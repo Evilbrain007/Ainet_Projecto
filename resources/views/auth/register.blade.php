@@ -52,6 +52,24 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
+                            <label for="inputDepartment" class="col-md-4 control-label">Departamento</label>
+
+                            <div class="col-md-6">
+                                <select name="department" class="form-control" id="inputDepartment">
+                                    <option value="1">Leiria</option>
+                                    <option value="2">Entroncamento</option>
+                                    <option value="3">Lisboa</option>
+                                </select>
+
+                                @if ($errors->has('department'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('department') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">Password</label>
 
@@ -65,6 +83,7 @@
                                 @endif
                             </div>
                         </div>
+
 
                         <div class="form-group">
                             <label for="password-confirm" class="col-md-4 control-label">Confirmar Password</label>
