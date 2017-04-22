@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head action="login.php" method="post" class="form-group">
+    <meta charset="UTF-8">
+    <title>Criar Perfil</title>
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Bootstrap 3 optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <form>
+        <div class="form-group">
+            <label for="inputName">Nome</label>
+            <input
+                    type="text" class="form-control" name="nome" id="inputName" placeholder="Nome" value=""/>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">Email</label>
+            <input
+                    type="email" class="form-control" name="email" id="inputEmail" placeholder="Email" value=""/>
+        </div>
+        <div class="form-group">
+            <label for="inputPhone">Telefone</label>
+            <input type="number" class="form-control" name="phone" id="inputPhone" placeholder="Telefone" value=""/>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" name="password" id="inputPassword" value=""/>
+        </div>
+        <div class="form-group">
+            <label for="inputDepartment">Departamento</label>
+            <select name="Department" id="inputDepartment">
+                <option value="Leiria">Leiria</option>
+                <option value="Entroncamento">Entroncamento</option>
+                <option value="Lisboa">Lisboa</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-success" name="ok">Guardar</button>
+        </div>
+
+    </form>
+
+
+</body>
+</html>
