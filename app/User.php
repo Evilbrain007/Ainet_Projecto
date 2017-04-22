@@ -26,4 +26,22 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    private $id;
+    private $name;
+    private $email;
+    private $password;
+    private $rembember_token;
+    private $admin;//boolean
+    private $blocked;//boolean
+    private $phone;//string
+    private $profile_photo;
+    private $profile_url;
+    private $presentation;
+    private $print_evals;
+    private $print_counts;
+    private $department_id;
+    private $created_at;
+    private $updated_at;
+
 }
