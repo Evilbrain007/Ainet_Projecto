@@ -3,7 +3,7 @@
 @section('title', "PrintIT - pedidos de impressão")
 
 @section('navbar')
-    <button type=button" class="btn btn-danger navbar-btn" href="home.html">Login</button>
+    <button type="button" class="btn btn-danger navbar-btn" href="home.html">Login</button>
 @endsection
 
 @section('content')
