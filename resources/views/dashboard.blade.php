@@ -1,15 +1,16 @@
 @extends('master')
 
-@section('title', "PrintIT - pedidos de impressão")
+@section('title', $title)
 
 @section('navbar')
     <button type="button" class="btn btn-danger navbar-btn" href="home.html">Login</button>
 @endsection
 
 @section('content')
-    <h1 class="page-header">
-        Página inicial
-    </h1>
+    <div class="container">
+        <h1 class="page-header">
+            Página inicial
+        </h1>
     </div>
     <div class="container text-center">
         <div class="row">
