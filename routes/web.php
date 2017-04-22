@@ -12,5 +12,50 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return 'Dashboard Printit!';
 });
+
+Route::get('/requests', function () {
+    return 'Lista de Pedidos de Impressão';
+});
+Route::get('/request/{id}', function () {
+    return 'Detalhe de um Pedido';
+});
+
+Route::get('/requests/create', function () {
+    return 'Página de criação de um Pedido';
+});
+Route::post('/requests/create', function () {
+    return 'Criação de um Pedido';
+});
+
+Route::get('/requests/edit/{id}', function () {
+    return 'Página para editar informação de um pedido';
+});
+Route::post('/requests/update/{id}', function () {
+    return 'Editar informação de um pedido';
+});
+Route::post('/requests/delete/{id}', function () {
+    return 'Eliminar informação de um pedido';
+});
+
+
+
+
+Route::get('/departament/{id}', function () {
+    return 'Lista de utilizadores';
+});
+Route::get('/user/{id}', function () {
+    return 'Detalhe de um utilizador';
+});
+
+Route::get('/login', function () {
+    return 'Página de Login';
+});
+Route::get('/logout', function () {
+    return 'Página de Logout';
+});
+Route::get('/signin', function () {
+    return 'Página de registo';
+});
+
