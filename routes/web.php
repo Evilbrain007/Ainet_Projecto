@@ -61,3 +61,7 @@ Route::get('/signin', function () {
     return 'Página de registo';
 });
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

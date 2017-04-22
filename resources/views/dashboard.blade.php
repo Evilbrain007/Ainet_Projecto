@@ -3,7 +3,9 @@
 @section('title', $title)
 
 @section('navbar')
-    <button type="button" class="btn btn-danger navbar-btn" href="home.html">Login</button>
+    <div class="container">
+        <button type="button" class="btn btn-danger navbar-btn navbar-right" href="home.html">Login</button>
+    </div>
 @endsection
 
 @section('content')
@@ -26,7 +28,7 @@
             <div class="col-md-3">Média imp. diárias Abril: 100</div>
         </div>
 
-        <div class="table-responsive col-md-5">
+        <div class="table-responsive col-md-6">
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -36,27 +38,22 @@
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td class="text-left">Departamento Leiria</td>
-                    <td class="text-right">100</td>
-                </tr>
-                <tr>
-                    <td class="text-left">Departamento Abrantes</td>
-                    <td class="text-right">100</td>
-                </tr>
-                <tr>
-                    <td class="text-left">Departamento Entroncamento</td>
-                    <td class="text-right">100</td>
-                </tr>
+
+
+                @foreach($departments as $department)
+                    <tr>
+                        <td class="text-left">{{$department->name}}</td>
+                        <td class="text-right">100</td>
+                    </tr>
+                @endforeach
+
                 </tbody>
             </table>
 
         </div>
 
-        <div class="col-md-3">
-        </div>
 
-        <div class="table-responsive col-md-4">
+        <div class="table-responsive col-md-6">
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -67,24 +64,19 @@
                 </thead>
 
                 <tbody>
-                <tr>
-                    <td class="text-left">Jose Migalha</td>
-                    <td class="text-right">jmig@cmosl.com</td>
-                    <td class="text-right">91222222</td>
-                </tr>
-                <tr>
-                    <td class="text-left">Jose Migalha</td>
-                    <td class="text-right">jmig@cmosl.com</td>
-                    <td class="text-right">91222222</td>
-                </tr>
-                <tr>
-                    <td class="text-left">Jose Migalha</td>
-                    <td class="text-right">jmig@cmosl.com</td>
-                    <td class="text-right">91222222</td>
-                </tr>
+
+                @foreach($users as $user)
+                    <tr>
+                        <td class="text-left">{{$user->name}}</td>
+                        <td class="text-right">{{$user->email}}</td>
+                        <td class="text-right">{{$user->phone}}</td>
+                    </tr>
+                @endforeach
+
                 </tbody>
             </table>
 
         </div>
+    </div>
 @endsection
 

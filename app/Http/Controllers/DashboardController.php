@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Departament;
+use App\User;
+use Illuminate\Database\Eloquent\Model;
 
 class DashboardController extends Controller
 {
@@ -10,6 +12,11 @@ class DashboardController extends Controller
     {
         $title = "Printit!";
 
-        return view('dashboard', compact('title'));
+        $users = User::all();
+        $departments = Departament::all();
+
+        return view('dashboard', compact('title', 'users', 'departments'));
+
+
     }
 }
