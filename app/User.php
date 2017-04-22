@@ -41,7 +41,5 @@ class User extends Authenticatable
     private $print_evals;
     private $print_counts;
     private $department_id;
-    private $created_at;
-    private $updated_at;
 
 }
