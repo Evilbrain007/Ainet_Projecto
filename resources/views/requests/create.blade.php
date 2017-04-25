@@ -7,7 +7,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Criar Pedido</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="ainet.project/requests/create">
+                        <form class="form-horizontal" role="form" method="POST" action="ainet.project/requests/create" enctype="multipart/form-data">
                             <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                                 <label for="description" class="col-md-4 control-label">Descição</label>
                                 <div class="col-md-6">
@@ -49,6 +49,25 @@
                                     @endif
                             </div>
 
+                            <div class="form-group{{$errors->has('paper_type') ? 'has-error' : ''}}">
+                                <label for="paper_type" class="col-md-4 control-label">Tipo de papel</label>
+                                <div class="col-md-6">
+                                    <select id="paper_type" class="form-control" name="paper_type" required>
+                                        <option value="" selected>Escolha um tipo de papel</option>
+                                        <option value="draft">Rascunho</option>
+                                        <option value="normal">Normal</option>
+                                        <option value="photo">Fotográfico</option>
+                                    </select>
+                                </div>
+
+                                @if($errors->has('paper_type'))
+                                    <span class="help-block">
+                                        <strong>{{$errors->first('paper_type')}}</strong>
+                                    </span>
+                                @endif
+
+                            </div>
+
                             <div class="form-group{{$errors->has('color') ? 'has-error' : ''}}">
                                 <label for="color" class="col-md-4 control-label">Seleccione a cor</label>
                                 <div class="col-md-6">
@@ -84,6 +103,42 @@
                                     </span>
                                 @endif
                             </div>
+
+                            <div class="form-group{{$errors->has('paper_size') ? 'has-error' : ''}}">
+                                <label for="paper_size" class="col-md-4 control-label">Tamanho do papel</label>
+                                <div class="col-md-6">
+                                    <div class="radio">
+                                        <input id="paper_size" type="radio"  name="paper_size" value="A3" required>A3
+                                    </div>
+                                    <div class="radio">
+                                        <input id="paper_size" type="radio"  name="paper_size" value="A4">A4
+                                    </div>
+                                </div>
+
+                                @if($errors->has('paper_size'))
+                                    <span class="help-block">
+                                        <strong>{{$errors->first('paper_size')}}</strong>
+                                    </span>
+                                @endif
+                            </div>
+
+                            <div class="form-group{{$errors->has('upload_file') ? 'has-error' : ''}}">
+                                <label for="upload_file" class="col-md-4 control-label">Seleccione um ficheiro</label>
+                                <div class="col-md-6">
+                                    <input id="upload_file" type="file"  name="upload_file" required>
+                                    {{--*****AKI VAI TER K VERIFICAR FORMATO VALIDO: IMAGEM(JPG, TIFF, PNG ...)
+                              WORD, EXCEL, ODT, PDF --}}
+                                </div>
+                                @if($errors->has('upload_file'))
+                                    <span class="help-block">
+                                        <strong>{{$errors->first('upload_file')}}</strong>
+                                    </span>
+                                @endif
+
+                            </div>
+
+                                {{--AINDA FALTA O BOTAO PARA SUBMETER --}}
+
 {{--
  <div class="form-group{{$errors->has('colour') ? 'has-error' : ''}}">
                                 <label for="colour" class="col-md-4 control-label">Seleccione a cor</label>
