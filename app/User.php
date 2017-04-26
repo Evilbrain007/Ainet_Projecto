@@ -48,17 +48,9 @@ class User extends Authenticatable
         $admin = false;
         $blocked = false;
         $phone = $attributes['phone'];
-        $profile_photo = null;
-        $profile_url = "";
-        $presentation = "";
         $print_evals = 0;
         $print_counts = 0;
         $department_id = $attributes['department_id'];
-    }
-
-    public static function store($user)
-    {
-        $user->save();
     }
 
 }
