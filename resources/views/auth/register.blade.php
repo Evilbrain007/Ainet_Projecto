@@ -25,7 +25,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">EMail</label>
+                            <label for="email" class="col-md-4 control-label">Email</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" placeholder="Email do Utilizador" value="{{ old('email') }}" required>
@@ -38,11 +38,11 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                             <label for="inputPhone" class="col-md-4 control-label">Telefone</label>
 
                             <div class="col-md-6">
-                                <input type="number" class="form-control" name="phone" id="inputPhone" placeholder="Telefone" value="{{ old('email') }}" required/>
+                                <input type="number" class="form-control" name="phone" id="inputPhone" placeholder="Telefone" value="{{ old('phone') }}" required/>
 
                                 @if ($errors->has('phone'))
                                     <span class="help-block">

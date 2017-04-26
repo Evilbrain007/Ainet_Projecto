@@ -27,11 +27,9 @@ class User extends Authenticatable
         'password', 'remember_token', 'admin', 'blocked', 'print_evals', 'print_counts'
     ];
 
-    private $id;
     private $name;
     private $email;
     private $password;
-    private $rembember_token;
     private $admin;//boolean
     private $blocked;//boolean
     private $phone;//string
@@ -47,7 +45,6 @@ class User extends Authenticatable
         $name = $attributes['name'];
         $email = $attributes['email'];
         $password= $attributes['password'];
-        $rembember_token = null;
         $admin = false;
         $blocked = false;
         $phone = $attributes['phone'];
