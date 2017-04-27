@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Request extends Model
+class PrintRequest extends Model
 {
     private $id;
     private $ownerId;
@@ -23,4 +23,7 @@ class Request extends Model
     private $closedUser;
     private $refusedReason;
     private $satisfactionGrade;
+
+
+    protected $table='requests';
 }
