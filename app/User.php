@@ -38,19 +38,25 @@ class User extends Authenticatable
     private $presentation;
     private $print_evals;
     private $print_counts;
-    private $department_id;
 
     public static function create($attributes)
     {
-        $name = $attributes['name'];
-        $email = $attributes['email'];
-        $password= $attributes['password'];
-        $admin = false;
-        $blocked = false;
-        $phone = $attributes['phone'];
-        $print_evals = 0;
-        $print_counts = 0;
-        $department_id = $attributes['department_id'];
+        $user = new User();
+        $user->name = $attributes['name'];
+        $user->email = $attributes['email'];
+        $user->password = $attributes['password'];
+        $user->admin = false;
+        $user->blocked = false;
+        $user->phone = $attributes['phone'];
+        $user->print_evals = 0;
+        $user->print_counts = 0;
+        $department = Departament::find($attributes['department_id']);
+        $user->departament()->associate($department);
+        return $user;
     }
 
+    public function departament()
+    {
+        return $this->hasOne('App\Departament');
+    }
 }
