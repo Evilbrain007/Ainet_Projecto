@@ -1,6 +1,13 @@
-@extends('layouts/app')
+@extends('master')
 
+
+@section('title', $title)
 {{-- INCLUIR NAV PARA USER AUTENTICADO --}}
+    @section('navbar')
+
+        @include('nav_logged_in')
+
+        @endsection
 
 @section('content')
     <div class="container">
@@ -17,18 +24,26 @@
                         <select id="filterByStatus" class="form-control" name="filterByStatus">
                             <option value="" selected>Escolha um estado</option>
                             <option value="1">Concluido</option>
+                            {{--  mostra os pedidos concluidos --}}
                             <option value="2">Em espera</option>
+                            {{--  mostra os pedidos em espera --}}
                         </select>
 
                         <select id="filterByopenDate" class="form-control" name="filterByopenDate">
-                            <option value="" selected>Escolha uma data de pedido</option>
-                            <option value="1">{{-- IR BUSCAR AS VARIAS DATAS --}}</option>
+                            <option value="" selected>Ordenar por data</option>
+                            <option value="0">Crescente</option>
+                            {{--  apresenta os dados na tabela por ordem crescente --}}
+                            <option value="1">Decrescente</option>
+                            {{--  apresenta os dados na tabela por ordem decrescente --}}
 
                         </select>
 
                         <select id="filterBydueDate" class="form-control" name="filterBydueDate">
-                            <option value="" selected>Escolha uma data de conclusão</option>
-                            <option value="1">{{-- IR BUSCAR AS VARIAS DATAS --}}</option>
+                            <option value="" selected>Ordenar por data de conclusão</option>
+                            <option value="0">Crescente</option>
+                            {{--  apresenta os dados na tabela por ordem crescente --}}
+                            <option value="1">Decrescente</option>
+                            {{--  apresenta os dados na tabela por ordem decrescente --}}
 
                         </select>
 
@@ -42,14 +57,14 @@
 
     </div>
 
-   <div class="table-responsive col-md-10">
+   <div class="table-responsive col-md-12">
         <table class="table table-hover">
             <thead>
             <tr>
-                <th class="col-md-1">Nº do pedido</th>
+                <th class="col-md-2">Nº do pedido</th>
                 <th class="col-md-2">Descrição</th>
-                <th class="col-md-1">Data do pedido</th>
-                <th class="col-md-1">Data de conclusão</th>
+                <th class="col-md-2">Data do pedido</th>
+                <th class="col-md-2">Data de conclusão</th>
                 <th class="col-md-1">Estado</th>
                 <th class="col-md-2">Acção</th> {{--mudar o nome desta coluna? --}}
             </tr>
@@ -61,10 +76,10 @@
 
             @foreach($requests as $request)
                 <tr>
-                    <td class="col-md-1">{{$request->id}}</td>
+                    <td class="col-md-2">{{$request->id}}</td>
                     <td class="col-md-2">{{$request->description}}</td>
-                    <td class="col-md-1">{{$request->openDate}}</td>
-                    <td class="col-md-1">{{$request->dueDate}}</td>
+                    <td class="col-md-2">{{$request->openDate}}</td>
+                    <td class="col-md-2">{{$request->dueDate}}</td>
 
                     @if($request->status==0)
                         <td class="col-md-1">Em espera</td>
@@ -72,13 +87,19 @@
                         <td class="col-md-1">Concluído</td>
                     @endif
 
+
                     @if($request->status === 0){
                         {{-- apresentar botao para editar e remover--}}
                     <td class="col-md-4">
                         <form>
                             <div class="form-group form-inline">
                                 <button type="submit" class="btn btn-primary">
-                                    Avaliar
+                                    Editar
+                                </button>
+                            </div>
+                            <div class="form-group form-inline">
+                                <button type="submit" class="btn btn-primary">
+                                    Remover
                                 </button>
                             </div>
                         </form>
