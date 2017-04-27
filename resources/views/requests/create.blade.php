@@ -7,7 +7,9 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Criar Pedido</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="ainet.project/requests/create" enctype="multipart/form-data">
+                        <form class="form-horizontal" role="form" method="POST" action='/requests/create'>
+                            {{ csrf_field() }}
+
                             <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                                 <label for="description" class="col-md-4 control-label">Descição</label>
                                 <div class="col-md-6">
@@ -22,29 +24,29 @@
                                 </div>
                             </div>
 
-                            <div class="form-group{{$errors->has('request_deadline') ? 'has-error' : ''}}">
-                                <label for="request_deadline" class="col-md-4 control-label">Data limite para concluir pedido </label>
+                            <div class="form-group{{$errors->has('due_date') ? 'has-error' : ''}}">
+                                <label for="due_date" class="col-md-4 control-label">Data limite para concluir pedido </label>
                                 <div class="col-md-6">
-                                    <input id="request_deadline" type="date" class="form-control" name="request_deadline" value="">
+                                    <input id="due_date" type="date" class="form-control" name="due_date" value="">
 
-                                    @if($errors->has('request_deadline'))
+                                    @if($errors->has('due_date'))
                                         <span class="help-block">
-                                            <strong>{{$errors->first('request_deadline')}}</strong>
+                                            <strong>{{$errors->first('due_date')}}</strong>
                                         </span>
                                         @endif
                                 </div>
                             </div>
 
-                            <div class="form-group{{$errors->has('copies_num') ? 'has-error' : ''}}">
-                                <label for="copies_num" class="col-md-4 control-label">Número de cópias</label>
+                            <div class="form-group{{$errors->has('quantity') ? 'has-error' : ''}}">
+                                <label for="quantity" class="col-md-4 control-label">Número de cópias</label>
                                 <div class="col-md-6">
-                                    <input id="copies_num" type="number" class="form-control" name="copies_num" value="" required>
+                                    <input id="quantity" type="number" class="form-control" name="quantity" value="" required>
                                 </div>
 
 
-                                @if($errors->has('copies_num'))
+                                @if($errors->has('quantity'))
                                     <span class="help-block">
-                                        <strong>{{$errors->first('copies_num')}}</strong>
+                                        <strong>{{$errors->first('quantity')}}</strong>
                                     </span>
                                     @endif
                             </div>
@@ -68,38 +70,38 @@
 
                             </div>
 
-                            <div class="form-group{{$errors->has('color') ? 'has-error' : ''}}">
-                                <label for="color" class="col-md-4 control-label">Seleccione a cor</label>
+                            <div class="form-group{{$errors->has('colored') ? 'has-error' : ''}}">
+                                <label for="colored" class="col-md-4 control-label">Seleccione a cor</label>
                                 <div class="col-md-6">
                                     <div class="radio">
-                                        <input id="color" type="radio"  name="color" value="pb" required>Preto e branco
+                                        <input id="colored" type="radio"  name="colored" value="false" required>Preto e branco
                                     </div>
                                     <div class="radio">
-                                        <input id="color" type="radio"  name="color" value="colored">Cores
+                                        <input id="colored" type="radio"  name="colored" value="true">Cores
                                     </div>
                                 </div>
 
-                                @if($errors->has('color'))
+                                @if($errors->has('colored'))
                                     <span class="help-block">
-                                        <strong>{{$errors->first('color')}}</strong>
+                                        <strong>{{$errors->first('colored')}}</strong>
                                     </span>
                                     @endif
                             </div>
 
-                            <div class="form-group{{$errors->has('staple') ? 'has-error' : ''}}">
-                                <label for="staple" class="col-md-4 control-label">Com ou sem agrafo</label>
+                            <div class="form-group{{$errors->has('stapled') ? 'has-error' : ''}}">
+                                <label for="stapled" class="col-md-4 control-label">Com ou sem agrafo</label>
                                 <div class="col-md-6">
                                     <div class="radio">
-                                        <input id="staple" type="radio"  name="staple" value="with_staple" required>Com agrafo
+                                        <input id="stapled" type="radio"  name="stapled" value="true" required>Com agrafo
                                     </div>
                                     <div class="radio">
-                                        <input id="staple" type="radio"  name="staple" value="without_staple">Sem agrafo
+                                        <input id="stapled" type="radio"  name="stapled" value="false">Sem agrafo
                                     </div>
                                 </div>
 
-                                @if($errors->has('staple'))
+                                @if($errors->has('stapled'))
                                     <span class="help-block">
-                                        <strong>{{$errors->first('staple')}}</strong>
+                                        <strong>{{$errors->first('stapled')}}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -122,22 +124,28 @@
                                 @endif
                             </div>
 
-                            <div class="form-group{{$errors->has('upload_file') ? 'has-error' : ''}}">
-                                <label for="upload_file" class="col-md-4 control-label">Seleccione um ficheiro</label>
+                            <div class="form-group{{$errors->has('file') ? 'has-error' : ''}}">
+                                <label for="file" class="col-md-4 control-label">Seleccione um ficheiro</label>
                                 <div class="col-md-6">
-                                    <input id="upload_file" type="file"  name="upload_file" required>
+                                    <input id="file" type="file"  name="file" required>
                                     {{--*****AKI VAI TER K VERIFICAR FORMATO VALIDO: IMAGEM(JPG, TIFF, PNG ...)
                               WORD, EXCEL, ODT, PDF --}}
                                 </div>
-                                @if($errors->has('upload_file'))
+                                @if($errors->has('file'))
                                     <span class="help-block">
-                                        <strong>{{$errors->first('upload_file')}}</strong>
+                                        <strong>{{$errors->first('file')}}</strong>
                                     </span>
                                 @endif
 
                             </div>
 
-                                {{--AINDA FALTA O BOTAO PARA SUBMETER --}}
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Criar
+                                    </button>
+                                </div>
+                            </div>
 
 {{--
  <div class="form-group{{$errors->has('colour') ? 'has-error' : ''}}">
