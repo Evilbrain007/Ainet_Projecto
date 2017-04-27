@@ -6,24 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class PrintRequest extends Model
 {
-    private $id;
-    private $ownerId;
-    private $status;
-    private $openDate;
-    private $dueDate;
-    private $description;
-    private $quantity;
-    private $colored;   // boolean
-    private $stapled;   // boolean
-    private $paperSize;
-    private $paperType;
-    private $file;
-    private $printerID;
-    private $closedDate;
-    private $closedUser;
-    private $refusedReason;
-    private $satisfactionGrade;
+    protected $table = 'requests';
 
+    public function comment()
+    {
+        $this->hasMany('App\Comment');
+    }
 
-    protected $table='requests';
+    public function printer()
+    {
+        $this->belongsTo('App\Printer');
+    }
+
+    public function owner() {
+        $this->belongsTo('App\User', 'owner_id');
+    }
+
+    public function closingUser() {
+        $this->belongsTo('App\User', 'closed_user_id');
+    }
 }

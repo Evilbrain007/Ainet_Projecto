@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -27,18 +28,6 @@ class User extends Authenticatable
         'password', 'remember_token', 'admin', 'blocked', 'print_evals', 'print_counts'
     ];
 
-    private $name;
-    private $email;
-    private $password;
-    private $admin;//boolean
-    private $blocked;//boolean
-    private $phone;//string
-    private $profile_photo;
-    private $profile_url;
-    private $presentation;
-    private $print_evals;
-    private $print_counts;
-
     public static function create($attributes)
     {
         $user = new User();
@@ -50,13 +39,24 @@ class User extends Authenticatable
         $user->phone = $attributes['phone'];
         $user->print_evals = 0;
         $user->print_counts = 0;
-        $department = Departament::find($attributes['department_id']);
-        $user->departament()->associate($department);
+        $department = Department::find($attributes['department_id']);
+        $user->department()->associate($department);
         return $user;
     }
 
-    public function departament()
+    public function department()
     {
-        return $this->hasOne('App\Departament');
+        return $this->belongsTo('App\Department', 'department_id');
     }
+
+    public function comment()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
+    public function printRequest()
+    {
+        return $this ->hasMany('App\PrintRequest');
+    }
+
 }

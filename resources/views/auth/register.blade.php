@@ -56,7 +56,7 @@
                             <label for="inputDepartment" class="col-md-4 control-label">Departamento</label>
 
                             <div class="col-md-6">
-                                <select name="department" class="form-control" id="inputDepartment">
+                                <select name="department_id" class="form-control" id="inputDepartment">
                                     <option value="1">Leiria</option>
                                     <option value="2">Entroncamento</option>
                                     <option value="3">Lisboa</option>
