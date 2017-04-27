@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('dashboard');
 });
 */
-Route::get('/', 'DashboardController@getIndex');
+Route::get('/', 'DashboardController@getIndex')->name('home');
 
 Route::get('/requests', function () {
     return 'Lista de Pedidos de Impressão';
@@ -24,12 +24,14 @@ Route::get('/request/{id}', function () {
     return 'Detalhe de um Pedido';
 });
 
-Route::get('/requests/create', function () {
-    return 'Página de criação de um Pedido';
-});
-Route::post('/requests/create', function () {
-    return 'Criação de um Pedido';
-});
+// faltam rotas para criacao de pedidos
+Route::get('/requests/create', 'RequestController@create');
+
+Route::post('/requests/create', 'RequestController@store');
+
+Route::get('/requests/details', 'RequestController@details');
+
+Route::get('/requests/dashboard', 'RequestController@dashboard');
 
 Route::get('/requests/edit/{id}', function () {
     return 'Página para editar informação de um pedido';

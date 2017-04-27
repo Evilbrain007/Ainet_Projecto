@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Printer extends Model
 {
-    private $id;
-    private $name;
+    public function printRequest()
+    {
+        $this->hasMany('App\PrintRequest');
+    }
 }
