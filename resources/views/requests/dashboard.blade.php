@@ -11,9 +11,9 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-3">Filtros
-                <form>
-                    <div class="form-group form-inline">
+            <div class="col-md-10">Filtros
+                <form class="form-group form-inline">
+                    <div >
                         <select id="filterByStatus" class="form-control" name="filterByStatus">
                             <option value="" selected>Escolha um estado</option>
                             <option value="1">Concluido</option>
@@ -68,39 +68,42 @@
 
                     @if($request->status==0)
                         <td class="col-md-1">Em espera</td>
+                    @else
+                        <td class="col-md-1">Concluído</td>
                     @endif
 
-                    {{--else: imprimir Concluido --}}
-
-                    {{--<td class="col-md-1">{{$request->status}}</td> --}}
-
-
-                    @if($request->status==0){
+                    @if($request->status === 0){
                         {{-- apresentar botao para editar e remover--}}
-                    @endif
-                    {{--else : apresentar o botao avaliar --}}
-                    <td class="col-md-4"> {{--Se o status for Concluido, apresenta Avaliar, se não, apresenta botoes editar/remover --}}
-
-                        {{--fazer o if--}}
-
+                    <td class="col-md-4">
                         <form>
                             <div class="form-group form-inline">
-                                <select id="satisfactionGrade" class="form-control" name="satisfactionGrade">
-                                    <option value="" selected>Avalie a qualidade do serviço</option>
-                                    <option value="1">Mau</option>
-                                    <option value="2">Médio</option>
-                                    <option value="3">Bom</option>
-                                </select>
                                 <button type="submit" class="btn btn-primary">
                                     Avaliar
                                 </button>
                             </div>
                         </form>
                     </td>
+                    @else
+                    {{--else : apresentar opcoes para avaliar --}}
+                        <td class="col-md-4">
+                            <form>
+                                <div class="form-group form-inline">
+                                    <select id="satisfactionGrade" class="form-control" name="satisfactionGrade">
+                                        <option value="" selected>Avalie a qualidade do serviço</option>
+                                        <option value="1">Mau</option>
+                                        <option value="2">Médio</option>
+                                        <option value="3">Bom</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">
+                                        Avaliar
+                                    </button>
+                                </div>
+                            </form>
+                        </td>
+
+                    @endif
                 </tr>
             @endforeach
-
-
             </tbody>
         </table>
 

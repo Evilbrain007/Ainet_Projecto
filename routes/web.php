@@ -24,7 +24,6 @@ Route::get('/request/{id}', function () {
     return 'Detalhe de um Pedido';
 });
 
-// faltam rotas para criacao de pedidos
 Route::get('/requests/create', 'RequestController@create');
 
 Route::post('/requests/create', 'RequestController@store');
@@ -42,7 +41,6 @@ Route::post('/requests/update/{id}', function () {
 Route::post('/requests/delete/{id}', function () {
     return 'Eliminar informação de um pedido';
 });
-
 
 
 
