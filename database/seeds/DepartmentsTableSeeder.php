@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DepartamentsTableSeeder extends Seeder
+class DepartmentsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class DepartamentsTableSeeder extends Seeder
         //PARA CORRER:
         //DENTRO DE VAGRANT SSH, ROOT DO PROJECTO:
         //php artisan db:seed --class=~PrintersTableSeeder
-        factory(App\Departament::class, 10)->create()->each(function ($u) {
+        factory(App\Department::class, 10)->create()->each(function ($u) {
             $u->save();
         });
     }

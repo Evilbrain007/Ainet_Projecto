@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         //PARA CORRER:
         //DENTRO DE VAGRANT SSH, ROOT DO PROJECTO:
         //php artisan db:seed
-        $this->call(DepartamentsTableSeeder::class);
+        $this->call(DepartmentsTableSeeder::class);
         $this->call(PrintersTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(RequestsTableSeeder::class);

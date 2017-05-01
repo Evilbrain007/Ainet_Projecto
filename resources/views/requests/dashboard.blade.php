@@ -1,13 +1,17 @@
-@extends('master')
+@extends('layouts/app')
 
 
+
+{{-- INCLUIR NAV PARA USER AUTENTICADO
 @section('title', $title)
-{{-- INCLUIR NAV PARA USER AUTENTICADO --}}
-    @section('navbar')
+@section('navbar')
 
         @include('nav_logged_in')
 
         @endsection
+
+--}}
+
 
 @section('content')
     <div class="container">
@@ -18,7 +22,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-10">Filtros
+            <div class="col-md-12">Filtros
                 <form class="form-group form-inline">
                     <div >
                         <select id="filterByStatus" class="form-control" name="filterByStatus">
@@ -61,7 +65,7 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th class="col-md-2">Nº do pedido</th>
+                <th class="col-md-1">Nº do pedido</th>
                 <th class="col-md-2">Descrição</th>
                 <th class="col-md-2">Data do pedido</th>
                 <th class="col-md-2">Data de conclusão</th>
@@ -76,8 +80,8 @@
 
             @foreach($requests as $request)
                 <tr>
-                    <td class="col-md-2">{{$request->id}}</td>
-                    <td class="col-md-2">{{$request->description}}</td>
+                    <td class="col-md-1">{{$request->id}}</td>
+                    <td class="col-md-2">{{substr($request->description, 0, 20)}}</td>
                     <td class="col-md-2">{{$request->openDate}}</td>
                     <td class="col-md-2">{{$request->dueDate}}</td>
 
@@ -129,4 +133,97 @@
         </table>
 
     </div>
+
+
+    {{--FILTRAR COMENTARIOS --}}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">Filtros
+                <form class="form-group form-inline">
+                        <div >
+                            <select id="orderByDate" class="form-control" name="orderByDate">
+                                <option value="0" selected>Ordem</option>
+                                <option value="1">Mais antigos</option>
+                                {{--  mostra comentarios do mais antigo para o mais recente --}}
+                                <option value="2">Mais recentes</option>
+                                {{--  mostra comentarios do mais recente para o mais antigo --}}
+                            </select>
+                        </div>
+
+
+                        <div >
+                            <select id="filterByReplys" class="form-control" name="filterByReplys">
+                                <option value="" selected>Filtrar por respostas</option>
+                                <option value="0">Todos os comentários</option>
+                                {{--  mostra comentarios do mais antigo para o mais recente --}}
+                                <option value="1">Com respostas não lidas</option>
+                                {{--  mostra comentarios do mais antigo para o mais recente --}}
+                                <option value="2">Sem respostas</option>
+                                {{--  mostra comentarios do mais recente para o mais antigo --}}
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Filtrar
+                        </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+    {{--COMENTARIOS DOS UTILIZADORES --}}
+
+    <div class="container">
+
+        <div class="table-responsive col-md-12">
+            <table class="table table-hover">
+
+                <thead>
+                <tr>
+                    <th class="col-md-3">Nº do Comentário</th>
+                    <th class="col-md-3">Descrição</th>
+                    <th class="col-md-3">Data da última resposta</th>
+                    {{--mudar a cor se tiver respostas nao lidas e por nº de respos
+                     tas clicavel para poder ver as respostas--}}
+                    <th class="col-md-1">Nº de Respostas</tr>
+                </thead>
+
+                <tbody>
+                {{--so mostra comentarios se nao estiverem bloqueados --}}
+                {{--filtrar e ordenar comentarios --}}
+
+                @foreach($comments as $comment)
+                    @if($comment->blocked != 1)
+                        <tr>
+                            <td class="col-md-3">{{$comment->id}}</td>
+                            <td class="col-md-3">{{$comment->comment}}</td>
+                            <td class="col-md-3">{{$comment->updated_at}}</td>
+
+                            <td class="col-md-1">
+                                <button type="submit" class="btn btn-primary">
+                                    {{-- contar o numero de respostas e mostrar o numero como nome do botao --}}
+                                    {{$comment['numberReplies']}}
+                                </button>
+                            </td>
+
+                        </tr>
+                    @endif
+
+
+                @endforeach
+
+
+                </tbody>
+
+
+
+            </table>
+        </div>
+
+    </div>
     @endsection
+
+

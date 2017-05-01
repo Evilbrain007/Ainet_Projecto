@@ -22,7 +22,7 @@ $factory->define(App\Printer::class, function (Faker\Generator $faker) {
 });
 
 
-$factory->define(App\Departament::class, function (Faker\Generator $faker) {
+$factory->define(App\Department::class, function (Faker\Generator $faker) {
 
     return [
         'name' => $faker->name,
