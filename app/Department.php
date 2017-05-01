@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-    private $id;
-    private $name;
+    protected $table = 'departaments';
+
+    public function user()
+    {
+        return $this->hasMany('App\User');
+    }
 }
