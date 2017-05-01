@@ -31,7 +31,7 @@ Route::post('/requests/create', 'RequestController@store');
 
 Route::get('/requests/details', 'RequestController@details');
 
-Route::get('/requests/dashboard', 'RequestController@dashboard');
+Route::get('/requests/dashboard', 'RequestController@dashboard')->name('requestsDashboard');
 
 Route::get('/requests/edit/{id}', function () {
     return 'Página para editar informação de um pedido';

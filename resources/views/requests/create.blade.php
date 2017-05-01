@@ -7,7 +7,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Criar Pedido</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action='/requests/create'>
+                        <form class="form-horizontal" role="form" method="POST" action='/requests/create'
+                        enctype="multipart/form-data">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
@@ -56,9 +57,9 @@
                                 <div class="col-md-6">
                                     <select id="paper_type" class="form-control" name="paper_type" required>
                                         <option value="" selected>Escolha um tipo de papel</option>
-                                        <option value="draft">Rascunho</option>
-                                        <option value="normal">Normal</option>
-                                        <option value="photo">Fotográfico</option>
+                                        <option value="0">Rascunho</option>
+                                        <option value="1">Normal</option>
+                                        <option value="2">Fotográfico</option>
                                     </select>
                                 </div>
 
@@ -74,10 +75,10 @@
                                 <label for="colored" class="col-md-4 control-label">Seleccione a cor</label>
                                 <div class="col-md-6">
                                     <div class="radio">
-                                        <input id="colored" type="radio"  name="colored" value="false" required>Preto e branco
+                                        <input id="colored" type="radio"  name="colored" value="0" required>Preto e branco
                                     </div>
                                     <div class="radio">
-                                        <input id="colored" type="radio"  name="colored" value="true">Cores
+                                        <input id="colored" type="radio"  name="colored" value="1">Cores
                                     </div>
                                 </div>
 
@@ -92,10 +93,10 @@
                                 <label for="stapled" class="col-md-4 control-label">Com ou sem agrafo</label>
                                 <div class="col-md-6">
                                     <div class="radio">
-                                        <input id="stapled" type="radio"  name="stapled" value="true" required>Com agrafo
+                                        <input id="stapled" type="radio"  name="stapled" value="1" required>Com agrafo
                                     </div>
                                     <div class="radio">
-                                        <input id="stapled" type="radio"  name="stapled" value="false">Sem agrafo
+                                        <input id="stapled" type="radio"  name="stapled" value="0">Sem agrafo
                                     </div>
                                 </div>
 
