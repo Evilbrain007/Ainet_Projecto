@@ -12,4 +12,11 @@ class UserController extends Controller
 
         return view('dashboard');
     }
+
+    public function getUserName($id){
+
+        //$name = User::where('id', $id)->get();
+        //receber o id do user e devolver o nome
+       // return
+    }
 }
