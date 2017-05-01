@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\PrintRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class RequestController extends Controller
@@ -22,7 +24,8 @@ class RequestController extends Controller
         //$request->input('description');
         $path = $request->file('file')->store('requestFiles');
 
-        $attributes = ['owner_id' => 1,
+
+        $attributes = ['owner_id' => 1, //TODO WHEN CONTROL AUTH IS DONE
             'status' => 0,
             'open_date' => Carbon::now(),
             'description' => $request->input('description'),
@@ -36,7 +39,9 @@ class RequestController extends Controller
             $attributes ['due_date'] =  $request->input('due_date');
         }
 
+
         $printRequest = PrintRequest::create($attributes);
+        PrintRequest::store($printRequest);
 
         return redirect()->route('requestsDashboard');
     }
