@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Department;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -15,7 +16,5 @@ class DashboardController extends Controller
         $departments = Department::all();
 
         return view('dashboard', compact('title', 'users', 'departments'));
-
-
     }
 }

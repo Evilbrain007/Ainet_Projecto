@@ -14,7 +14,7 @@
 <body>
 
 <div class="navbar navbar-fixed-top navbar-inverse">
-    @yield('navbar')
+    @include('nav')
 </div>
 
 <div class="container">
