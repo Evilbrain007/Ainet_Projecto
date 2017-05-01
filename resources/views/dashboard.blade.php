@@ -42,7 +42,10 @@
 
                 @foreach($departments as $department)
                     <tr>
-                        <td class="text-left"><a href="{{}}"{{$department->name}}</td>
+                        <td class="text-left">
+                            <a href="{{route('departmentDetail', ['id' => $department->id])}}">
+                                {{$department->name}}
+                            </a></td>
                         <td class="text-right">{{$department->totalPrints}}</td>
                     </tr>
                 @endforeach
