@@ -6,8 +6,8 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>Pedido #3467
-                <small>03/05/2017</small>
+            <h1>Pedido {{$printRequest->id}}
+                <small>{{$printRequest->open_date}}</small>
             </h1>
             <h5 class="text-muted"><strong>POR IMPRIMIR</strong></h5>
             <h5 class="text-muted">Concluir até: 10/05/2017</h5>
@@ -62,6 +62,27 @@
         <div class="panel-heading">
             <h3 class="panel-title">Comentários</h3>
         </div>
+
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Deixe o seu comentário</h3>
+                </div>
+                <div class="panel-body">
+                    {{-- FALTA A ROTA NO ACTION--}}
+                    <form action="{{route('createComment')}}" method="post">
+                        {{--<input type="number" hidden value={{$request->id}}> --}}
+
+                        <textarea name="message" rows="10" cols="200"></textarea>
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-danger">Comentar</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
         <div class="panel-body">
             <div class="panel panel-default">
                 <div class="panel-heading">

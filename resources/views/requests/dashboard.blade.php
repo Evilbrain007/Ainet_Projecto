@@ -23,7 +23,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">Filtros
-                <form class="form-group form-inline">
+                {{-- FALTA A ROTA NO ACTION--}}
+                <form class="form-group form-inline" action="" method="get">
                     <div >
                         <select id="filterByStatus" class="form-control" name="filterByStatus">
                             <option value="" selected>Escolha um estado</option>
@@ -95,12 +96,19 @@
                     @if($request->status === 0){
                         {{-- apresentar botao para editar e remover--}}
                     <td class="col-md-4">
-                        <form>
+
+                        {{-- <form action="{{ route('requestDetails') }}" method="get">
                             <div class="form-group form-inline">
                                 <button type="submit" class="btn btn-primary">
                                     Editar
                                 </button>
                             </div>
+                        </form>--}}
+
+
+                        <a class="btn btn-primary" href="{{ route('editRequest', ['id'=>$request->id]) }}">Editar</a>
+                        {{-- FALTA A ROTA NO ACTION--}}
+                            <form action="" method="get">
                             <div class="form-group form-inline">
                                 <button type="submit" class="btn btn-primary">
                                     Remover
@@ -111,7 +119,9 @@
                     @else
                     {{--else : apresentar opcoes para avaliar --}}
                         <td class="col-md-4">
-                            <form>
+
+                            {{-- FALTA A ROTA NO ACTION--}}
+                            <form action="" method="post">
                                 <div class="form-group form-inline">
                                     <select id="satisfactionGrade" class="form-control" name="satisfactionGrade">
                                         <option value="" selected>Avalie a qualidade do serviço</option>
