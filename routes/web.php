@@ -51,9 +51,7 @@ Route::get('/user/{id}', function () {
 Route::get('/login', function () {
     return 'Página de Login';
 });
-Route::get('/logout', function () {
-    return 'Página de Logout';
-});
+
 Route::get('/signin', function () {
     return 'Página de registo';
 });
