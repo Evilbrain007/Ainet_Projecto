@@ -14,6 +14,9 @@ class DashboardController extends Controller
     {
         $title = "Printit!";
 
+        $users = User::all();
+        $departments = Department::all();
+
         $statistics = [];
         $completedPrints = PrintRequest::whereNotNull('closed_user_id')->get();
         $statistics['totalPrints'] = $completedPrints->count();
@@ -41,10 +44,6 @@ class DashboardController extends Controller
         $currentMonth = Carbon::now()->month;
         $statistics['totalPrintsToday'] = PrintRequest::whereDate('closed_date', $today)->count();
         $statistics['totalPrintsCurrentMonth'] = PrintRequest::whereMonth('closed_date', $currentMonth)->count();
-
-        $users = User::all();
-        $departments = Department::all();
-
 
         foreach ($departments as $department) {
             $department->totalPrints = 0;
