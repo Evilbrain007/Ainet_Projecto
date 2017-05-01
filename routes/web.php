@@ -41,9 +41,8 @@ Route::post('/requests/delete/{id}', function () {
 
 
 
-Route::get('/departament/{id}', function () {
-    return 'Lista de utilizadores';
-});
+Route::get('/departament/{id}', 'DepartmentController@detail')->name('departmentDetail');
+
 Route::get('/user/{id}', function () {
     return 'Detalhe de um utilizador';
 });
@@ -51,9 +50,7 @@ Route::get('/user/{id}', function () {
 Route::get('/login', function () {
     return 'Página de Login';
 });
-Route::get('/logout', function () {
-    return 'Página de Logout';
-});
+
 Route::get('/signin', function () {
     return 'Página de registo';
 });

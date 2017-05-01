@@ -13,13 +13,19 @@
             <div class="col-md-3">Total de impressões</div>
             <div class="col-md-1">P/B</div>
             <div class="col-md-1">Cor</div>
-            <div class="col-md-3">300 Impressoes hoje</div>
+            <div class="col-md-3">
+                @if($statistics['totalPrintsToday'] === 1)
+                    {{$statistics['totalPrintsToday']}} impressão hoje
+                @else
+                    {{$statistics['totalPrintsToday']}} impressões hoje
+                @endif
+            </div>
         </div>
         <div class="row">
-            <div class="col-md-3">1280371</div>
-            <div class="col-md-1">77%</div>
-            <div class="col-md-1">23%</div>
-            <div class="col-md-3">Média imp. diárias Abril: 100</div>
+            <div class="col-md-3">{{$statistics['totalPrints']}}</div>
+            <div class="col-md-1">{{$statistics['bwColoredPrintsRatio']}}</div>
+            <div class="col-md-1">{{$statistics['coloredBWPrintsRatio']}}</div>
+            <div class="col-md-3">Média imp. diárias deste mês: {{$statistics['totalPrintsCurrentMonth']}}</div>
         </div>
 
         <div class="table-responsive col-md-6">
@@ -36,8 +42,11 @@
 
                 @foreach($departments as $department)
                     <tr>
-                        <td class="text-left">{{$department->name}}</td>
-                        <td class="text-right">100</td>
+                        <td class="text-left">
+                            <a href="{{route('departmentDetail', ['id' => $department->id])}}">
+                                {{$department->name}}
+                            </a></td>
+                        <td class="text-right">{{$department->totalPrints}}</td>
                     </tr>
                 @endforeach
 
