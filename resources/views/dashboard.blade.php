@@ -2,12 +2,6 @@
 
 @section('title', $title)
 
-@section('navbar')
-    <div class="container">
-        <button type="button" class="btn btn-danger navbar-btn navbar-right" href="home.html">Login</button>
-    </div>
-@endsection
-
 @section('content')
     <div class="container">
         <h1 class="page-header">
