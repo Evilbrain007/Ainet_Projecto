@@ -70,6 +70,7 @@ class RequestController extends Controller
     public function edit(PrintRequest $id)
     {
         $printRequest = $id;
+
         $title = "Editar pedido nº $printRequest->id"; //isto esta bem? ou evia so buscar o id na vista blade?
 
         return view('requests/create', compact('title', 'printRequest'));
