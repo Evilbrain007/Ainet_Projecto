@@ -2,7 +2,7 @@
 
 @section('content')
 
-    @include('nav_logged_in'){{--INCLUIR A NAV LOGGED IN --}}
+    @include('nav.blade.php'){{--INCLUIR A NAV LOGGED IN --}}
 
     <div class="container">
         <div class="page-header">

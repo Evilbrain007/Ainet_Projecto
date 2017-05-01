@@ -10,11 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-/*
-Route::get('/', function () {
-    return view('dashboard');
-});
-*/
 Route::get('/', 'DashboardController@getIndex')->name('home');
 
 Route::get('/requests', function () {
@@ -35,7 +30,7 @@ Route::get('/requests/details/{id}', 'RequestController@details')->name('request
 
 Route::post('requests/comments/create', 'RequestsController@createComment')->name('createComment');
 
-Route::get('/requests/dashboard', 'RequestController@dashboard');
+Route::get('/requests/dashboard', 'RequestController@dashboard')->name('requestsDashboard');
 
 Route::post('/requests/update/{id}', function () {
     return 'Editar informação de um pedido';

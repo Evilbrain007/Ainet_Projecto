@@ -8,6 +8,6 @@ class Printer extends Model
 {
     public function printRequest()
     {
-        $this->hasMany('App\PrintRequest');
+        return $this->hasMany('App\PrintRequest');
     }
 }

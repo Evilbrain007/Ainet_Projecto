@@ -13,7 +13,7 @@
 
 <body>
 
-<div class="navbar navbar-inverse">
+<div class="navbar navbar-fixed-top navbar-inverse">
     @yield('navbar')
 </div>
 
