@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('dashboard');
 });
 */
-Route::get('/', 'DashboardController@getIndex');
+Route::get('/', 'DashboardController@getIndex')->name('home');
 
 Route::get('/requests', function () {
     return 'Lista de Pedidos de Impressão';
