@@ -25,4 +25,8 @@ class PrintRequest extends Model
     public function closingUser() {
         $this->belongsTo('App\User', 'closed_user_id');
     }
+
+    protected $fillable = [
+        'owner_id', 'status', 'open_date', 'file', 'description', 'due_date', 'quantity', 'paper_type', 'colored', 'stapled', 'paper_size',
+    ];
 }
