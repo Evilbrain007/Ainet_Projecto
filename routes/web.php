@@ -48,15 +48,6 @@ Route::get('/user/{id}', function () {
     return 'Detalhe de um utilizador';
 });
 
-Route::get('/login', function () {
-    return 'Página de Login';
-});
-Route::get('/logout', function () {
-    return 'Página de Logout';
-});
-Route::get('/signin', function () {
-    return 'Página de registo';
-});
 
 
 Auth::routes();

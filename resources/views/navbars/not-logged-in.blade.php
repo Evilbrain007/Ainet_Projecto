@@ -1,2 +1,2 @@
-<a class="btn btn-danger navbar-btn" href="{{ route('login') }}">Login</a>
-<a class="btn btn-default navbar-btn" href="{{ route('register') }}">Criar conta</a>
+<li><a href="{{ route('login') }}">Login</a></li>
+<li><a href="{{ route('register') }}">Criar conta</a></li>

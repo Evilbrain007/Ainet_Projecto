@@ -1,6 +1,4 @@
-@extends('layouts/app')
-
-{{-- INCLUIR NAV PARA USER AUTENTICADO --}}
+@extends('master')
 
 @section('content')
     <div class="container">
@@ -42,7 +40,7 @@
 
     </div>
 
-   <div class="table-responsive col-md-10">
+   <div class="table-responsive col-md-12">
         <table class="table table-hover">
             <thead>
             <tr>

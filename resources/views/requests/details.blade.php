@@ -1,8 +1,6 @@
-@extends('layouts/app')
+@extends('master')
 
 @section('content')
-
-    @include('nav.blade.php'){{--INCLUIR A NAV LOGGED IN --}}
 
     <div class="container">
         <div class="page-header">
