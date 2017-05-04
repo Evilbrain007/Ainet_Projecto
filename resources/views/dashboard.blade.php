@@ -1,13 +1,12 @@
 @extends('master')
 
-@section('title', $title)
+@section('title')
+
+    <h1>{{$title}}</h1>
+
+@endsection
 
 @section('content')
-    <div class="container">
-        <h1 class="page-header">
-            Página inicial
-        </h1>
-    </div>
     <div class="container text-center">
         <div class="row">
             <div class="col-md-3">Total de impressões</div>
