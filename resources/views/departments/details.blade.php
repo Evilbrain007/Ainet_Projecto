@@ -22,7 +22,7 @@
                 <td> {{$statistics['bwColoredPrintsRatio']}}</td>
                 <td>{{$statistics['coloredBWPrintsRatio']}}</td>
                 <td>{{$statistics['totalPrintsToday']}}</td>
-                <td>{{$statistics['totalPrintsCurrentMonth']}}</td>
+                <td>{{number_format($statistics['printAvgCurrentMonth'],2)}}</td>
             </tr>
             </tbody>
         </table>

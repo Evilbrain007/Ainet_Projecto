@@ -51,13 +51,15 @@ class DepartmentController extends Controller
             ->whereDate('closed_date', $today)
             ->count();
 
-        $currentMonth = Carbon::now()->month;
-        $statistics['totalPrintsCurrentMonth'] = DB::table('users')
+        $now = Carbon::now();
+        $currentMonth = $now->month;
+        $printAvgCurrentMonth= DB::table('users')
             ->where('department_id', $department->id)
             ->join('requests', 'requests.owner_id', '=', 'users.id')
             ->whereNotNull('closed_user_id')
             ->whereMonth('closed_date', $currentMonth)
             ->count();
+        $statistics['printAvgCurrentMonth'] = $printAvgCurrentMonth/($now->daysInMonth);
 
         return view('departments/details', compact('title', 'department', 'statistics'));
     }

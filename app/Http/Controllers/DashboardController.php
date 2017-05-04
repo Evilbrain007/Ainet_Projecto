@@ -14,8 +14,9 @@ class DashboardController extends Controller
     {
         $title = "Printit!";
 
-        $users = User::all();
-        $departments = Department::all();
+        $users = User::orderBy('name', 'asc')->get();
+        $departments = Department::orderBy('name', 'asc')->get();
+
 
         $statistics = [];
         $completedPrints = PrintRequest::whereNotNull('closed_user_id')->get();
@@ -40,10 +41,14 @@ class DashboardController extends Controller
                 $statistics['coloredBWPrintsRatio'] = "$ratio" . ' %';
             }
         }
-        $today = Carbon::now()->toDateString();
-        $currentMonth = Carbon::now()->month;
+        $now = Carbon::now();
+        $today = $now->toDateString();
         $statistics['totalPrintsToday'] = PrintRequest::whereDate('closed_date', $today)->count();
-        $statistics['totalPrintsCurrentMonth'] = PrintRequest::whereMonth('closed_date', $currentMonth)->count();
+
+        $currentMonth = $now->month;
+
+        $totalPrintsCurrentMonth = PrintRequest::whereMonth('closed_date', $currentMonth)->count();
+        $statistics['printAvgCurrentMonth'] = $totalPrintsCurrentMonth/($now->daysInMonth);
 
         foreach ($departments as $department) {
             $department->totalPrints = 0;
