@@ -22,7 +22,7 @@ Route::get('/request/{id}', function () {
 
 Route::get('/requests/edit/{id}', 'RequestController@edit')->name('editRequest');
 
-Route::get('/requests/create', 'RequestController@create');
+Route::get('/requests/create', 'RequestController@create')->name('createRequest');
 
 Route::post('/requests/create', 'RequestController@store');
 
@@ -44,9 +44,8 @@ Route::post('/requests/delete/{id}', function () {
 Route::get('/departament/{id}', function () {
     return 'Lista de utilizadores';
 });
-Route::get('/user/{id}', function () {
-    return 'Detalhe de um utilizador';
-});
+
+Route::get('/users/details/{id}', 'UserController@details');
 
 
 

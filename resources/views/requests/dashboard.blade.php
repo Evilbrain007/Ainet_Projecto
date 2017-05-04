@@ -1,12 +1,13 @@
 @extends('master')
 
-@section('content')
-    <div class="container">
-        <h1 class="page-header">
-            Pedidos
-        </h1>
-    </div>
 
+@section('title')
+
+    <h1>{{$title}}</h1>
+
+@endsection
+
+@section('content')
     <div class="container">
         <div class="row">
             <div class="col-md-12">Filtros
