@@ -27,7 +27,7 @@ class UserController extends Controller
     {
         $user = $id;
         $user->admin = true;
-        $user->save();
+        User::store($user);
         return redirect(route('home'));
     }
 
@@ -36,6 +36,24 @@ class UserController extends Controller
     {
         $user = $id;
         $user->admin = false;
+        User::store($user);
+
+        return redirect(route('home'));
+    }
+
+    public function blockUser(User $id)
+    {
+        $user = $id;
+        $user->blocked = true;
+        User::store($user);
+
+        return redirect(route('home'));
+    }
+
+    public function unblockUser(User $id)
+    {
+        $user = $id;
+        $user->blocked = false;
         User::store($user);
 
         return redirect(route('home'));
