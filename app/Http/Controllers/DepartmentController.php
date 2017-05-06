@@ -47,7 +47,6 @@ class DepartmentController extends Controller
         $statistics['totalPrintsToday'] = DB::table('users')
             ->where('department_id', $department->id)
             ->join('requests', 'requests.owner_id', '=', 'users.id')
-            ->whereNotNull('closed_user_id')
             ->whereDate('closed_date', $today)
             ->count();
 
@@ -56,7 +55,6 @@ class DepartmentController extends Controller
         $printAvgCurrentMonth= DB::table('users')
             ->where('department_id', $department->id)
             ->join('requests', 'requests.owner_id', '=', 'users.id')
-            ->whereNotNull('closed_user_id')
             ->whereMonth('closed_date', $currentMonth)
             ->count();
         $statistics['printAvgCurrentMonth'] = $printAvgCurrentMonth/($now->daysInMonth);

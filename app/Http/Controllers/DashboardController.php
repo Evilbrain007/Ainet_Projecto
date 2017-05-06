@@ -64,7 +64,7 @@ class DashboardController extends Controller
             $department->totalPrints = 0;
             $departmentUsers = User::where('department_id', $department->id)->get();
             foreach ($departmentUsers as $user) {
-                $n = PrintRequest::whereNotNull('closed_user_id')->where('owner_id', $user->id)->count();
+                $n = PrintRequest::whereNotNull('closed_date')->where('owner_id', $user->id)->count();
                 $department->totalPrints += $n;
             }
         }
