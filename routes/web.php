@@ -45,11 +45,7 @@ Route::post('/requests/delete/{id}', function () {
 
 Route::get('/departament/{id}', 'DepartmentController@detail')->name('departmentDetail');
 
-Route::get('/user/{id}', function () {
-    return 'Detalhe de um utilizador';
-});
-
-Route::get('/users/details/{id}', 'UserController@details');
+Route::get('/users/details/{id}', 'UserController@details')->name('userDetail');
 
 
 
