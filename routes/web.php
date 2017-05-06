@@ -27,7 +27,7 @@ Route::get('/requests/create', 'RequestController@create')->name('createRequest'
 
 Route::post('/requests/create', 'RequestController@store');
 
-Route::get('/requests/details/{id}', 'RequestController@details')->name('requestDetails');
+Route::get('/request/{id}', 'RequestController@details')->name('requestDetails');
 
 Route::post('requests/comments/create', 'RequestsController@createComment')->name('createComment');
 
@@ -45,7 +45,7 @@ Route::post('/requests/delete/{id}', function () {
 
 Route::get('/departament/{id}', 'DepartmentController@detail')->name('departmentDetail');
 
-Route::get('/users/details/{id}', 'UserController@details')->name('userDetail');
+Route::get('/user/{id}', 'UserController@details')->name('userDetail');
 
 
 
