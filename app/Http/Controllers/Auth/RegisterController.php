@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Department;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -51,8 +52,8 @@ class RegisterController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:8|confirmed',
-            /*'phone' => 'required|size:9',
-            'department_id' => 'required',*/
+            'phone' => 'required|size:9',
+            'department_id' => 'required',
         ]);
     }
 
@@ -72,4 +73,13 @@ class RegisterController extends Controller
             'department_id' => $data['department_id'],
         ]);
     }
+
+    public function showRegistrationForm()
+    {
+        $title = "Página de Registo";
+        $departments = Department::all();
+        return view('auth.register', compact('departments', 'title'));
+    }
+
+
 }

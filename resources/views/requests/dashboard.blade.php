@@ -1,25 +1,13 @@
-@extends('layouts/app')
+@extends('layouts.master')
 
 
+@section('title')
 
-{{-- INCLUIR NAV PARA USER AUTENTICADO
-@section('title', $title)
-@section('navbar')
+    <h1>{{$title}}</h1>
 
-        @include('nav_logged_in')
-
-        @endsection
-
---}}
-
+@endsection
 
 @section('content')
-    <div class="container">
-        <h1 class="page-header">
-            Pedidos
-        </h1>
-    </div>
-
     <div class="container">
         <div class="row">
             <div class="col-md-12">Filtros

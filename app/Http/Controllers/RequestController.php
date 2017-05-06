@@ -6,9 +6,9 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\PrintRequest;
-use App\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Comment;
 
 class RequestController extends Controller
 {

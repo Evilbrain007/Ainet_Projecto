@@ -1,4 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.master')
+
+@section('title')
+
+    <h1>{{$title}}</h1>
+
+@endsection
 
 @section('content')
 <div class="container">

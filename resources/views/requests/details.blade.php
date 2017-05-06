@@ -1,18 +1,16 @@
-@extends('layouts/app')
+@extends('layouts.master')
+
+@section('title')
+
+    <h1>Pedido {{$printRequest->id}}
+        <small>{{$printRequest->open_date}}</small>
+    </h1>
+    <h5 class="text-muted"><strong>POR IMPRIMIR</strong></h5>
+    <h5 class="text-muted">Concluir até: 10/05/2017</h5>
+
+@endsection
 
 @section('content')
-
-    @include('nav.blade.php'){{--INCLUIR A NAV LOGGED IN --}}
-
-    <div class="container">
-        <div class="page-header">
-            <h1>Pedido {{$printRequest->id}}
-                <small>{{$printRequest->open_date}}</small>
-            </h1>
-            <h5 class="text-muted"><strong>POR IMPRIMIR</strong></h5>
-            <h5 class="text-muted">Concluir até: 10/05/2017</h5>
-        </div>
-    </div>
 
     <div class="panel panel-primary">
         <div class="panel-heading">

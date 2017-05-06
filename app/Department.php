@@ -8,9 +8,10 @@ class Department extends Model
 {
     protected $table = 'departaments';
 
+    private $totalPrints;
+
     public function user()
     {
         return $this->hasMany('App\User');
     }
-
 }
