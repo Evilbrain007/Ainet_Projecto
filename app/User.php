@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $user;
     }
 
+    public static function store(User $user)
+    {
+        $user->save();
+    }
+
     public function department()
     {
         return $this->belongsTo('App\Department', 'department_id');
