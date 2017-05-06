@@ -6,15 +6,25 @@ use App\Department;
 use App\PrintRequest;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 
 class DashboardController extends Controller
 {
-    public function getIndex()
+    public function getIndex(Request $request)
     {
+        if ($request->userOrder === 'desc') {
+            $userOrder = 'desc';
+            $selectedUserAsc = false;
+        } else {
+            $userOrder = 'asc';
+            $selectedUserAsc = true;
+        }
+
+
         $title = "Printit!";
 
-        $users = User::orderBy('name', 'asc')->get();
+        $users = User::orderBy('name', $userOrder)->paginate(8);
         $departments = Department::orderBy('name', 'asc')->get();
 
 
@@ -54,11 +64,11 @@ class DashboardController extends Controller
             $department->totalPrints = 0;
             $departmentUsers = User::where('department_id', $department->id)->get();
             foreach ($departmentUsers as $user) {
-                $n = PrintRequest::whereNotNull('closed_user_id')->where('owner_id', $user->id)->count();
+                $n = PrintRequest::whereNotNull('closed_date')->where('owner_id', $user->id)->count();
                 $department->totalPrints += $n;
             }
         }
 
-        return view('dashboard', compact('title', 'users', 'departments', 'statistics'));
+        return view('dashboard', compact('title', 'users', 'departments', 'statistics', 'selectedUserAsc'));
     }
 }

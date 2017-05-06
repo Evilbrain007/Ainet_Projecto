@@ -55,7 +55,6 @@
 
         </div>
 
-
         <div class="table-responsive col-md-6">
             <table class="table table-hover">
                 <thead>
@@ -78,6 +77,17 @@
 
                 </tbody>
             </table>
+            {{ $users->links() }}
+                <form action= {{route('home')}} method="get">
+                    <label class="radio-inline">
+                        <input type="radio" name="userOrder" value="asc" @if($selectedUserAsc === true) checked @endif>
+                        Ascendente</label>
+                    <label class="radio-inline">
+                        <input type="radio" name="userOrder" value="desc" @if($selectedUserAsc === false) checked @endif>
+                        Descendente</label>
+                    &nbsp&nbsp
+                    <input type="submit" value="Ordenar" class="btn btn-default">
+                </form>
 
         </div>
     </div>
