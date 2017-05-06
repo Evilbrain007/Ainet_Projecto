@@ -28,12 +28,12 @@
                 mês: {{number_format($statistics['printAvgCurrentMonth'],2)}}</div>
         </div>
 
-        <div class="table-responsive col-md-4">
+        <div class="table-responsive col-md-3">
             <table class="table table-hover">
                 <thead>
                 <tr>
                     <th>Departamento</th>
-                    <th>Total impressões</th>
+                    <th>Impressões</th>
                 </tr>
                 </thead>
 
@@ -55,14 +55,17 @@
 
         </div>
 
-        <div class="table-responsive col-md-8">
+        <div class="table-responsive col-md-9">
             <table class="table table-hover">
                 <thead>
                 <tr>
                     <th>Nome</th>
                     <th>Email</th>
                     <th>Telefone</th>
-                    @if(Auth::user()->admin == true)
+                    @if(Auth::check() && Auth::user()->admin == true)
+                        <th>
+                            Bloqueado
+                        </th>
                         <th>
                             Administrador
                         </th>
@@ -81,7 +84,32 @@
                             </a></td>
                         <td class="text-right">{{$user->email}}</td>
                         <td class="text-right">{{$user->phone}}</td>
-                        @if(Auth::user()->admin == true)
+                        @if(Auth::check() && Auth::user()->admin == true)
+                            <td>
+                                @if($user->blocked == true)
+                                    <form class="form-inline"
+                                          action={{route('unblockUser', ['id' =>$user->id])}} method="post">
+                                        {{ csrf_field() }}
+                                        <input class="btn btn-danger disabled" type="button" value="Sim"/>
+                                        @unless(Auth::user() == $user)
+                                            <input class="btn btn-default" type="submit" value="Não">
+                                        @else
+                                            <input class="btn btn-default disabled" type="button" value="Não"/>
+                                        @endunless
+                                    </form>
+                                @else
+                                    <form class="form-inline"
+                                          action={{route('blockUser', ['id' =>$user->id])}} method="post">
+                                        {{ csrf_field() }}
+                                        @unless(Auth::user() == $user)
+                                            <input class="btn btn-default" type="submit" value="Sim">
+                                        @else
+                                            <input class="btn btn-default disabled" type="button" value="Sim"/>
+                                        @endunless
+                                        <input class="btn btn-danger disabled" type="button" value="Não"/>
+                                    </form>
+                                @endif
+                            </td>
                             <td>
                                 @if($user->admin == true)
                                     <form class="form-inline"
