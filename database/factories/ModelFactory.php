@@ -51,7 +51,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
 
 $factory->define(App\PrintRequest::class, function (Faker\Generator $faker) {
 
-    return [
+    $printRequests = [
         'owner_id' => 1,
         'status' => $faker->boolean ? 1 : 0,
         'open_date' => \Carbon\Carbon::now(),
@@ -65,5 +65,13 @@ $factory->define(App\PrintRequest::class, function (Faker\Generator $faker) {
         'file' => $faker->name,
         'printer_id' => 1,
         'satisfaction_grade' => $faker->randomElement(['1', '2', '3']),
+        'front_back' => $faker->boolean ? 1 : 0,
     ];
+
+    if($faker->boolean(70)) {
+        $printRequests['closed_date'] = \Carbon\Carbon::now();
+        $printRequests['closed_user_id'] = 1;
+    }
+
+    return $printRequests;
 });
