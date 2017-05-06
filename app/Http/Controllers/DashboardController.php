@@ -21,12 +21,10 @@ class DashboardController extends Controller
             $selectedUserAsc = true;
         }
 
-
         $title = "Printit!";
 
         $users = User::orderBy('name', $userOrder)->paginate(8);
         $departments = Department::orderBy('name', 'asc')->get();
-
 
         $statistics = [];
         $completedPrints = PrintRequest::whereNotNull('closed_user_id')->get();

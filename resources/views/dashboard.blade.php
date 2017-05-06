@@ -69,7 +69,10 @@
 
                 @foreach($users as $user)
                     <tr>
-                        <td class="text-left">{{$user->name}}</td>
+                        <td class="text-left">
+                            <a href="{{route('userDetail', ['id' =>$user->id])}}">
+                                {{$user->name}}
+                            </a></td>
                         <td class="text-right">{{$user->email}}</td>
                         <td class="text-right">{{$user->phone}}</td>
                     </tr>
