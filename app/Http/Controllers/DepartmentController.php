@@ -25,22 +25,14 @@ class DepartmentController extends Controller
         $bwCompletedPrints = $printRequests->where('colored', false)->count();
         $coloredCompletedPrints = $printRequests->where('colored', true)->count();
 
-        if ($bwCompletedPrints === 0 && $coloredCompletedPrints === 0) {
+        if ($statistics['totalPrints'] === 0) {
             $statistics['bwColoredPrintsRatio'] = 'N/D';
             $statistics['coloredBWPrintsRatio'] = 'N/D';
         } else {
-            if ($coloredCompletedPrints === 0 && $coloredCompletedPrints > 0) {
-                $statistics['bwColoredPrintsRatio'] = '100 %';
-            } else {
-                $ratio = $bwCompletedPrints / $coloredCompletedPrints * 100;
-                $statistics['bwColoredPrintsRatio'] = "$ratio" . ' %';
-            }
-            if ($bwCompletedPrints === 0 && $coloredCompletedPrints > 0) {
-                $statistics['coloredBWPrintsRatio'] = '100 %';
-            } else {
-                $ratio = $coloredCompletedPrints / $bwCompletedPrints * 100;
-                $statistics['coloredBWPrintsRatio'] = "$ratio" . ' %';
-            }
+            $ratioColor = $bwCompletedPrints / $statistics['totalPrints'] * 100;
+            $statistics['bwColoredPrintsRatio'] = "$ratioColor" . ' %';
+            $ratioBW = $coloredCompletedPrints / $statistics['totalPrints'] * 100;
+            $statistics['coloredBWPrintsRatio'] = "$ratioBW" . ' %';
         }
 
         $today = Carbon::today();
@@ -52,12 +44,12 @@ class DepartmentController extends Controller
 
         $now = Carbon::now();
         $currentMonth = $now->month;
-        $printAvgCurrentMonth= DB::table('users')
+        $printAvgCurrentMonth = DB::table('users')
             ->where('department_id', $department->id)
             ->join('requests', 'requests.owner_id', '=', 'users.id')
             ->whereMonth('closed_date', $currentMonth)
             ->count();
-        $statistics['printAvgCurrentMonth'] = $printAvgCurrentMonth/($now->daysInMonth);
+        $statistics['printAvgCurrentMonth'] = $printAvgCurrentMonth / ($now->daysInMonth);
 
         return view('departments/details', compact('title', 'department', 'statistics'));
     }
