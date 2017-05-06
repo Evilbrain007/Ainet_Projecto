@@ -1,7 +1,7 @@
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
         {{ Auth::user()->name }},
-        @if (Auth::user()->admin === true)
+        @if (Auth::user()->admin == true)
             Administrador
         @else
             Funcionário

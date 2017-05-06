@@ -28,7 +28,7 @@
                 mês: {{number_format($statistics['printAvgCurrentMonth'],2)}}</div>
         </div>
 
-        <div class="table-responsive col-md-6">
+        <div class="table-responsive col-md-4">
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -55,13 +55,19 @@
 
         </div>
 
-        <div class="table-responsive col-md-6">
+        <div class="table-responsive col-md-8">
             <table class="table table-hover">
                 <thead>
                 <tr>
                     <th>Nome</th>
                     <th>Email</th>
                     <th>Telefone</th>
+                    @if(Auth::user()->admin == true)
+                        <th>
+                            Administrador
+                        </th>
+                    @endif
+
                 </tr>
                 </thead>
 
@@ -75,22 +81,49 @@
                             </a></td>
                         <td class="text-right">{{$user->email}}</td>
                         <td class="text-right">{{$user->phone}}</td>
+                        @if(Auth::user()->admin == true)
+                            <td>
+                                @if($user->admin == true)
+                                    <form class="form-inline"
+                                          action={{route('setUserAsEmployee', ['id' =>$user->id])}} method="post">
+                                        {{ csrf_field() }}
+                                        <input class="btn btn-primary disabled" type="button" value="Sim"/>
+                                        @unless(Auth::user() == $user)
+                                            <input class="btn btn-default" type="submit" value="Não">
+                                        @else
+                                            <input class="btn btn-default disabled" type="button" value="Não"/>
+                                        @endunless
+                                    </form>
+                                @else
+                                    <form class="form-inline"
+                                          action={{route('setUserAsAdmin', ['id' =>$user->id])}} method="post">
+                                        {{ csrf_field() }}
+                                        @unless(Auth::user() == $user)
+                                            <input class="btn btn-default" type="submit" value="Sim">
+                                        @else
+                                            <input class="btn btn-default disabled" type="button" value="Sim"/>
+                                        @endunless
+                                        <input class="btn btn-primary disabled" type="button" value="Não"/>
+                                    </form>
+                                @endif
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
 
                 </tbody>
             </table>
             {{ $users->links() }}
-                <form action= {{route('home')}} method="get">
-                    <label class="radio-inline">
-                        <input type="radio" name="userOrder" value="asc" @if($selectedUserAsc === true) checked @endif>
-                        Ascendente</label>
-                    <label class="radio-inline">
-                        <input type="radio" name="userOrder" value="desc" @if($selectedUserAsc === false) checked @endif>
-                        Descendente</label>
-                    &nbsp&nbsp
-                    <input type="submit" value="Ordenar" class="btn btn-default">
-                </form>
+            <form action={{route('home')}} method="get">
+                <label class="radio-inline">
+                    <input type="radio" name="userOrder" value="asc" @if($selectedUserAsc === true) checked @endif>
+                    Ascendente</label>
+                <label class="radio-inline">
+                    <input type="radio" name="userOrder" value="desc" @if($selectedUserAsc === false) checked @endif>
+                    Descendente</label>
+                &nbsp&nbsp
+                <input type="submit" value="Ordenar" class="btn btn-default">
+            </form>
 
         </div>
     </div>
