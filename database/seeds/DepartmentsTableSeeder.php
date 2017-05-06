@@ -13,7 +13,7 @@ class DepartmentsTableSeeder extends Seeder
     {
         //PARA CORRER:
         //DENTRO DE VAGRANT SSH, ROOT DO PROJECTO:
-        //php artisan db:seed --class=~PrintersTableSeeder
+        //php artisan db:seed --class=~DepartmentsTableSeeder
         factory(App\Department::class, 10)->create()->each(function ($u) {
             $u->save();
         });

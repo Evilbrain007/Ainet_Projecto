@@ -76,8 +76,9 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
+        $title = "Página de Registo";
         $departments = Department::all();
-        return view('auth.register', compact('departments'));
+        return view('auth.register', compact('departments', 'title'));
     }
 
 
