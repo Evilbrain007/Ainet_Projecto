@@ -8,47 +8,54 @@
 
 @section('content')
 
-    <div>
-        <h2>Nome:</h2>
-        <h2></h2>
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{$user->name}}</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center">{{--
+                    <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive">
+                --}}</div>
+
+                <div class=" col-md-9 col-lg-9 ">
+                    <table class="table table-user-information">
+                        <tbody>
+                        <tr>
+                            <td>E-Mail:</td>
+                            <td>{{$user->email}}</td>
+                        </tr>
+                        <tr>
+                            <td>Departamento:</td>
+                            <td>{{$department->name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Telefone:</td>
+                            <td>{{$user->phone}}</td>
+                        </tr>
+                        <tr>
+                            <td>Quantidade de Impressões</td>
+                            <td>{{$user->print_counts}}</td>
+                        </tr>
+                        <tr>
+                            <td>Quantidade de Avaliações</td>
+                            <td>{{$user->print_evals}}</td>
+                        </tr>
+                        <tr>
+                            <td>Data de Criação do Utilizador:</td>
+                            <td>{{$user->created_at}}</td>
+                        </tr>
+                        <tr>
+                            <td>Perfil Externo:</td>
+                            <td>{{$user->profile_url}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <h4>Apresentação:</h4>
+            <p>{{$user->presentation}}</p>
+        </div>
     </div>
-
-    <div class=" col-md-9 col-lg-9 ">
-        <table class="table table-user-information">
-            <tbody>
-            <tr>
-                <td>Department:</td>
-                <td>Programming</td>
-            </tr>
-            <tr>
-                <td>Hire date:</td>
-                <td>06/23/2013</td>
-            </tr>
-            <tr>
-                <td>Date of Birth</td>
-                <td>01/24/1988</td>
-            </tr>
-
-            <tr>
-            <tr>
-                <td>Gender</td>
-                <td>Female</td>
-            </tr>
-            <tr>
-                <td>Home Address</td>
-                <td>Kathmandu,Nepal</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td><a href="mailto:info@support.com">info@support.com</a></td>
-            </tr>
-            <td>Phone Number</td>
-            <td>123-4567-890(Landline)<br><br>555-4567-890(Mobile)
-            </td>
-
-            </tr>
-
-            </tbody>
-        </table>
 
 @endsection

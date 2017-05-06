@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Department;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,9 @@ class UserController extends Controller
 
         $title = "Detalhes do Utilizador";
 
-        return view('users.details', compact('title', 'user'));
+        $department = Department::find($user->department_id);
+
+        return view('users.details', compact('title', 'user', 'department'));
     }
 
     public function getUserName($id){
