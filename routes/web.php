@@ -45,24 +45,10 @@ Route::post('/requests/delete/{id}', function () {
 
 Route::get('/departament/{id}', 'DepartmentController@detail')->name('departmentDetail');
 
+Route::get('user/image/{user_id}', 'UserController@getUserImage')->name('getUserImage');
+
 Route::get('/user/{id}', 'UserController@details')->name('userDetail');
 
-
-Route::get('/resources/app/uploads/{filename}', function($filename){
-    $path = resource_path() . '/app/uploads/' . $filename;
-
-    if(!File::exists($path)) {
-        return response()->json(['message' => 'Image not found.'], 404);
-    }
-
-    $file = File::get($path);
-    $type = File::mimeType($path);
-
-    $response = Response::make($file, 200);
-    $response->header("Content-Type", $type);
-
-    return $response;
-});
 
 
 Auth::routes();

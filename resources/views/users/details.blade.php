@@ -16,7 +16,9 @@
             <div class="row">
                 <div class="col-md-3 col-lg-3 " align="center">{{--
                     <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive">
-                --}}</div>
+                --}}
+                    <img alt="User Pic" src="{{ route("getUserImage", ['user_id' => $user->id]) }}" class="img-responsive">
+                </div>
 
                 <div class=" col-md-9 col-lg-9 ">
                     <table class="table table-user-information">

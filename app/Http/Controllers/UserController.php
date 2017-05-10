@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Department;
 use App\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 
 class UserController extends Controller
 {
@@ -31,5 +33,22 @@ class UserController extends Controller
         //$name = User::where('id', $id)->get();
         //receber o id do user e devolver o nome
        // return
+    }
+
+    public function getUserImage(User $user_id)
+    {
+        if($user_id==null){
+            return 'User Inválido';
+        }
+        $user = $user_id;
+        $imageManager = new ImageManager();
+        $imagePath = $user->getAttribute('profile_photo');
+        if($imagePath == null){
+            $img = $imageManager->make(public_path().'/images/default_profile_photo.png');
+        }else{
+            $img = $imageManager->make(Storage::get($imagePath));
+        }
+        return $img->response();
+
     }
 }

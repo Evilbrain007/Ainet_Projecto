@@ -70,8 +70,9 @@ class RegisterController extends Controller
         ////////
 
         //Our Code
-        if($request->file('file')){
+        if($request->file('file')->isValid()){
             $path = $request->file('file')->store('userImages');
+            $img = Image::make($path);
             $user->setAttribute('profile_photo', $path);
         }
         $user->save();
