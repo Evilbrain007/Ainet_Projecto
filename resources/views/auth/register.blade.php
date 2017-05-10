@@ -13,7 +13,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Register</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -102,6 +102,21 @@
                                     <input id="password-confirm" type="password" class="form-control"
                                            name="password_confirmation" required>
                                 </div>
+                            </div>
+
+                            <div class="form-group{{$errors->has('file') ? 'has-error' : ''}}">
+                                <label for="file" class="col-md-4 control-label">Seleccione uma fotografia</label>
+                                <div class="col-md-6">
+                                    <input id="file" type="file"  name="file"  required>
+                                    {{--*****AKI VAI TER K VERIFICAR FORMATO VALIDO: IMAGEM(JPG, TIFF, PNG ...)
+                              WORD, EXCEL, ODT, PDF --}}
+                                </div>
+                                @if($errors->has('file'))
+                                    <span class="help-block">
+                                        <strong>{{$errors->first('file')}}</strong>
+                                    </span>
+                                @endif
+
                             </div>
 
                             <div class="form-group">
