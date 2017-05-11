@@ -6,7 +6,6 @@ use App\Department;
 use App\User;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 
 class UserController extends Controller
@@ -50,12 +49,10 @@ class UserController extends Controller
         return view('users/edit', compact('title', 'user', 'departments'));
     }
 
-    public function update (Request $request, $id){
+    public function update(Request $request, $id)
+    {
         dd($request);
     }
-
-
-    public function getUserName($id){
 
 
     public function setUserAsEmployee(User $id)
@@ -87,7 +84,6 @@ class UserController extends Controller
 
     public function getUserName($id)
     {
-
         //$name = User::where('id', $id)->get();
         //receber o id do user e devolver o nome
         // return
@@ -95,16 +91,16 @@ class UserController extends Controller
 
     public function getUserImage(User $user_id)
     {
-        if($user_id==null){
+        if ($user_id == null) {
             return 'User Inválido';
         }
         $user = $user_id;
         $imageManager = new ImageManager();
         $imagePath = $user->getAttribute('profile_photo');
-        if($imagePath == null){
-            $img = $imageManager->make(public_path().'/images/default_profile_photo.png');
-        }else{
-            $img = $imageManager->make(Storage::get('public/profiles/'.$imagePath));
+        if ($imagePath == null) {
+            $img = $imageManager->make(public_path() . '/images/default_profile_photo.png');
+        } else {
+            $img = $imageManager->make(Storage::get('public/profiles/' . $imagePath));
         }
         return $img->response();
 

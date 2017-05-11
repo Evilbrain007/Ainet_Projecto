@@ -5,13 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Department;
 use App\Http\Controllers\Controller;
 use App\User;
-use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Intervention\Image\Image;
-use Intervention\Image\ImageManager;
 
 class RegisterController extends Controller
 {
@@ -73,7 +70,7 @@ class RegisterController extends Controller
         ////////
 
         //Our Code
-        if($request->file('file')->isValid()){
+        if ($request->file('file')->isValid()) {
             $path = $request->file('file')->store('userImages');
             /*$imageManager = new ImageManager();
             $img = $imageManager->make($path);*/
@@ -117,9 +114,8 @@ class RegisterController extends Controller
 
     protected function registered(Request $request, $user)
     {
-        dd($request);
+        redirect(route('home'));
     }
-
 
 
 }
