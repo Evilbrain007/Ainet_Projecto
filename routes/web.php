@@ -47,9 +47,14 @@ Route::get('/departament/{id}', 'DepartmentController@detail')->name('department
 
 Route::get('/user/{id}', 'UserController@details')->middleware('auth')->name('userDetail');
 
+Route::get('user/image/{user_id}', 'UserController@getUserImage')->name('getUserImage');
 
+Route::get('/user/{id}', 'UserController@details')->name('userDetail');
+
+Route::get('/user/edit/{id}', 'UserController@edit')->name('editUser');
 Route::get('/admin', 'DashboardController@getIndex')->middleware('auth')->middleware('admin')->name('homeAdmin');
 
+Route::post('/user/edit/{id}', 'UserController@update')->name('updateUser');
 Route::post('admin/user/{id}/setadmin', 'UserController@setUserAsAdmin')->middleware('auth')->middleware('admin')->name('setUserAsAdmin');
 
 Route::post('admin/user/{id}/setemployee', 'UserController@setUserAsEmployee')->middleware('auth')->middleware('admin')->name('setUserAsEmployee');
