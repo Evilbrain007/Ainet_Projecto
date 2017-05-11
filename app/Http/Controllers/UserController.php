@@ -65,7 +65,7 @@ class UserController extends Controller
         if($imagePath == null){
             $img = $imageManager->make(public_path().'/images/default_profile_photo.png');
         }else{
-            $img = $imageManager->make(Storage::get($imagePath));
+            $img = $imageManager->make(Storage::get('public/profiles/'.$imagePath));
         }
         return $img->response();
 

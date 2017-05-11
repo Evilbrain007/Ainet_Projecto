@@ -11,12 +11,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        //PARA CORRER:
-        //DENTRO DE VAGRANT SSH, ROOT DO PROJECTO:
-        //php artisan db:seed
         $this->call(DepartmentsTableSeeder::class);
         $this->call(PrintersTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(RequestsTableSeeder::class);
+        $this->call(CommentsTableSeeder::class);
     }
 }
