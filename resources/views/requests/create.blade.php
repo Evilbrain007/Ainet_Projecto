@@ -168,8 +168,8 @@
                                     @else
                                     <label for="file" class="col-md-4 control-label">Ficheiro carregado</label>
                                     <div class="col-md-6">
-                                        <a href="https://www.w3schools.com">
-                                            <img border="0" alt="W3Schools" src="{{$path}}" width="100" height="100">
+                                        <a href="">
+                                            <img border="0" alt="imagem" src="{{$path}}" width="100" height="100">
                                         </a>
                                     </div>
                                         {{-- mostra ficheiro exsitente--}}
