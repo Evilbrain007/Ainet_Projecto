@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use App\PrintRequest;
 use Illuminate\Support\Facades\Auth;
@@ -63,6 +64,11 @@ class RequestController extends Controller
         $title = 'Detalhes do produto';
 
         $printRequest = $id;
+      //  $user = $printRequest->owner();
+      //  $department = $user
+       // $user = $printRequest->  tenho que ir buscar o user a partir do request e depois o departamento
+        //a partir do user. e tenho que devolver no return
+        //deveria passar um array de parametros?
 
         return view('requests/details', compact('title', 'printRequest'));
     }
@@ -70,15 +76,26 @@ class RequestController extends Controller
     public function edit(PrintRequest $id)
     {
         $printRequest = $id;
-        $title = "Editar pedido nº $printRequest->id"; //isto esta bem? ou evia so buscar o id na vista blade?
 
-        return view('requests/create', compact('title', 'printRequest'));
+        $title = "Editar pedido nº $printRequest->id";
+        $file_extension = pathinfo(storage_path().'/print-jobs/'.$printRequest->owner_id.'/'.$printRequest->file, PATHINFO_EXTENSION);
+        $path = null;
+
+        if($file_extension=='odt' || $file_extension=='pdf' || $file_extension=='pptx'
+    || $file_extension=='xlsx'){
+            $path=asset('images/'.$file_extension.'.png');
+        } else{
+            //aqui vai buscar a imagem à storage
+            $path=asset('images/printit.png');
+        }
+
+        return view('requests/create', compact('title', 'printRequest', 'path'));
     }
 
     public function dashboard()
     {
         $title = 'Pedidos';
-        $owner_id = 1;
+        $owner_id = Auth::id();
 
         $requests = PrintRequest::where('owner_id', $owner_id)->get();
         $comments = [];
@@ -95,7 +112,6 @@ class RequestController extends Controller
 
            }
         }
-        //dd($comments);
 
         return view('requests/dashboard', compact('title', 'requests', 'comments'));
     }
