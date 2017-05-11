@@ -40,7 +40,6 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'admin' => $faker->boolean(),
         'blocked' => $faker->boolean(),
         'phone' => '91'.$faker->randomNumber(7),
-        'profile_photo' => $faker->name,
         'profile_url' => $faker->url,
         'presentation' => $faker->text,
         'print_evals' => $faker->randomNumber(2),
