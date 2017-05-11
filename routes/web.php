@@ -25,6 +25,8 @@ Route::post('/comments/create', 'CommentController@store')->name('createComment'
 
 Route::get('/requests/edit/{id}', 'RequestController@edit')->name('editRequest');
 
+Route::post('/requests/edit/{id}', 'RequestController@update')->name('updateRequest');
+
 Route::get('/requests/create', 'RequestController@create')->name('createRequest');
 
 Route::post('/requests/create', 'RequestController@store');

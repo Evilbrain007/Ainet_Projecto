@@ -15,14 +15,15 @@
                     <div class="panel-heading">{{$title}}</div>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST" action='/requests/create'
-                        enctype="multipart/form-data">
+                              enctype="multipart/form-data">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                                 <label for="description" class="col-md-4 control-label">Descição</label>
                                 <div class="col-md-6">
 
-                                    <textarea id="description" class="form-control" name="description" rows="5" cols="70"
+                                    <textarea id="description" class="form-control" name="description" rows="5"
+                                              cols="70"
                                               placeholder="Descrição do pedido" required>
                                         {{$printRequest->description}}
                                     </textarea>
@@ -39,19 +40,20 @@
                             </div>
 
                             <div class="form-group{{$errors->has('due_date') ? 'has-error' : ''}}">
-                                <label for="due_date" class="col-md-4 control-label">Data limite para concluir pedido </label>
+                                <label for="due_date" class="col-md-4 control-label">Data limite para concluir
+                                    pedido </label>
                                 <div class="col-md-6">
                                     <input id="due_date" type="date" class="form-control" name="due_date"
                                            value="{{substr($printRequest->due_date, 0, 10)}}">
-                                            {{-- antes de por la a data verificar com o isset pk este campo é opcional
-                                            e a data pd nao ter sido seleccionada}}
-                                    {{--FALTA POR AQUI A DATA DE CONCLUSAO --}}
+                                    {{-- antes de por la a data verificar com o isset pk este campo é opcional
+                                    e a data pd nao ter sido seleccionada}}
+                            {{--FALTA POR AQUI A DATA DE CONCLUSAO --}}
 
                                     @if($errors->has('due_date'))
                                         <span class="help-block">
                                             <strong>{{$errors->first('due_date')}}</strong>
                                         </span>
-                                        @endif
+                                    @endif
                                 </div>
                             </div>
 
@@ -67,7 +69,7 @@
                                     <span class="help-block">
                                         <strong>{{$errors->first('quantity')}}</strong>
                                     </span>
-                                    @endif
+                                @endif
                             </div>
 
                             <div class="form-group{{$errors->has('paper_type') ? 'has-error' : ''}}">
@@ -75,10 +77,17 @@
                                 <div class="col-md-6">
                                     <select id="paper_type" class="form-control" name="paper_type" required>
 
-                                        <option value="" {{isset($printRequest->paper_type) ? '' : 'selected'}} >Escolha um tipo de papel</option>
-                                        <option value="0" {{$printRequest->paper_type == 0 ? 'selected' : ''}} >Rascunho</option>
-                                        <option value="1" {{$printRequest->paper_type == 1 ? 'selected' : ''}} >Normal</option>
-                                        <option value="2" {{$printRequest->paper_type == 2 ? 'selected' : ''}} >Fotográfico</option>
+                                        <option value="" {{isset($printRequest->paper_type) ? '' : 'selected'}} >Escolha
+                                            um tipo de papel
+                                        </option>
+                                        <option value="0" {{$printRequest->paper_type == 0 ? 'selected' : ''}} >
+                                            Rascunho
+                                        </option>
+                                        <option value="1" {{$printRequest->paper_type == 1 ? 'selected' : ''}} >Normal
+                                        </option>
+                                        <option value="2" {{$printRequest->paper_type == 2 ? 'selected' : ''}} >
+                                            Fotográfico
+                                        </option>
                                     </select>
                                 </div>
 
@@ -94,12 +103,12 @@
                                 <label for="colored" class="col-md-4 control-label">Seleccione a cor</label>
                                 <div class="col-md-6">
                                     <div class="radio">
-                                        <input id="colored" type="radio"  name="colored" value="0"
+                                        <input id="colored" type="radio" name="colored" value="0"
                                                {{$printRequest->colored == 0 ? 'checked' : ''}} required>Preto e branco
                                     </div>
                                     <div class="radio">
-                                        <input id="colored" type="radio"  name="colored" value="1"
-                                            {{$printRequest->colored == 1 ? 'checked' : ''}}>Cores
+                                        <input id="colored" type="radio" name="colored" value="1"
+                                                {{$printRequest->colored == 1 ? 'checked' : ''}}>Cores
                                     </div>
                                 </div>
 
@@ -107,19 +116,19 @@
                                     <span class="help-block">
                                         <strong>{{$errors->first('colored')}}</strong>
                                     </span>
-                                    @endif
+                                @endif
                             </div>
 
                             <div class="form-group{{$errors->has('stapled') ? 'has-error' : ''}}">
                                 <label for="stapled" class="col-md-4 control-label">Com ou sem agrafo</label>
                                 <div class="col-md-6">
                                     <div class="radio">
-                                        <input id="stapled" type="radio"  name="stapled" value="1"
+                                        <input id="stapled" type="radio" name="stapled" value="1"
                                                {{$printRequest->stapled == 1 ? 'checked' : ''}}required>Com agrafo
                                     </div>
                                     <div class="radio">
-                                        <input id="stapled" type="radio"  name="stapled" value="0"
-                                        {{$printRequest->stapled == 0 ? 'checked' : ''}}>Sem agrafo
+                                        <input id="stapled" type="radio" name="stapled" value="0"
+                                                {{$printRequest->stapled == 0 ? 'checked' : ''}}>Sem agrafo
                                     </div>
                                 </div>
 
@@ -134,11 +143,11 @@
                                 <label for="paper_size" class="col-md-4 control-label">Tamanho do papel</label>
                                 <div class="col-md-6">
                                     <div class="radio">
-                                        <input id="paper_size" type="radio"  name="paper_size" value="3"
+                                        <input id="paper_size" type="radio" name="paper_size" value="3"
                                                {{$printRequest->paper_size == 3 ? 'checked' : ''}} required>A3
                                     </div>
                                     <div class="radio">
-                                        <input id="paper_size" type="radio"  name="paper_size" value="4"
+                                        <input id="paper_size" type="radio" name="paper_size" value="4"
                                                 {{$printRequest->paper_size == 4 ? 'checked' : ''}}>A4
                                     </div>
                                 </div>
@@ -151,12 +160,24 @@
                             </div>
 
                             <div class="form-group{{$errors->has('file') ? 'has-error' : ''}}">
+                                @if($printRequest->file == null)
                                 <label for="file" class="col-md-4 control-label">Seleccione um ficheiro</label>
                                 <div class="col-md-6">
-                                    <input id="file" type="file"  name="file" required>
+                                    <input id="file" type="file" name="file" required>
+                                </div>
+                                    @else
+                                    <label for="file" class="col-md-4 control-label">Ficheiro carregado</label>
+                                    <div class="col-md-6">
+                                        <a href="https://www.w3schools.com">
+                                            <img border="0" alt="W3Schools" src="{{$path}}" width="100" height="100">
+                                        </a>
+                                    </div>
+                                        {{-- mostra ficheiro exsitente--}}
+                                    @endif
+
                                     {{--*****AKI VAI TER K VERIFICAR FORMATO VALIDO: IMAGEM(JPG, TIFF, PNG ...)
                               WORD, EXCEL, ODT, PDF --}}
-                                </div>
+
                                 @if($errors->has('file'))
                                     <span class="help-block">
                                         <strong>{{$errors->first('file')}}</strong>
@@ -173,25 +194,25 @@
                                 </div>
                             </div>
 
-{{--
- <div class="form-group{{$errors->has('colour') ? 'has-error' : ''}}">
-                                <label for="colour" class="col-md-4 control-label">Seleccione a cor</label>
-                                <div class="col-md-6">
-                                    <select id="colour" class="form-control" required>
-                                        <option value="" selected>Escolha a opção</option>
-                                        <option value="cores">Impressão a cores</option>
-                                        <option value="pb">Impressão a preto e branco</option>
-                                    </select>
-                                </div>
+                            {{--
+                             <div class="form-group{{$errors->has('colour') ? 'has-error' : ''}}">
+                                                            <label for="colour" class="col-md-4 control-label">Seleccione a cor</label>
+                                                            <div class="col-md-6">
+                                                                <select id="colour" class="form-control" required>
+                                                                    <option value="" selected>Escolha a opção</option>
+                                                                    <option value="cores">Impressão a cores</option>
+                                                                    <option value="pb">Impressão a preto e branco</option>
+                                                                </select>
+                                                            </div>
 
-                                @if($errors->has('colour'))
-                                    <span class="help-block">
-                                        <strong>{{$errors->first('colour')}}</strong>
-                                    </span>
-                                    @endif
-                            </div>
+                                                            @if($errors->has('colour'))
+                                                                <span class="help-block">
+                                                                    <strong>{{$errors->first('colour')}}</strong>
+                                                                </span>
+                                                                @endif
+                                                        </div>
 
- --}}
+                             --}}
 
 
                         </form>
@@ -200,4 +221,4 @@
             </div>
         </div>
     </div>
-    @endsection
+@endsection
