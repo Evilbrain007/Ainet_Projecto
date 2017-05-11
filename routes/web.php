@@ -49,6 +49,9 @@ Route::get('user/image/{user_id}', 'UserController@getUserImage')->name('getUser
 
 Route::get('/user/{id}', 'UserController@details')->name('userDetail');
 
+Route::get('/user/edit/{id}', 'UserController@edit')->name('editUser');
+
+Route::post('/user/edit/{id}', 'UserController@update')->name('updateUser');
 
 
 Auth::routes();

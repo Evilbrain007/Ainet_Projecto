@@ -9,6 +9,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 
 class RegisterController extends Controller
 {
@@ -72,7 +74,8 @@ class RegisterController extends Controller
         //Our Code
         if($request->file('file')->isValid()){
             $path = $request->file('file')->store('userImages');
-            $img = Image::make($path);
+            /*$imageManager = new ImageManager();
+            $img = $imageManager->make($path);*/
             $user->setAttribute('profile_photo', $path);
         }
         $user->save();
