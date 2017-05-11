@@ -26,6 +26,9 @@ Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth')-
 Route::get('/requests/create', 'RequestController@create')->middleware('auth')->name('createRequest');
 
 Route::post('/requests/create', 'RequestController@store')->middleware('auth');
+Route::post('/requests/edit/{id}', 'RequestController@update')->name('updateRequest');
+
+Route::get('/requests/create', 'RequestController@create')->name('createRequest');
 
 Route::get('/request/{id}', 'RequestController@details')->middleware('auth')->name('requestDetails');
 
