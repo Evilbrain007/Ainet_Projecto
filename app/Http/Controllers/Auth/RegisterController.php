@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Department;
-use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
+use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -80,6 +80,12 @@ class RegisterController extends Controller
         $departments = Department::all();
         return view('auth.register', compact('departments', 'title'));
     }
+
+    protected function registered(Request $request, $user)
+    {
+        dd($request);
+    }
+
 
 
 }

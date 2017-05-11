@@ -41,11 +41,18 @@ Route::post('/requests/delete/{id}', function () {
 });
 
 
-
-
 Route::get('/departament/{id}', 'DepartmentController@detail')->name('departmentDetail');
 
+
 Route::get('/user/{id}', 'UserController@details')->name('userDetail');
+
+Route::post('/user/{id}/setadmin', 'UserController@setUserAsAdmin')->name('setUserAsAdmin');
+
+Route::post('/user/{id}/setemployee', 'UserController@setUserAsEmployee')->name('setUserAsEmployee');
+
+Route::post('/user/{id}/block', 'UserController@blockUser')->name('blockUser');
+
+Route::post('/user/{id}/unblock', 'UserController@unblockUser')->name('unblockUser');
 
 
 

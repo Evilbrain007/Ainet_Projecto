@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -15,7 +14,8 @@ class UserController extends Controller
     }
 
 
-    public function details(User $id){
+    public function details(User $id)
+    {
         $user = $id;
 
         $title = "Detalhes do Utilizador";
@@ -23,10 +23,47 @@ class UserController extends Controller
         return view('users.details', compact('title', 'user'));
     }
 
-    public function getUserName($id){
+    public function setUserAsAdmin(User $id)
+    {
+        $user = $id;
+        $user->admin = true;
+        User::store($user);
+        return redirect(route('home'));
+    }
+
+
+    public function setUserAsEmployee(User $id)
+    {
+        $user = $id;
+        $user->admin = false;
+        User::store($user);
+
+        return redirect(route('home'));
+    }
+
+    public function blockUser(User $id)
+    {
+        $user = $id;
+        $user->blocked = true;
+        User::store($user);
+
+        return redirect(route('home'));
+    }
+
+    public function unblockUser(User $id)
+    {
+        $user = $id;
+        $user->blocked = false;
+        User::store($user);
+
+        return redirect(route('home'));
+    }
+
+    public function getUserName($id)
+    {
 
         //$name = User::where('id', $id)->get();
         //receber o id do user e devolver o nome
-       // return
+        // return
     }
 }
