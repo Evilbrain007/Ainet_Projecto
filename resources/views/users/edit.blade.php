@@ -11,9 +11,9 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Register</div>
+                    <div class="panel-heading">Editar</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ route('updateUser', ['id' => $user->id]) }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -21,7 +21,8 @@
 
                                 <div class="col-md-6">
                                     <input id="name" type="text" class="form-control" name="name"
-                                           placeholder="Nome do Utilizador" value="{{ old('name') }}" required
+                                           placeholder="Nome do Utilizador"
+                                           value="@if(old('name')){{ old('name') }}@else{{$user->name}}@endif" required
                                            autofocus>
 
                                     @if ($errors->has('name'))
@@ -37,11 +38,12 @@
 
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control" name="email"
-                                           placeholder="Email do Utilizador" value="{{ old('email') }}" required>
+                                           placeholder="Email do Utilizador"
+                                           value="@if(old('email')){{ old('email') }}@else{{$user->email}}@endif" required>
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
-                                         <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                     @endif
                                 </div>
@@ -52,7 +54,8 @@
 
                                 <div class="col-md-6">
                                     <input type="number" class="form-control" name="phone" id="inputPhone"
-                                           placeholder="Telefone" value="{{ old('phone') }}" required/>
+                                           placeholder="Telefone"
+                                           value="@if(old('phone')){{ old('phone') }}@else{{$user->phone}}@endif" required/>
 
                                     @if ($errors->has('phone'))
                                         <span class="help-block">
@@ -68,7 +71,12 @@
                                 <div class="col-md-6">
                                     <select name="department_id" class="form-control" id="inputDepartment">
                                         @foreach($departments as $department)
-                                            <option value="{{$department->id}}">{{$department->name}}</option>
+                                            <option value="{{$department->id}}"
+                                                    @if($department->id==$user->department_id)
+                                                    selected
+                                                    @endif
+                                            >{{$department->name}}
+                                            </option>
                                         @endforeach
                                     </select>
 
@@ -107,7 +115,7 @@
                             <div class="form-group{{$errors->has('file') ? 'has-error' : ''}}">
                                 <label for="file" class="col-md-4 control-label">Seleccione uma fotografia</label>
                                 <div class="col-md-6">
-                                    <input id="file" type="file"  name="file" >
+                                    <input id="file" type="file"  name="file"  required>
                                     {{--*****AKI VAI TER K VERIFICAR FORMATO VALIDO: IMAGEM(JPG, TIFF, PNG ...)
                               WORD, EXCEL, ODT, PDF --}}
                                 </div>
@@ -122,7 +130,7 @@
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
-                                        Registar
+                                        Editar
                                     </button>
                                 </div>
                             </div>

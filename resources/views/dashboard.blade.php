@@ -61,12 +61,12 @@
                 <tr>
                     <th>Nome</th>
                     <th>Email</th>
-                    <th>Telefone</th>
+                    <th th class="col-md-2">Telefone</th>
                     @if(Auth::check() && Auth::user()->admin == true)
-                        <th>
+                        <th class="col-md-2">
                             Bloqueado
                         </th>
-                        <th>
+                        <th th class="col-md-2">
                             Administrador
                         </th>
                     @endif

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Department;
 use App\Http\Controllers\Controller;
 use App\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -54,8 +56,37 @@ class RegisterController extends Controller
             'password' => 'required|min:8|confirmed',
             'phone' => 'required|size:9',
             'department_id' => 'required',
+            'file' => 'image',
         ]);
     }
+
+    public function register(Request $request)
+    {
+        //Register Function Overriden from class "RegistersUsers"
+        //Laravel Code
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+        ////////
+
+        //Our Code
+        if ($request->file('file')->isValid()) {
+            $path = $request->file('file')->store('userImages');
+            /*$imageManager = new ImageManager();
+            $img = $imageManager->make($path);*/
+            $user->setAttribute('profile_photo', $path);
+        }
+        $user->save();
+        ////////
+
+
+        //Laravel Code
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+    }
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -83,9 +114,8 @@ class RegisterController extends Controller
 
     protected function registered(Request $request, $user)
     {
-        dd($request);
+        redirect(route('home'));
     }
-
 
 
 }

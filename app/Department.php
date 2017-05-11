@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-
     private $totalPrints;
 
     public function user()

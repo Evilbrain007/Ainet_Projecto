@@ -13,7 +13,7 @@
 
     <ul class="dropdown-menu" role="menu">
         <li>
-            <a href="www.facebook.com">Ver Perfil</a>
+            <a href="{{route('userDetail', ['id' => Auth::id()])}}">Ver Perfil</a>
         </li>
         <li>
             <a href="{{ route('logout') }}"

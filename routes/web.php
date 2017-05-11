@@ -13,49 +13,44 @@
 Route::get('/', 'DashboardController@getIndex')->name('home');
 
 
-Route::get('/requests', function () {
-    return 'Lista de Pedidos de Impressão';
-});
-
-Route::get('/request/{id}', function () {
-    return 'Detalhe de um Pedido';
-});
-
-Route::post('/comments/create', 'CommentController@store')->name('createComment');
-
-Route::get('/requests/edit/{id}', 'RequestController@edit')->name('editRequest');
-
-Route::post('/requests/edit/{id}', 'RequestController@update')->name('updateRequest');
-
-Route::get('/requests/create', 'RequestController@create')->name('createRequest');
-
-Route::post('/requests/create', 'RequestController@store');
-
-Route::get('/request/{id}', 'RequestController@details')->name('requestDetails');
-
-Route::get('/requests/dashboard', 'RequestController@dashboard')->name('requestsDashboard');
-
-Route::post('/requests/update/{id}', function () {
-    return 'Editar informação de um pedido';
-});
-Route::post('/requests/delete/{id}', function () {
-    return 'Eliminar informação de um pedido';
-});
-
-
 Route::get('/departament/{id}', 'DepartmentController@detail')->name('departmentDetail');
 
 
+
+Route::get('users/image/{user_id}', 'UserController@getUserImage')->name('getUserImage');
+
+Route::get('/users/edit/{id}', 'UserController@edit')->middleware('auth')->name('editUser');
+
+Route::post('/users/edit/{id}', 'UserController@update')->middleware('auth')->name('updateUser');
+
 Route::get('/user/{id}', 'UserController@details')->name('userDetail');
 
-Route::post('/user/{id}/setadmin', 'UserController@setUserAsAdmin')->name('setUserAsAdmin');
 
-Route::post('/user/{id}/setemployee', 'UserController@setUserAsEmployee')->name('setUserAsEmployee');
+Route::get('/requests/dashboard', 'RequestController@dashboard')->middleware('auth')->name('requestsDashboard');
 
-Route::post('/user/{id}/block', 'UserController@blockUser')->name('blockUser');
+Route::get('/requests/create', 'RequestController@create')->middleware('auth')->name('createRequest');
 
-Route::post('/user/{id}/unblock', 'UserController@unblockUser')->name('unblockUser');
+Route::post('/requests/create', 'RequestController@store')->middleware('auth');
 
+Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth')->name('editRequest');
+
+Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth')->name('updateRequest');
+
+Route::get('/request/{id}', 'RequestController@details')->middleware('auth')->name('requestDetails');
+
+
+Route::post('requests/comments/create', 'RequestsController@createComment')->middleware('auth')->name('createComment');
+
+
+Route::get('/admin', 'DashboardController@getIndex')->middleware('auth')->middleware('admin')->name('homeAdmin');
+
+Route::post('admin/user/{id}/setadmin', 'UserController@setUserAsAdmin')->middleware('auth')->middleware('admin')->name('setUserAsAdmin');
+
+Route::post('admin/user/{id}/setemployee', 'UserController@setUserAsEmployee')->middleware('auth')->middleware('admin')->name('setUserAsEmployee');
+
+Route::post('admin/user/{id}/block', 'UserController@blockUser')->middleware('auth')->middleware('admin')->name('blockUser');
+
+Route::post('admin//user/{id}/unblock', 'UserController@unblockUser')->middleware('auth')->middleware('admin')->name('unblockUser');
 
 
 Auth::routes();
