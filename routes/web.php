@@ -21,6 +21,8 @@ Route::get('/request/{id}', function () {
     return 'Detalhe de um Pedido';
 });
 
+Route::post('/comments/create', 'CommentController@store')->name('createComment');
+
 Route::get('/requests/edit/{id}', 'RequestController@edit')->name('editRequest');
 
 Route::get('/requests/create', 'RequestController@create')->name('createRequest');
@@ -28,8 +30,6 @@ Route::get('/requests/create', 'RequestController@create')->name('createRequest'
 Route::post('/requests/create', 'RequestController@store');
 
 Route::get('/request/{id}', 'RequestController@details')->name('requestDetails');
-
-Route::post('requests/comments/create', 'RequestsController@createComment')->name('createComment');
 
 Route::get('/requests/dashboard', 'RequestController@dashboard')->name('requestsDashboard');
 

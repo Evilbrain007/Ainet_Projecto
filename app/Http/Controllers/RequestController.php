@@ -63,6 +63,11 @@ class RequestController extends Controller
         $title = 'Detalhes do produto';
 
         $printRequest = $id;
+      //  $user = $printRequest->owner();
+      //  $department = $user
+       // $user = $printRequest->  tenho que ir buscar o user a partir do request e depois o departamento
+        //a partir do user. e tenho que devolver no return
+        //deveria passar um array de parametros?
 
         return view('requests/details', compact('title', 'printRequest'));
     }
@@ -71,7 +76,7 @@ class RequestController extends Controller
     {
         $printRequest = $id;
 
-        $title = "Editar pedido nº $printRequest->id"; //isto esta bem? ou evia so buscar o id na vista blade?
+        $title = "Editar pedido nº $printRequest->id";
 
         return view('requests/create', compact('title', 'printRequest'));
     }

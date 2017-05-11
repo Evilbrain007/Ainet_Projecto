@@ -7,6 +7,7 @@
 
 @endsection
 
+
 @section('content')
     <div class="container">
         <div class="row">
@@ -81,7 +82,7 @@
                     @endif
 
 
-                    @if($request->status === 0){
+                    @if($request->status === 0)
                         {{-- apresentar botao para editar e remover--}}
                     <td class="col-md-4">
 
