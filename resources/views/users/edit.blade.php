@@ -13,7 +13,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Editar</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ route('updateUser', ['id' => $user->id]) }}" enctype="multipart/form-data">
+                        <form class="form-horizontal" role="form" method="POST"
+                              action="{{ route('updateUser', ['id' => $user->id]) }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -39,7 +40,8 @@
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control" name="email"
                                            placeholder="Email do Utilizador"
-                                           value="@if(old('email')){{ old('email') }}@else{{$user->email}}@endif" required>
+                                           value="@if(old('email')){{ old('email') }}@else{{$user->email}}@endif"
+                                           required>
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -55,7 +57,8 @@
                                 <div class="col-md-6">
                                     <input type="number" class="form-control" name="phone" id="inputPhone"
                                            placeholder="Telefone"
-                                           value="@if(old('phone')){{ old('phone') }}@else{{$user->phone}}@endif" required/>
+                                           value="@if(old('phone')){{ old('phone') }}@else{{$user->phone}}@endif"
+                                           required/>
 
                                     @if ($errors->has('phone'))
                                         <span class="help-block">
@@ -88,34 +91,10 @@
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required>
-
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="password-confirm" class="col-md-4 control-label">Confirmar Password</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control"
-                                           name="password_confirmation" required>
-                                </div>
-                            </div>
-
                             <div class="form-group{{$errors->has('file') ? 'has-error' : ''}}">
                                 <label for="file" class="col-md-4 control-label">Seleccione uma fotografia</label>
                                 <div class="col-md-6">
-                                    <input id="file" type="file"  name="file"  required>
+                                    <input id="file" type="file" name="file" required>
                                     {{--*****AKI VAI TER K VERIFICAR FORMATO VALIDO: IMAGEM(JPG, TIFF, PNG ...)
                               WORD, EXCEL, ODT, PDF --}}
                                 </div>
