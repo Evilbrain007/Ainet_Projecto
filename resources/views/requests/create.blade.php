@@ -14,7 +14,8 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">{{$title}}</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action='/requests/create'
+                        <form class="form-horizontal" role="form" method="POST" action="{{$printRequest->id === null ?
+                        route('createRequest') : route('updateRequest', $printRequest->id)}}"
                               enctype="multipart/form-data">
                             {{ csrf_field() }}
 
@@ -186,9 +187,7 @@
                                 @else
                                     <label for="file" class="col-md-4 control-label">Ficheiro carregado</label>
                                     <div class="col-md-6">
-                                        <a href="">
-                                            <img border="0" alt="imagem" src="{{$path}}" width="80" height="80">
-                                        </a>
+                                            <img alt="imagem" src="{{$path}}" class="img-responsive" {{--width="80" height="80" --}}>
                                     </div>
                                     {{-- mostra ficheiro exsitente--}}
                                 @endif

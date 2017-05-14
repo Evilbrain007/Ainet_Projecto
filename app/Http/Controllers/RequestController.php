@@ -28,8 +28,7 @@ class RequestController extends Controller
         //$request->input('description');
         $owner_id = Auth::id();
         $full_path = $request->file('file')->store('print-jobs/' . $owner_id);
-        // $path = explode('/', $full_path)[2];
-        $path = RequestController::renderImage($full_path);
+        $path = explode('/', $full_path)[2];
 
 
         $attributes = ['status' => 0,
@@ -40,7 +39,7 @@ class RequestController extends Controller
             'stapled' => $request->input('stapled'),
             'paper_size' => $request->input('paper_size'),
             'file' => $path];
-        if ($request->exists('due_date')) {
+        if ($request->exists('due_date')) { //fazemos o if porque o utilizador pode ou não ter indicado uma data de conclusao
             $attributes ['due_date'] = $request->input('due_date');
         }
 
@@ -88,19 +87,20 @@ class RequestController extends Controller
         } else {
             //aqui vai buscar a imagem à storage
             // $path=asset('images/printit.png');
-
-            //  $path = Storage::get()
+            //asset(storage_path().'/print-jobs/'.$printRequest->owner_id. '/'. $printRequest->file)
+             $path = route('getImageRequest', ['id' => $printRequest->id]);
         }
 
         return view('requests/create', compact('title', 'printRequest', 'path'));
     }
 
-    public function renderImage($full_path)
-    {
+    public function getImageRequest(PrintRequest $id){
 
-        $path = explode('/', $full_path)[2];
+        $printRequest = $id;
 
-        return $path;
+        $file_name = $printRequest->file;
+
+        return response()->file(storage_path('app/print-jobs/'. $printRequest->owner_id. '/'. $file_name));
     }
 
     public function dashboard()
@@ -129,6 +129,30 @@ class RequestController extends Controller
 
     public function createComment()
     {
+
+    }
+    //o Request é um objecto que é passado automaticamente quando se faz post
+    public function update(Request $request, PrintRequest $id){
+
+        //recebemos o printRequest que vai ser alterado
+        $printRequest = $id;
+        //dd($request);
+
+        $attributes = ['status' => 0,
+            'description' => $request->input('description'),
+            'quantity' => $request->input('quantity'),
+            'paper_type' => $request->input('paper_type'),
+            'colored' => $request->input('colored'),
+            'stapled' => $request->input('stapled'),
+            'paper_size' => $request->input('paper_size')];
+        if ($request->exists('due_date')) { //fazemos o if porque o utilizador pode ou não ter indicado uma data de conclusao
+            $attributes ['due_date'] = $request->input('due_date');
+        }
+        //chamamos o update (que é da superclasse Model e o $printRequest extende de Model)
+        $printRequest->update($attributes);
+
+        return redirect()->route('requestsDashboard');
+
 
     }
 }

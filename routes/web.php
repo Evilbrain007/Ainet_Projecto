@@ -35,6 +35,8 @@ Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth')-
 
 Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth')->name('updateRequest');
 
+Route::get('/requests/edit/image/{id}', 'RequestController@getImageRequest')->middleware('auth')->name('getImageRequest');
+
 Route::get('/request/{id}', 'RequestController@details')->middleware('auth')->name('requestDetails');
 
 
