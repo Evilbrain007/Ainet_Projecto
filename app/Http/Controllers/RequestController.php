@@ -88,29 +88,72 @@ class RequestController extends Controller
             //aqui vai buscar a imagem à storage
             // $path=asset('images/printit.png');
             //asset(storage_path().'/print-jobs/'.$printRequest->owner_id. '/'. $printRequest->file)
-             $path = route('getImageRequest', ['id' => $printRequest->id]);
+            $path = route('getImageRequest', ['id' => $printRequest->id]);
         }
 
         return view('requests/create', compact('title', 'printRequest', 'path'));
     }
 
-    public function getImageRequest(PrintRequest $id){
+    public function getImageRequest(PrintRequest $id)
+    {
 
         $printRequest = $id;
 
         $file_name = $printRequest->file;
 
-        return response()->file(storage_path('app/print-jobs/'. $printRequest->owner_id. '/'. $file_name));
+        return response()->file(storage_path('app/print-jobs/' . $printRequest->owner_id . '/' . $file_name));
     }
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $title = 'Pedidos';
         $owner_id = Auth::id();
 
-        $requests = PrintRequest::where('owner_id', $owner_id)->get();
+
+        //verificar se o utilizador logado é admin ou nao
+
+        //se for admin mostro todos os pedidos de todos os users
+
+        //se for funcionadio mostra so os pedidos do proprio funcionario - feito
+        //filtrar os pedidos do proprio funcionario
+
+        $filters = ['status' => $request->input('filterByStatus'), //o input vai buscar o que foi inputado no formulario da dashboard nos respectivos campos
+            'openDate' => $request->input('filterByopenDate'),
+            'dueDate' => $request->input('filterBydueDate')];
+
+        //dd($filters);
+
+        $requests = PrintRequest::where('owner_id', $owner_id);
         $comments = [];
-        $replys = [];
+        //se nao houver filtros seleccionados, mostra todos os pedidos normalmente
+        if (isset($filters['status'])) {
+            $requests = $requests->where('status', $filters['status']);
+            //se por exemplo um utilizador ecolher filtar por estado concluido e nao tiver pedidos concluidos, o que é
+            //suposto acontecer? Mostra tudo vazio?
+        }
+
+
+        if (isset($filters['openDate'])) {
+            // $requests = $requests->orderBy('created_at', $filters['openDat    e'])->get();
+            if ($filters['openDate'] == 'cresc') {
+                $requests = $requests->where('owner_id', $owner_id)->oldest();
+            } else {
+                $requests = $requests->where('owner_id', $owner_id)->latest();
+            }
+
+        }
+
+        if (isset($filters['dueDate'])) {
+            // $requests = $requests->orderBy('due_date', $filters['dueDate'])->get();
+            if ($filters['dueDate'] == 'cresc') {
+                $requests = $requests->where('owner_id', $owner_id)->oldest('due_date');
+            } else {
+                $requests = $requests->where('owner_id', $owner_id)->latest('due_date');
+            }
+        }
+
+        $requests = $requests->get();
+
 
         foreach ($requests as $request) {
             $aux = Comment::where('request_id', $request->id)->get();
@@ -131,8 +174,10 @@ class RequestController extends Controller
     {
 
     }
+
     //o Request é um objecto que é passado automaticamente quando se faz post
-    public function update(Request $request, PrintRequest $id){
+    public function update(Request $request, PrintRequest $id)
+    {
 
         //recebemos o printRequest que vai ser alterado
         $printRequest = $id;
@@ -153,6 +198,18 @@ class RequestController extends Controller
 
         return redirect()->route('requestsDashboard');
 
+    }
+
+    public function remove(Request $request){
+
+        $requestId = $request->input('request_id');
+
+
+        $printRequest = PrintRequest::find($requestId);
+
+        //TODO
+        $printRequest->comment()->delete();
+        $printRequest->delete();
 
     }
 }

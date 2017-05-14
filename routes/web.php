@@ -39,6 +39,8 @@ Route::get('/requests/edit/image/{id}', 'RequestController@getImageRequest')->mi
 
 Route::get('/request/{id}', 'RequestController@details')->middleware('auth')->name('requestDetails');
 
+Route::post('/request/remove', 'RequestController@remove')->middleware('auth')->name('removeRequest');
+
 
 Route::post('requests/comments/create', 'RequestsController@createComment')->middleware('auth')->name('createComment');
 
