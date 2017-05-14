@@ -13,30 +13,30 @@
         <div class="row">
             <div class="col-md-12">Filtros
                 {{-- FALTA A ROTA NO ACTION--}}
-                <form class="form-group form-inline" action="" method="get">
+                <form class="form-group form-inline" action="{{route('requestsDashboard')}}" method="get">
                     <div >
                         <select id="filterByStatus" class="form-control" name="filterByStatus">
                             <option value="" selected>Escolha um estado</option>
                             <option value="1">Concluido</option>
                             {{--  mostra os pedidos concluidos --}}
-                            <option value="2">Em espera</option>
+                            <option value="0">Em espera</option>
                             {{--  mostra os pedidos em espera --}}
                         </select>
 
                         <select id="filterByopenDate" class="form-control" name="filterByopenDate">
                             <option value="" selected>Ordenar por data</option>
-                            <option value="0">Crescente</option>
+                            <option value="cresc">Mais antigos primeiro</option>
                             {{--  apresenta os dados na tabela por ordem crescente --}}
-                            <option value="1">Decrescente</option>
+                            <option value="desc">Mais recentes primeiro</option>
                             {{--  apresenta os dados na tabela por ordem decrescente --}}
 
                         </select>
 
                         <select id="filterBydueDate" class="form-control" name="filterBydueDate">
                             <option value="" selected>Ordenar por data de conclusão</option>
-                            <option value="0">Crescente</option>
+                            <option value="cresc">Mais antigos primeiro</option>
                             {{--  apresenta os dados na tabela por ordem crescente --}}
-                            <option value="1">Decrescente</option>
+                            <option value="desc">Mais recentes primeiro</option>
                             {{--  apresenta os dados na tabela por ordem decrescente --}}
 
                         </select>
@@ -57,8 +57,8 @@
             <tr>
                 <th class="col-md-1">Nº do pedido</th>
                 <th class="col-md-2">Descrição</th>
+                <th class="col-md-1">Data de Criação</th>
                 <th class="col-md-2">Data de conclusão</th>
-                <th class="col-md-1">Estado</th>
                 <th class="col-md-2">Acção</th> {{--mudar o nome desta coluna? --}}
             </tr>
             </thead>
@@ -71,6 +71,7 @@
                 <tr>
                     <td class="col-md-1"><a href="{{route('requestDetails', ['id' => $request->id])}}" >{{$request->id}}</a></td>
                     <td class="col-md-2">{{substr($request->description, 0, 20)}}</td>
+                    <td class="col-md-2">{{$request->created_at}}</td>
                     <td class="col-md-2">{{$request->due_date}}</td>
 
                     @if($request->status==0)
@@ -84,20 +85,16 @@
                         {{-- apresentar botao para editar e remover--}}
                     <td class="col-md-4">
 
-                        {{-- <form action="{{ route('requestDetails') }}" method="get">
-                            <div class="form-group form-inline">
-                                <button type="submit" class="btn btn-primary">
-                                    Editar
-                                </button>
-                            </div>
-                        </form>--}}
-
-
-                        <a class="btn btn-primary" href="{{ route('editRequest', ['id'=>$request->id]) }}">Editar</a>
+                        <a class="col-md-4 btn btn-primary" href="{{ route('editRequest', ['id'=>$request->id]) }}">Editar</a>
                         {{-- FALTA A ROTA NO ACTION--}}
-                            <form action="" method="get">
+                            <form action="{{route('removeRequest')}}"  class="col-md-4" method="POST">
+                                {{csrf_field()}} {{--usamos o field e nao o token pk o field gera um input hidden com o token --}}
                             <div class="form-group form-inline">
-                                <button type="submit" class="btn btn-primary">
+                                {{--quando usamos um link passa-se as variaveis pela rota como na linha acima
+                                 quando é um form get ou post temos que criar um input  para podermos depois aceder as variaveis no controlador
+                                 se o form for post esse campo tem k ser hiden para nao aparecer nada no link do browser--}}
+                                <input hidden value="{{$request->id}}" name="request_id">
+                                <button type="submit" class="btn btn-danger">
                                     Remover
                                 </button>
                             </div>
@@ -111,7 +108,7 @@
                             <form action="" method="post">
                                 <div class="form-group form-inline">
                                     <select id="satisfactionGrade" class="form-control" name="satisfactionGrade">
-                                        <option value="" selected>Avalie a qualidade do serviço</option>
+                                        <option value="" selected>Qualidade do serviço</option>
                                         <option value="1">Mau</option>
                                         <option value="2">Médio</option>
                                         <option value="3">Bom</option>
