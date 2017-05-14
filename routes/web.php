@@ -16,7 +16,6 @@ Route::get('/', 'DashboardController@getIndex')->name('home');
 Route::get('/departament/{id}', 'DepartmentController@detail')->name('departmentDetail');
 
 
-
 Route::get('users/image/{user_id}', 'UserController@getUserImage')->name('getUserImage');
 
 Route::get('/users/edit/{id}', 'UserController@edit')->middleware('auth')->name('editUser');
