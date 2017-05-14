@@ -58,3 +58,6 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('password/reset', 'Auth\ResetPasswordController@showResetForm')->name('password.request');
 
+Route::get('/verifyemail/{token}', 'Auth\RegisterController@verify');
+
+

@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Department;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendVerificationEmail;
+use App\PasswordReset;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 
 class RegisterController extends Controller
 {
@@ -42,6 +45,44 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    public function register(Request $request)
+    {
+        //Register Function Overriden from class "RegistersUsers"
+        //Laravel Code
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+        ////////
+
+        //Our Code
+        if ($request->file('file')->isValid()) {
+            $path = $request->file('file')->store('userImages');
+            /*$imageManager = new ImageManager();
+            $img = $imageManager->make($path);*/
+            $user->setAttribute('profile_photo', $path);
+        }
+
+        // activation token
+        $activation = new PasswordReset();
+        $activation->email = $user->email;
+        $activation->token = base64_encode(bcrypt($user->email));
+        $activation->save();
+
+        $user->save();
+        ////////
+
+        dispatch(new SendVerificationEmail($activation));
+        return view(‘verification’);
+
+        /* old code
+        //Laravel Code
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
+        */
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -60,34 +101,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    public function register(Request $request)
-    {
-        //Register Function Overriden from class "RegistersUsers"
-        //Laravel Code
-        $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-        ////////
-
-        //Our Code
-        if ($request->file('file')->isValid()) {
-            $path = $request->file('file')->store('userImages');
-            /*$imageManager = new ImageManager();
-            $img = $imageManager->make($path);*/
-            $user->setAttribute('profile_photo', $path);
-        }
-        $user->save();
-        ////////
-
-
-        //Laravel Code
-        $this->guard()->login($user);
-
-        return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
-    }
-
-
     /**
      * Create a new user instance after a valid registration.
      *
@@ -103,6 +116,8 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'department_id' => $data['department_id'],
         ]);
+
+
     }
 
     public function showRegistrationForm()
@@ -110,6 +125,16 @@ class RegisterController extends Controller
         $title = "Página de Registo";
         $departments = Department::all();
         return view('auth.register', compact('departments', 'title'));
+    }
+
+    public function verify($token)
+    {
+        $activation = PasswordReset::first(‘token’, $token);
+        $user = User::first('email', $activation->email);
+        $user->blocked = 0;
+        if ($user->save()) {
+            return view(‘emailconfirm’, [‘user’ => $user]);
+        }
     }
 
     protected function registered(Request $request, $user)
