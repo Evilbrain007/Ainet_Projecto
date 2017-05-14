@@ -62,16 +62,15 @@ class RegisterController extends Controller
             $user->setAttribute('profile_photo', $path);
         }
 
-        // activation token
         $activation = PasswordReset::where('email', $user->email)->first();
         $user->save();
-        ////////
 
         dispatch(new SendVerificationEmail($activation, $user));
 
         $title = 'Verificação de conta';
         return view('auth.verification', compact('title'));
-
+        ////////
+        ///
         /* old code
         //Laravel Code
         $this->guard()->login($user);
@@ -125,12 +124,12 @@ class RegisterController extends Controller
 
     public function verify($token)
     {
-        $activation = PasswordReset::first('token', $token);
-        $user = User::first('email', $activation->email);
+        $activation = PasswordReset::where('token', $token)->first();
+        $user = User::where('email', $activation->email)->first();
         $user->blocked = 0;
         if ($user->save()) {
-            $title = "Email confirmado";
-            return view('auth.emailconfirm', compact('title', 'user'));
+            $this->guard()->login($user);
+            redirect(route('home'));
         }
     }
 
