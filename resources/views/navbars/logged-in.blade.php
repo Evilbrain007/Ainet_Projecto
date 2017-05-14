@@ -16,6 +16,9 @@
             <a href="{{route('userDetail', ['id' => Auth::id()])}}">Ver Perfil</a>
         </li>
         <li>
+            <a href="{{route('editUser', ['id' => Auth::id()])}}">Editar Perfil</a>
+        </li>
+        <li>
             <a href="{{ route('logout') }}"
                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

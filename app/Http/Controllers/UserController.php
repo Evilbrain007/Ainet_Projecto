@@ -95,14 +95,11 @@ class UserController extends Controller
             return 'User Inválido';
         }
         $user = $user_id;
-        $imageManager = new ImageManager();
         $imagePath = $user->getAttribute('profile_photo');
-        if ($imagePath == null) {
-            $img = $imageManager->make(public_path() . '/images/default_profile_photo.png');
-        } else {
-            $img = $imageManager->make(Storage::get('public/profiles/' . $imagePath));
+        if($imagePath == null){
+            return  response()->file(public_path().'/images/default_profile_photo.png');
         }
-        return $img->response();
+        return  response()->file(storage_path('app/public/profiles/'.$imagePath));
 
     }
 
