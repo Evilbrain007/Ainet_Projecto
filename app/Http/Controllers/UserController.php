@@ -91,9 +91,6 @@ class UserController extends Controller
 
     public function getUserImage(User $user_id)
     {
-        if ($user_id == null) {
-            return 'User Inválido';
-        }
         $user = $user_id;
         $imagePath = $user->getAttribute('profile_photo');
         if($imagePath == null){
