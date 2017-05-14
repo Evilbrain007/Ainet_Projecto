@@ -34,7 +34,7 @@
                 <td class="col-sm-1">{{$printRequest->colored ? 'A Cores' : 'Preto e branco'}}</td>
                 <td class="col-sm-1">{{$printRequest->front_back ? 'Frente e verso' : 'Só frente'}}</td>
                 <td class="col-sm-1">{{$printRequest->front_back ? 'Agrafado' : 'Não agrafado'}}</td>
-                <td class="col-sm-1">{{$printRequest->paper_size}}</td>
+                <td class="col-sm-1">A{{$printRequest->paper_size}}</td>
                 <td class="col-sm-1">{{$printRequest->paper_type == 2 ? 'Papel de fotografia' :
                  $printRequest->paper_type == 1 ? 'Normal' : 'Rascunho'}}</td>
                 <td class="col-sm-1"><a href="{{-- //TODO ROTA DA SORAIA --}}">Ficheiro a imprimir</a></td>
