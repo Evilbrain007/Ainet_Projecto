@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class PasswordReset extends Model
 {
     public $timestamps = false;
-    public $primaryKey = 'email';
-
-    public function user()
-    {
-        $this->hasOne('App\User');
-    }
+    protected $table = 'password_resets';
+    protected $primaryKey = 'email';
 }

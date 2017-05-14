@@ -63,16 +63,14 @@ class RegisterController extends Controller
         }
 
         // activation token
-        $activation = new PasswordReset();
-        $activation->email = $user->email;
-        $activation->token = base64_encode(bcrypt($user->email));
-        $activation->save();
-
+        $activation = PasswordReset::where('email', $user->email)->first();
         $user->save();
         ////////
 
-        dispatch(new SendVerificationEmail($activation));
-        return view(‘verification’);
+        dispatch(new SendVerificationEmail($activation, $user));
+
+        $title = 'Verificação de conta';
+        return view('auth.verification', compact('title'));
 
         /* old code
         //Laravel Code
@@ -116,8 +114,6 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'department_id' => $data['department_id'],
         ]);
-
-
     }
 
     public function showRegistrationForm()
@@ -129,11 +125,12 @@ class RegisterController extends Controller
 
     public function verify($token)
     {
-        $activation = PasswordReset::first(‘token’, $token);
+        $activation = PasswordReset::first('token', $token);
         $user = User::first('email', $activation->email);
         $user->blocked = 0;
         if ($user->save()) {
-            return view(‘emailconfirm’, [‘user’ => $user]);
+            $title = "Email confirmado";
+            return view('auth.emailconfirm', compact('title', 'user'));
         }
     }
 

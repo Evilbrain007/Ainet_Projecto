@@ -30,8 +30,10 @@ class EmailVerification extends Mailable
      */
     public function build()
     {
-        return $this->view(‘email.email_verification’)->with([
-            ‘email_token’ => $this->passwordReset->token,
+
+        return $this->view('email.email_verification')->with([
+            'title' => 'Verificação de email',
+            'email_token' => $this->passwordReset->token,
         ]);
 
     }

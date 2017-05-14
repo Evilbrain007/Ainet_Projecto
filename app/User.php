@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -16,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'department_id', 'token'
+        'name', 'email', 'password', 'phone', 'department_id'
     ];
 
     /**
@@ -41,6 +42,15 @@ class User extends Authenticatable
         $user->print_counts = 0;
         $department = Department::find($attributes['department_id']);
         $user->department()->associate($department);
+
+        $activation = PasswordReset::find($user->email);
+        if ($activation === null) {
+            $activation = new PasswordReset();
+        }
+        $activation->email = $user->email;
+        $activation->token = base64_encode(bcrypt($user->email));
+        $activation->created_at = Carbon::now();
+        $activation->save();
 
         return $user;
     }
