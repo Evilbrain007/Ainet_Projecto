@@ -93,7 +93,7 @@
                                 {{--quando usamos um link passa-se as variaveis pela rota como na linha acima
                                  quando é um form get ou post temos que criar um input  para podermos depois aceder as variaveis no controlador
                                  se o form for post esse campo tem k ser hiden para nao aparecer nada no link do browser--}}
-                                <input hidden value="{{$request->id}}" name="request_id">
+                                <input type="number" hidden value="{{$request->id}}" name="request_id">
                                 <button type="submit" class="btn btn-danger">
                                     Remover
                                 </button>

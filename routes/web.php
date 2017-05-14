@@ -42,7 +42,9 @@ Route::get('/request/{id}', 'RequestController@details')->middleware('auth')->na
 Route::post('/request/remove', 'RequestController@remove')->middleware('auth')->name('removeRequest');
 
 
-Route::post('requests/comments/create', 'RequestsController@createComment')->middleware('auth')->name('createComment');
+Route::post('requests/comments/create', 'CommentController@store')->middleware('auth')->name('createComment');
+
+Route::post('requests/comments/create/response', 'CommentController@storeReply')->middleware('auth')->name('createResponse');
 
 
 Route::get('/admin', 'DashboardController@getIndex')->middleware('auth')->middleware('admin')->name('homeAdmin');

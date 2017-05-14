@@ -193,10 +193,15 @@ class RequestController extends Controller
         return view('requests/dashboard', compact('title', 'requests', 'comments'));
     }
 
-    public function createComment()
+   /* public function createComment(Request $request)
     {
+        $attributes = ['request_id'=>$request->input('request_id') ];
 
-    }
+        $comment = Comment::create($attributes);
+        Comment::store($comment);
+
+        return redirect()->route('requestDetails', $attributes['request_id']);
+    }*/
 
     //o Request é um objecto que é passado automaticamente quando se faz post
     public function update(Request $request, PrintRequest $id)

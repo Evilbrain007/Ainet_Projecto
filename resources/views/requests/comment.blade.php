@@ -8,7 +8,19 @@
                 <p>{{$comment->comment}}</p>
                 <div class="pull-right">
                     @if(Auth::user()->admin == true)<a class="btn btn-danger" href="home.html">Bloquear</a>@endif
-                    <a class="btn btn-primary" href="home.html">Responder</a>
+
+                </div>
+                <div class="panel-body">
+                    <form action="{{route('createResponse')}}" method="post">
+                        {{csrf_field()}}
+                        <input type="number" hidden value="{{$printRequest->id}}" name="requestId">
+                        <input type="number" hidden value="{{$comment->id}}" name="parent"> {{--como ja estamos no comment pai passamos o id do pai e nao
+                         o parent_id--}}
+                        <textarea  name="comment" rows="9" cols="120"></textarea>
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-info">Responder</button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="panel-body">

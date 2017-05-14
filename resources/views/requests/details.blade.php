@@ -71,13 +71,10 @@
                     <h3 class="panel-title">Deixe o seu comentário</h3>
                 </div>
                 <div class="panel-body">
-                    {{-- FALTA A ROTA NO ACTION--}}
                     <form action="{{route('createComment')}}" method="post">
-                        <input type="number" hidden value={{$printRequest->id}}>
-
-                        <label>
-                            <textarea name="message" rows="10" cols="130"></textarea>
-                        </label>
+                        {{csrf_field()}}
+                        <input type="number" hidden value="{{$printRequest->id}}" name="requestId">
+                        <textarea name="comment" rows="9" cols="120"></textarea>
                         <div class="pull-right">
                             <button type="submit" class="btn btn-danger">Comentar</button>
                         </div>

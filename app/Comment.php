@@ -30,11 +30,15 @@ class Comment extends Model
     public static function create($attributes)
     {
         $comment = new Comment();
-        $printRequest = PrintRequest::find($attributes['requestId']); //vamos buscar o id do pedido
+        $printRequest = PrintRequest::find($attributes['request_id']); //vamos buscar o id do pedido
         $comment->printRequest()->associate($printRequest);
         // associamos o comentario ao pedido
         //usando o metodo printRequest desta classe, que tem o belongsTo
 
+        if(isset($attributes['parent_id'])){
+            //se estiver a criar uma resposta a um comentário, então temos de fazer set ao comentário pai.
+            $comment->setAttribute('parent_id', $attributes['parent_id']);
+        }
         //tb temos que associar o user que escreveu o comentario ao comantario
         $user = User::find(Auth::id()); //vamos buscar o id do user
         $comment->user()->associate($user);
