@@ -4,19 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Department;
 use App\User;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function listUsers()
-    {
-        $title = "Listagem de Utilizadores";
-
-        return view('dashboard');
-    }
-
 
     public function details(User $id)
     {

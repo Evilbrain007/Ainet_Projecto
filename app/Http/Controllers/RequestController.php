@@ -175,7 +175,7 @@ class RequestController extends Controller
             }
         }
 
-        $requests = $requests->get();
+        $requests = $requests->paginate(5);
 
 
         foreach ($requests as $request) {

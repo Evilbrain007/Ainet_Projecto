@@ -93,7 +93,10 @@
 
                             <div class="form-group{{$errors->has('file') ? 'has-error' : ''}}">
                                 <label for="file" class="col-md-4 control-label">Seleccione uma fotografia</label>
-                                <div class="col-md-6">
+                                <div class="col-md-3" align="center">
+                                    <img alt="User Pic" src="{{ route("getUserImage", ['user_id' => $user->id]) }}" class="img-responsive">
+                                </div>
+                                <div class="col-md-3">
                                     <input id="file" type="file" name="file" required>
                                     {{--*****AKI VAI TER K VERIFICAR FORMATO VALIDO: IMAGEM(JPG, TIFF, PNG ...)
                               WORD, EXCEL, ODT, PDF --}}
