@@ -57,7 +57,6 @@
             <tr>
                 <th class="col-md-1">Nº do pedido</th>
                 <th class="col-md-2">Descrição</th>
-                <th class="col-md-2">Data do pedido</th>
                 <th class="col-md-2">Data de conclusão</th>
                 <th class="col-md-1">Estado</th>
                 <th class="col-md-2">Acção</th> {{--mudar o nome desta coluna? --}}
@@ -72,8 +71,7 @@
                 <tr>
                     <td class="col-md-1">{{$request->id}}</td>
                     <td class="col-md-2">{{substr($request->description, 0, 20)}}</td>
-                    <td class="col-md-2">{{$request->openDate}}</td>
-                    <td class="col-md-2">{{$request->dueDate}}</td>
+                    <td class="col-md-2">{{$request->due_date}}</td>
 
                     @if($request->status==0)
                         <td class="col-md-1">Em espera</td>
