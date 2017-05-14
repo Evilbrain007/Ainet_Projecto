@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Department;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\File;
@@ -64,13 +65,35 @@ class RequestController extends Controller
         $title = 'Detalhes do produto';
 
         $printRequest = $id;
-        //  $user = $printRequest->owner();
-        //  $department = $user
+        $user = User::find($printRequest->owner_id);
+        $department = Department::find($user->department_id);
         // $user = $printRequest->  tenho que ir buscar o user a partir do request e depois o departamento
         //a partir do user. e tenho que devolver no return
         //deveria passar um array de parametros?
+        $comments = $this->getComments($printRequest->id);
+        return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments'));
+    }
 
-        return view('requests/details', compact('title', 'printRequest'));
+    public function getComments($printRequestId)
+    {
+        $comments = Comment::where('request_id', $printRequestId)->where('parent_id', null)->get();
+
+        if(!empty($comments)){
+            $this->getChildren($comments);
+        }
+
+        return $comments;
+    }
+
+    private function getChildren($comments)
+    {
+        foreach ($comments as $comment) {
+            $comment_children = Comment::where('parent_id', $comment->id)->get();
+            if(!empty($comment_children)){
+                $this->getChildren($comment_children);
+                $comment ['comment_children'] = $comment_children;
+            }
+        }
     }
 
     public function edit(PrintRequest $id)
@@ -131,4 +154,5 @@ class RequestController extends Controller
     {
 
     }
+
 }

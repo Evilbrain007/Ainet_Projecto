@@ -12,6 +12,7 @@
 
 @section('content')
 
+    @if(Auth::user()->admin == true)
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">Administração</h3>
@@ -21,6 +22,7 @@
             <a class="btn btn-danger" href="home.html">Recusar Pedido</a>
         </div>
     </div>
+    @endif
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -29,18 +31,20 @@
         <table class="table">
             <tbody class="text-center">
             <tr>
-                <td class="col-sm-1">Preto e branco</td>
-                <td class="col-sm-1">Frente e verso</td>
-                <td class="col-sm-1">Não agrafado</td>
-                <td class="col-sm-1">A4</td>
-                <td class="col-sm-1">Papel de fotografia</td>
-                <td class="col-sm-1"><a href="">Ficheiro a imprimir</a></td>
-                <td class="col-sm-1"><strong>POR IMPRIMIR</strong></td>
+                <td class="col-sm-1">{{$printRequest->colored ? 'A Cores' : 'Preto e branco'}}</td>
+                <td class="col-sm-1">{{$printRequest->front_back ? 'Frente e verso' : 'Só frente'}}</td>
+                <td class="col-sm-1">{{$printRequest->front_back ? 'Agrafado' : 'Não agrafado'}}</td>
+                <td class="col-sm-1">{{$printRequest->paper_size}}</td>
+                <td class="col-sm-1">{{$printRequest->paper_type == 2 ? 'Papel de fotografia' :
+                 $printRequest->paper_type == 1 ? 'Normal' : 'Rascunho'}}</td>
+                <td class="col-sm-1"><a href="{{-- //TODO ROTA DA SORAIA --}}">Ficheiro a imprimir</a></td>
+                <td class="col-sm-1"><strong>{{$printRequest->closed_user_id == null ? 'POR IMPRIMIR' : 'CONCLUIDO'}}</strong></td>
             </tr>
             </tbody>
         </table>
         <div class="panel-body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            <div class="col-sm-4">{{-- //TODO ROTA DA SORAIA --}}</div>
+            <div class="col-sm-8">{{$printRequest->description}}</div>
         </div>
     </div>
 
@@ -49,10 +53,10 @@
             <h3 class="panel-title">Requerente</h3>
         </div>
         <div class="panel-body">
-            Francisco de Valle<br>
-            Departamento de Ortodentia<br>
-            dentistaARRobamundosdosmedicos.dom<br>
-            Telefone: 991712312
+            {{$user->name}}<br>
+            {{$department->name}}<br>
+            Email: {{$user->email}}<br>
+            Telefone: {{$user->phone == null ? 'Sem número.' : $user->phone}}
         </div>
     </div>
 
@@ -69,48 +73,24 @@
                 <div class="panel-body">
                     {{-- FALTA A ROTA NO ACTION--}}
                     <form action="{{route('createComment')}}" method="post">
-                        {{--<input type="number" hidden value={{$request->id}}> --}}
+                        <input type="number" hidden value={{$printRequest->id}}>
 
-                        <textarea name="message" rows="10" cols="200"></textarea>
+                        <label>
+                            <textarea name="message" rows="10" cols="130"></textarea>
+                        </label>
                         <div class="pull-right">
                             <button type="submit" class="btn btn-danger">Comentar</button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
 
-        <div class="panel-body">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">João Fonseca</h3>
-                </div>
-                <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    <div class="pull-right">
-                        <a class="btn btn-danger" href="home.html">Bloquear</a>
-                        <a class="btn btn-primary" href="home.html">Responder</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="panel-body">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Mariana Marques</h3>
-                </div>
-                <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    <div class="pull-right">
-                        <a class="btn btn-danger" href="home.html">Bloquear</a>
-                        <a class="btn btn-primary" href="home.html">Responder</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
+
+        @foreach($comments as $comment)
+            @include('requests.comment', ['comment' => $comment])
+        @endforeach
 
     </div>
 

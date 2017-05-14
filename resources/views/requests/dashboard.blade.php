@@ -69,7 +69,7 @@
 
             @foreach($requests as $request)
                 <tr>
-                    <td class="col-md-1">{{$request->id}}</td>
+                    <td class="col-md-1"><a href="{{route('requestDetails', ['id' => $request->id])}}" >{{$request->id}}</a></td>
                     <td class="col-md-2">{{substr($request->description, 0, 20)}}</td>
                     <td class="col-md-2">{{$request->due_date}}</td>
 
