@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\PasswordReset;
+use App\User;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 
@@ -42,6 +44,11 @@ class ResetPasswordController extends Controller
     {
         $title = "Recuperar password";
         $email = $request->email;
+        $activation = PasswordReset::where('email', $email)->first();
+        $user = User::where('email', $email)->first();
+        $user->blocked(-1);
+        $user->save();
+        dispatch(new SendVerificationEmail($activation, $user));
         return view('auth.passwords.reset', compact('title', 'token', 'email'));
     }
 }
