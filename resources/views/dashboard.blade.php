@@ -22,8 +22,8 @@
         </div>
         <div class="row">
             <div class="col-md-3">{{$statistics['totalPrints']}}</div>
-            <div class="col-md-1">{{$statistics['bwColoredPrintsRatio']}}</div>
-            <div class="col-md-1">{{$statistics['coloredBWPrintsRatio']}}</div>
+            <div class="col-md-1">{{number_format((float)$statistics['bwColoredPrintsRatio'],2)}} %</div>
+            <div class="col-md-1">{{number_format((float)$statistics['coloredBWPrintsRatio'],2)}} %</div>
             <div class="col-md-3">Média imp. diárias deste
                 mês: {{number_format($statistics['printAvgCurrentMonth'],2)}}</div>
         </div>
