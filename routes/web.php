@@ -25,7 +25,7 @@ Route::post('/users/edit/{id}', 'UserController@update')->middleware('auth')->na
 Route::get('/user/{id}', 'UserController@details')->name('userDetail');
 
 
-Route::get('/requests/dashboard', 'RequestController@dashboard')->middleware('auth')->name('requestsDashboard');
+Route::get('/requests/dashboard', 'RequestController@dashboard')->middleware('auth')->name('requests.dashboard');
 
 Route::get('/requests/create', 'RequestController@create')->middleware('auth')->name('createRequest');
 
@@ -38,6 +38,7 @@ Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth
 Route::get('/requests/edit/image/{id}', 'RequestController@getImageRequest')->middleware('auth')->name('getImageRequest');
 
 Route::get('/request/{id}', 'RequestController@details')->middleware('auth')->name('requestDetails');
+
 
 Route::post('/request/remove', 'RequestController@remove')->middleware('auth')->name('removeRequest');
 
@@ -57,6 +58,9 @@ Route::post('admin/user/{id}/block', 'UserController@blockUser')->middleware('au
 
 Route::post('admin//user/{id}/unblock', 'UserController@unblockUser')->middleware('auth')->middleware('admin')->name('unblockUser');
 
+Route::post('admin/request/{id}/close', 'RequestController@closeRequest')->middleware('auth')->middleware('admin')->name('admin.request.close');
+
+Route::post('admin/request/{id}/refuse', 'RequestController@refuseRequest')->middleware('auth')->middleware('admin')->name('admin.request.refuse');
 
 Auth::routes();
 

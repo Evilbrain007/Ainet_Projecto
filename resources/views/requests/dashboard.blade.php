@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-md-12">Filtros
                 {{-- FALTA A ROTA NO ACTION--}}
-                <form class="form-group form-inline" action="{{route('requestsDashboard')}}" method="get">
+                <form class="form-group form-inline" action="{{route('requests.dashboard')}}" method="get">
                     <div >
                         <select id="filterByStatus" class="form-control" name="filterByStatus">
                             <option value="" selected>Escolha um estado</option>
