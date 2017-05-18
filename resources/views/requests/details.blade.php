@@ -20,7 +20,7 @@
             </div>
             <div class="panel-body">
                 <form class="form-inline"
-                      action={{route('admin.request.close', ['id' => $printRequest->id])}} method="post">
+                      action={{route('request.close', ['id' => $printRequest->id])}} method="post">
                     {{ csrf_field() }}
                     <input class="btn btn-primary" type="submit" value="Concluir pedido">
                     <label for="printers">Impressora usada:</label>
@@ -31,7 +31,7 @@
                         </select>
                 </form>
                 <form class="form-inline"
-                      action={{route('admin.request.refuse', ['id' => $printRequest->id])}} method="post">
+                      action={{route('request.refuse', ['id' => $printRequest->id])}} method="post">
                     {{ csrf_field() }}
                     <input class="btn btn-danger" type="submit" value="Recusar pedido">
                     <div class="form-group">
@@ -92,7 +92,7 @@
                     <h3 class="panel-title">Deixe o seu comentário</h3>
                 </div>
                 <div class="panel-body">
-                    <form action="{{route('createComment')}}" method="post">
+                    <form action="{{route('comment.create')}}" method="post">
                         {{csrf_field()}}
                         <input type="number" hidden value="{{$printRequest->id}}" name="requestId">
                         <textarea name="comment" rows="9" cols="120"></textarea>

@@ -15,7 +15,7 @@
                     <div class="panel-heading">{{$title}}</div>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST" action="{{$printRequest->id === null ?
-                        route('createRequest') : route('updateRequest', $printRequest->id)}}"
+                        route('request.create') : route('request.update', $printRequest->id)}}"
                               enctype="multipart/form-data">
                             {{ csrf_field() }}
 
