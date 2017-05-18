@@ -15,15 +15,15 @@
             @endif
         </strong>
     </h5>
-    @if($printRequest->due_date !== null))
+    @if($printRequest->due_date !== null)
         <h5 class="text-muted">Concluir até: {{substr($printRequest->due_date, 0, 10)}}</h5>
-    @endunless
+    @endif
 
 @endsection
 
 @section('content')
 
-    @if(Auth::user()->admin == true)
+    @if(Auth::user()->admin == true && $printRequest->status === 0)
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">Administração</h3>
@@ -45,11 +45,10 @@
                     {{ csrf_field() }}
                     <input class="btn btn-danger" type="submit" value="Recusar pedido">
                     <div class="form-group">
-                        <label for="refusal_reason">Motivo de recusa: </label>
-                        <input name="refusal_reason" id="refusal_reason" type="textarea" value="">
+                        <label for="refused_reason">Motivo de recusa: </label>
+                        <input name="refused_reason" id="refused_reason" type="textarea" value="">
                     </div>
                 </form>
-
             </div>
         </div>
     @endif
@@ -69,7 +68,16 @@
                  $printRequest->paper_type == 1 ? 'Normal' : 'Rascunho'}}</td>
                 <td class="col-sm-1"><a href="{{-- //TODO ROTA DA SORAIA --}}">Ficheiro a imprimir</a></td>
                 <td class="col-sm-1">
-                    <strong>{{$printRequest->closed_user_id == null ? 'POR IMPRIMIR' : 'CONCLUIDO'}}</strong></td>
+                    <strong>
+                        @if($printRequest->status === 0)
+                            POR IMPRIMIR
+                        @elseif ($printRequest->status === 1)
+                            CONCLUÍDO
+                        @elseif ($printRequest->status === 2)
+                            RECUSADO
+                        @endif
+                    </strong>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -78,6 +86,29 @@
             <div class="col-sm-8">{{$printRequest->description}}</div>
         </div>
     </div>
+
+    @if ($printRequest->status === 1)
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Impressora usada</h3>
+            </div>
+            <div class="panel-body">
+                {{$printRequest->printer->name}}
+            </div>
+        </div>
+    @endif
+
+
+    @if ($printRequest->status === 2)
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">Motivo de recusa do pedido</h3>
+            </div>
+            <div class="panel-body">
+                {{$printRequest->refused_reason}}
+            </div>
+        </div>
+    @endif
 
     <div class="panel panel-default">
         <div class="panel-heading">

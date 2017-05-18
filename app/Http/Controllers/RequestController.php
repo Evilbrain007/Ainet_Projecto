@@ -266,7 +266,7 @@ class RequestController extends Controller
     {
         $printRequest = $this->prepareClosedRequest($id);
         $printRequest->status = 2;
-        $reason = trim($request->refusal_reason);
+        $reason = trim($request->refused_reason);
         if ($reason !== "") {
             $printRequest->refused_reason = $reason;
             if ($printRequest->save()) {

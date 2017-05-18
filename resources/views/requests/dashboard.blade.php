@@ -69,9 +69,12 @@
 
             @foreach($requests as $request)
                 <tr>
-                    <td class="col-md-1"><a
-                                href="{{route('request.details', ['id' => $request->id])}}">{{$request->id}}</a></td>
-                    <td class="col-md-2">{{substr($request->description, 0, 20)}}</td>
+                    <td class="col-md-1">
+                        <a href="{{route('request.details', ['id' => $request->id])}}">{{$request->id}}</a>
+                    </td>
+                    <td class="col-md-2">
+                        <a href="{{route('request.details', ['id' => $request->id])}}">{{substr($request->description, 0, 20)}}</a>
+                    </td>
                     <td class="col-md-2">{{substr($request->created_at, 0, 10)}}</td>
                     <td class="col-md-2">{{substr($request->due_date, 0, 10)}}</td>
 
