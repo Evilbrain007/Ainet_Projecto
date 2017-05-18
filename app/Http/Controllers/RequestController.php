@@ -266,8 +266,8 @@ class RequestController extends Controller
     {
         $printRequest = $this->prepareClosedRequest($id);
         $reason = trim($request->refusal_reason);
-        if (isNonEmptyString($reason)) {
-            $printRequest->refusedReason = $reason;
+        if ($reason !== "") {
+            $printRequest->refused_reason = $reason;
             if ($printRequest->save()) {
                 return redirect(route('requests.dashboard'));
             }
