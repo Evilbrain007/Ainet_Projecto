@@ -2,8 +2,9 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 
 class User extends Authenticatable
@@ -35,23 +36,33 @@ class User extends Authenticatable
         $user->email = $attributes['email'];
         $user->password = $attributes['password'];
         $user->admin = false;
-        $user->blocked = false;
+        $user->blocked = -1;
         $user->phone = $attributes['phone'];
         $user->print_evals = 0;
         $user->print_counts = 0;
         $department = Department::find($attributes['department_id']);
         $user->department()->associate($department);
-        return $user;
-    }
 
-    public static function store(User $user)
-    {
-        $user->save();
+        $activation = PasswordReset::find($user->email);
+        if ($activation === null) {
+            $activation = new PasswordReset();
+        }
+        $activation->email = $user->email;
+        $activation->token = base64_encode(bcrypt($user->email));
+        $activation->created_at = Carbon::now();
+        $activation->save();
+
+        return $user;
     }
 
     public function department()
     {
         return $this->belongsTo('App\Department', 'department_id');
+    }
+
+    public static function store(User $user)
+    {
+        $user->save();
     }
 
     public function comment()
@@ -61,7 +72,7 @@ class User extends Authenticatable
 
     public function printRequest()
     {
-        return $this ->hasMany('App\PrintRequest');
+        return $this->hasMany('App\PrintRequest');
     }
 
 }

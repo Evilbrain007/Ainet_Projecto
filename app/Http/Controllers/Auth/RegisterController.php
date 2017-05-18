@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Department;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendVerificationEmail;
+use App\PasswordReset;
 use App\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+
 
 class RegisterController extends Controller
 {
@@ -42,24 +45,6 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:8|confirmed',
-            'phone' => 'required|size:9',
-            'department_id' => 'required',
-            'file' => 'image',
-        ]);
-    }
-
     public function register(Request $request)
     {
         //Register Function Overriden from class "RegistersUsers"
@@ -77,17 +62,42 @@ class RegisterController extends Controller
             $path = substr($path, 15);
             $user->setAttribute('profile_photo', $path);
         }
+
+        $activation = PasswordReset::where('email', $user->email)->first();
         $user->save();
+
+        dispatch(new SendVerificationEmail($activation, $user));
+
+        $title = 'Verificação de conta';
+        return view('auth.verification', compact('title'));
         ////////
-
-
+        ///
+        /* old code
         //Laravel Code
         $this->guard()->login($user);
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
+        */
     }
 
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:8|confirmed',
+            'phone' => 'required|size:9',
+            'department_id' => 'required',
+            'file' => 'image',
+        ]);
+    }
 
     /**
      * Create a new user instance after a valid registration.
@@ -111,6 +121,17 @@ class RegisterController extends Controller
         $title = "Página de Registo";
         $departments = Department::all();
         return view('auth.register', compact('departments', 'title'));
+    }
+
+    public function verify($token)
+    {
+        $activation = PasswordReset::where('token', $token)->first();
+        $user = User::where('email', $activation->email)->first();
+        $user->blocked = 0;
+        if ($user->save()) {
+            $this->guard()->login($user);
+            redirect(route('home'));
+        }
     }
 
     protected function registered(Request $request, $user)
