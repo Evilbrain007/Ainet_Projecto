@@ -257,6 +257,7 @@ class RequestController extends Controller
     {
         $printRequest = $id;
         $printRequest->closed_date = Carbon::now();
+        $printRequest->status = 1;
         $printRequest->closingUser()->associate(Auth::user());
         return $printRequest;
     }
@@ -264,6 +265,7 @@ class RequestController extends Controller
     public function refuseRequest(Request $request, PrintRequest $id)
     {
         $printRequest = $this->prepareClosedRequest($id);
+        $printRequest->status = 2;
         $reason = trim($request->refusal_reason);
         if ($reason !== "") {
             $printRequest->refused_reason = $reason;

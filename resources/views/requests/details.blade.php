@@ -5,9 +5,19 @@
     <h1>Pedido {{$printRequest->id}}
         <small>{{substr($printRequest->created_at, 0, 10)}}</small>
     </h1>
-    <h5 class="text-muted"><strong>{{$printRequest->closed_user_id == null ? 'POR IMPRIMIR' : 'CONCLUIDO'}}</strong>
+    <h5 class="text-muted"><strong>
+            @if($printRequest->status === 0)
+                POR IMPRIMIR
+            @elseif ($printRequest->status === 1)
+                CONCLUÍDO
+            @elseif ($printRequest->status === 2)
+                RECUSADO
+            @endif
+        </strong>
     </h5>
-    <h5 class="text-muted">Concluir até: {{substr($printRequest->due_date, 0, 10)}}</h5>
+    @if($printRequest->due_date !== null))
+        <h5 class="text-muted">Concluir até: {{substr($printRequest->due_date, 0, 10)}}</h5>
+    @endunless
 
 @endsection
 
@@ -24,11 +34,11 @@
                     {{ csrf_field() }}
                     <input class="btn btn-primary" type="submit" value="Concluir pedido">
                     <label for="printers">Impressora usada:</label>
-                        <select name="printer">
-                            @foreach($printers as $printer)
-                                <option value="{{$printer->id}}">{{$printer->name}}</option>
-                            @endforeach
-                        </select>
+                    <select name="printer">
+                        @foreach($printers as $printer)
+                            <option value="{{$printer->id}}">{{$printer->name}}</option>
+                        @endforeach
+                    </select>
                 </form>
                 <form class="form-inline"
                       action={{route('request.refuse', ['id' => $printRequest->id])}} method="post">
