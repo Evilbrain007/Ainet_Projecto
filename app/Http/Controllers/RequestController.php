@@ -59,7 +59,7 @@ class RequestController extends Controller
 
     public function details(PrintRequest $id)//O ID vai ser transformado no respectivo PrintRequest, se existir
     {
-        $title = 'Detalhes do produto';
+        $title = 'Detalhes do pedido';
 
         $printRequest = $id;
         $user = User::find($printRequest->owner_id);
@@ -271,7 +271,8 @@ class RequestController extends Controller
                 return redirect(route('requests.dashboard'));
             }
         } else {
-            return redirect(route('request.details', ['id' => $printRequest->id]));
+            $message = ['message_error' => 'Deve indicar o motivo de recusa do pedido de impressão'];
+            return redirect(route('request.details', ['id' => $printRequest->id]))->with($message);
         }
     }
 }
