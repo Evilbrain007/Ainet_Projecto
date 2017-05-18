@@ -15,6 +15,7 @@
                 {{-- FALTA A ROTA NO ACTION--}}
                 <form class="form-group form-inline" action="{{route('requestsDashboard')}}" method="get">
                     <div >
+
                         <select id="filterByStatus" class="form-control" name="filterByStatus">
                             <option value="" selected>Escolha um estado</option>
                             <option value="1">Concluido</option>
@@ -40,6 +41,8 @@
                             {{--  apresenta os dados na tabela por ordem decrescente --}}
 
                         </select>
+
+                        {{--se o user autenticado for o admin apresentar mais opçoes de filtros --}}
 
                         <button type="submit" class="btn btn-primary">
                             Filtrar
@@ -71,8 +74,8 @@
                 <tr>
                     <td class="col-md-1"><a href="{{route('requestDetails', ['id' => $request->id])}}" >{{$request->id}}</a></td>
                     <td class="col-md-2">{{substr($request->description, 0, 20)}}</td>
-                    <td class="col-md-2">{{$request->created_at}}</td>
-                    <td class="col-md-2">{{$request->due_date}}</td>
+                    <td class="col-md-2">{{substr($request->created_at), 0, 10}}</td>
+                    <td class="col-md-2">{{substr($request->due_date), 0, 10}}</td>
 
                     @if($request->status==0)
                         <td class="col-md-1">Em espera</td>

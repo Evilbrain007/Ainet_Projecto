@@ -131,6 +131,7 @@ class RequestController extends Controller
     {
         $title = 'Pedidos';
         $owner_id = Auth::id();
+        $user = User::find($owner_id);
 
 
         //verificar se o utilizador logado é admin ou nao
@@ -148,6 +149,7 @@ class RequestController extends Controller
 
         $requests = PrintRequest::where('owner_id', $owner_id);
         $comments = [];
+        
         //se nao houver filtros seleccionados, mostra todos os pedidos normalmente
         if (isset($filters['status'])) {
             $requests = $requests->where('status', $filters['status']);
