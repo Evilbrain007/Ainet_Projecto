@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Department;
 use App\User;
 use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
 
 class UserController extends Controller
 {
@@ -29,22 +27,12 @@ class UserController extends Controller
         return view('users.details', compact('title', 'user', 'department'));
     }
 
-    public function setUserAsAdmin(User $id)
-    {
-        $user = $id;
-        $user->admin = true;
-        User::store($user);
-        return redirect(route('home'));
-    }
-
-
     public function edit(User $id)
     {
         $user = $id;
         $departments = Department::all();
 
-        $title = "Editar Perfil"; //isto esta bem? ou evia so buscar o id na vista blade?
-
+        $title = "Editar Perfil"; //isto esta bem? ou evita so buscar o id na vista blade?
 
         return view('users/edit', compact('title', 'user', 'departments'));
     }
@@ -52,6 +40,15 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         dd($request);
+    }
+
+
+    public function setUserAsAdmin(User $id)
+    {
+        $user = $id;
+        $user->admin = true;
+        User::store($user);
+        return redirect(route('home'));
     }
 
 

@@ -3,25 +3,45 @@
 @section('title')
 
     <h1>Pedido {{$printRequest->id}}
-        <small>{{$printRequest->open_date}}</small>
+        <small>{{substr($printRequest->created_at, 0, 10)}}</small>
     </h1>
-    <h5 class="text-muted"><strong>POR IMPRIMIR</strong></h5>
-    <h5 class="text-muted">Concluir até: 10/05/2017</h5>
+    <h5 class="text-muted"><strong>{{$printRequest->closed_user_id == null ? 'POR IMPRIMIR' : 'CONCLUIDO'}}</strong>
+    </h5>
+    <h5 class="text-muted">Concluir até: {{substr($printRequest->due_date, 0, 10)}}</h5>
 
 @endsection
 
 @section('content')
 
     @if(Auth::user()->admin == true)
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">Administração</h3>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Administração</h3>
+            </div>
+            <div class="panel-body">
+                <form class="form-inline"
+                      action={{route('admin.request.close', ['id' => $printRequest->id])}} method="post">
+                    {{ csrf_field() }}
+                    <input class="btn btn-primary" type="submit" value="Concluir pedido">
+                    <label for="printers">Impressora usada:</label>
+                        <select name="printer">
+                            @foreach($printers as $printer)
+                                <option value="{{$printer->id}}">{{$printer->name}}</option>
+                            @endforeach
+                        </select>
+                </form>
+                <form class="form-inline"
+                      action={{route('admin.request.refuse', ['id' => $printRequest->id])}} method="post">
+                    {{ csrf_field() }}
+                    <input class="btn btn-danger" type="submit" value="Recusar pedido">
+                    <div class="form-group">
+                        <label for="refusal_reason">Motivo de recusa: </label>
+                        <input name="refusal_reason" id="refusal_reason" type="textarea" value="">
+                    </div>
+                </form>
+
+            </div>
         </div>
-        <div class="panel-body">
-            <a class="btn btn-primary" href="home.html">Concluir Pedido</a>
-            <a class="btn btn-danger" href="home.html">Recusar Pedido</a>
-        </div>
-    </div>
     @endif
 
     <div class="panel panel-default">
@@ -38,7 +58,8 @@
                 <td class="col-sm-1">{{$printRequest->paper_type == 2 ? 'Papel de fotografia' :
                  $printRequest->paper_type == 1 ? 'Normal' : 'Rascunho'}}</td>
                 <td class="col-sm-1"><a href="{{-- //TODO ROTA DA SORAIA --}}">Ficheiro a imprimir</a></td>
-                <td class="col-sm-1"><strong>{{$printRequest->closed_user_id == null ? 'POR IMPRIMIR' : 'CONCLUIDO'}}</strong></td>
+                <td class="col-sm-1">
+                    <strong>{{$printRequest->closed_user_id == null ? 'POR IMPRIMIR' : 'CONCLUIDO'}}</strong></td>
             </tr>
             </tbody>
         </table>
@@ -84,11 +105,10 @@
         </div>
 
 
-
         @foreach($comments as $comment)
             @include('requests.comment', ['comment' => $comment])
         @endforeach
 
     </div>
 
-    @endsection
+@endsection

@@ -20,7 +20,7 @@
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
-                                <label for="description" class="col-md-4 control-label">Descição</label>
+                                <label for="description" class="col-md-4 control-label">Descrição</label>
                                 <div class="col-md-6">
 
                                     <textarea id="description" class="form-control" name="description" rows="5"

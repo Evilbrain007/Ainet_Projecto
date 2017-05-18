@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Department;
+use App\Printer;
+use App\PrintRequest;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Http\File;
 use Illuminate\Http\Request;
-use App\PrintRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use App\Comment;
 
 class RequestController extends Controller
 {
@@ -18,7 +17,6 @@ class RequestController extends Controller
     {
         $title = 'Criar Pedido';
         $printRequest = new PrintRequest();
-
 
         return view('requests/create', compact('title', 'printRequest'));
     }
@@ -47,7 +45,7 @@ class RequestController extends Controller
         $printRequest = PrintRequest::create($attributes);
         PrintRequest::store($printRequest);
 
-        return redirect()->route('requestsDashboard');
+        return redirect()->route('requests.dashboard');
     }
 
     /*public function details($id)
@@ -70,14 +68,20 @@ class RequestController extends Controller
         //a partir do user. e tenho que devolver no return
         //deveria passar um array de parametros?
         $comments = $this->getComments($printRequest->id);
-        return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments'));
+
+        if (Auth::user()->admin == true) {
+            $printers = Printer::all();
+            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments', 'printers'));
+        } else {
+            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments'));
+        }
     }
 
     public function getComments($printRequestId)
     {
         $comments = Comment::where('request_id', $printRequestId)->where('parent_id', null)->get();
 
-        if(!empty($comments)){
+        if (!empty($comments)) {
             $this->getChildren($comments);
         }
 
@@ -88,7 +92,7 @@ class RequestController extends Controller
     {
         foreach ($comments as $comment) {
             $comment_children = Comment::where('parent_id', $comment->id)->get();
-            if(!empty($comment_children)){
+            if (!empty($comment_children)) {
                 $this->getChildren($comment_children);
                 $comment ['comment_children'] = $comment_children;
             }
@@ -155,7 +159,6 @@ class RequestController extends Controller
             //suposto acontecer? Mostra tudo vazio?
         }
 
-
         if (isset($filters['openDate'])) {
             // $requests = $requests->orderBy('created_at', $filters['openDat    e'])->get();
             if ($filters['openDate'] == 'cresc') {
@@ -163,7 +166,6 @@ class RequestController extends Controller
             } else {
                 $requests = $requests->where('owner_id', $owner_id)->latest();
             }
-
         }
 
         if (isset($filters['dueDate'])) {
@@ -174,9 +176,7 @@ class RequestController extends Controller
                 $requests = $requests->where('owner_id', $owner_id)->latest('due_date');
             }
         }
-
         $requests = $requests->get();
-
 
         foreach ($requests as $request) {
             $aux = Comment::where('request_id', $request->id)->get();
@@ -186,22 +186,20 @@ class RequestController extends Controller
                     $comment['numberReplies'] = $numberReplies;
                     $comments [] = $comment;
                 }
-
             }
         }
-
         return view('requests/dashboard', compact('title', 'requests', 'comments'));
     }
 
-   /* public function createComment(Request $request)
-    {
-        $attributes = ['request_id'=>$request->input('request_id') ];
+    /* public function createComment(Request $request)
+     {
+         $attributes = ['request_id'=>$request->input('request_id') ];
 
-        $comment = Comment::create($attributes);
-        Comment::store($comment);
+         $comment = Comment::create($attributes);
+         Comment::store($comment);
 
-        return redirect()->route('requestDetails', $attributes['request_id']);
-    }*/
+         return redirect()->route('requestDetails', $attributes['request_id']);
+     }*/
 
     //o Request é um objecto que é passado automaticamente quando se faz post
     public function update(Request $request, PrintRequest $id)
@@ -224,11 +222,12 @@ class RequestController extends Controller
         //chamamos o update (que é da superclasse Model e o $printRequest extende de Model)
         $printRequest->update($attributes);
 
-        return redirect()->route('requestsDashboard');
+        return redirect()->route('requests.dashboard');
 
     }
 
-    public function remove(Request $request){
+    public function remove(Request $request)
+    {
 
         $requestId = $request->input('request_id');
 
@@ -241,4 +240,39 @@ class RequestController extends Controller
 
     }
 
+    public function closeRequest(Request $request, PrintRequest $id)
+    {
+        $printRequest = $this->prepareClosedRequest($id);
+        $printer = Printer::find($request->printer);
+        if (isset($printer)) {
+            $printRequest->printer()->associate($printer);
+            if ($printRequest->save()) {
+                return redirect(route('requests.dashboard'));
+            }
+        } else {
+            return redirect(route('requestDetails', ['id' => $printRequest->id]));
+        }
+    }
+
+    public function prepareClosedRequest(PrintRequest $id)
+    {
+        $printRequest = $id;
+        $printRequest->closed_date = Carbon::now();
+        $printRequest->closingUser()->associate(Auth::user());
+        return $printRequest;
+    }
+
+    public function refuseRequest(Request $request, PrintRequest $id)
+    {
+        $printRequest = $this->prepareClosedRequest($id);
+        $reason = trim($request->refusal_reason);
+        if ($reason !== "") {
+            $printRequest->refused_reason = $reason;
+            if ($printRequest->save()) {
+                return redirect(route('requests.dashboard'));
+            }
+        } else {
+            return redirect(route('requestDetails', ['id' => $printRequest->id]));
+        }
+    }
 }
