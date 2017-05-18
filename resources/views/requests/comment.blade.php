@@ -11,7 +11,7 @@
 
                 </div>
                 <div class="panel-body">
-                    <form action="{{route('createResponse')}}" method="post">
+                    <form action="{{route('comment.response.create')}}" method="post">
                         {{csrf_field()}}
                         <input type="number" hidden value="{{$printRequest->id}}" name="requestId">
                         <input type="number" hidden value="{{$comment->id}}" name="parent"> {{--como ja estamos no comment pai passamos o id do pai e nao

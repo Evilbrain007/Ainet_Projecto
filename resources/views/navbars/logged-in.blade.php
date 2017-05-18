@@ -13,10 +13,10 @@
 
     <ul class="dropdown-menu" role="menu">
         <li>
-            <a href="{{route('userDetail', ['id' => Auth::id()])}}">Ver Perfil</a>
+            <a href="{{route('user.detail', ['id' => Auth::id()])}}">Ver Perfil</a>
         </li>
         <li>
-            <a href="{{route('editUser', ['id' => Auth::id()])}}">Editar Perfil</a>
+            <a href="{{route('user.edit', ['id' => Auth::id()])}}">Editar Perfil</a>
         </li>
         <li>
             <a href="{{ route('logout') }}"

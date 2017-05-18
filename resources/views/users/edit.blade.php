@@ -14,7 +14,7 @@
                     <div class="panel-heading">Editar</div>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST"
-                              action="{{ route('updateUser', ['id' => $user->id]) }}" enctype="multipart/form-data">
+                              action="{{ route('user.update', ['id' => $user->id]) }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
 
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
