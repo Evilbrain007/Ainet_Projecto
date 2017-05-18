@@ -14,7 +14,7 @@
             <div class="col-md-12">Filtros
                 {{-- FALTA A ROTA NO ACTION--}}
                 <form class="form-group form-inline" action="{{route('requests.dashboard')}}" method="get">
-                    <div >
+                    <div>
                         <select id="filterByStatus" class="form-control" name="filterByStatus">
                             <option value="" selected>Escolha um estado</option>
                             <option value="1">Concluido</option>
@@ -51,7 +51,7 @@
 
     </div>
 
-   <div class="table-responsive col-md-12">
+    <div class="table-responsive col-md-12">
         <table class="table table-hover">
             <thead>
             <tr>
@@ -69,39 +69,47 @@
 
             @foreach($requests as $request)
                 <tr>
-                    <td class="col-md-1"><a href="{{route('request.details', ['id' => $request->id])}}" >{{$request->id}}</a></td>
-                    <td class="col-md-2">{{substr($request->description, 0, 20)}}</td>
+                    <td class="col-md-1">
+                        <a href="{{route('request.details', ['id' => $request->id])}}">{{$request->id}}</a>
+                    </td>
+                    <td class="col-md-2">
+                        <a href="{{route('request.details', ['id' => $request->id])}}">{{substr($request->description, 0, 20)}}</a>
+                    </td>
                     <td class="col-md-2">{{substr($request->created_at, 0, 10)}}</td>
                     <td class="col-md-2">{{substr($request->due_date, 0, 10)}}</td>
 
-                    @if($request->status==0)
-                        <td class="col-md-1">Em espera</td>
-                    @else
-                        <td class="col-md-1">Concluído</td>
-                    @endif
-
+                    <td class="col-md-1">
+                        @if($request->status === 0)
+                            Em espera
+                        @elseif ($request->status === 1)
+                            Concluído
+                        @elseif ($request->status === 2)
+                            Recusado
+                        @endif
+                    </td>
 
                     @if($request->status === 0)
                         {{-- apresentar botao para editar e remover--}}
-                    <td class="col-md-4">
+                        <td class="col-md-4">
 
-                        <a class="col-md-4 btn btn-primary" href="{{ route('request.edit', ['id'=>$request->id]) }}">Editar</a>
-                        {{-- FALTA A ROTA NO ACTION--}}
-                            <form action="{{route('request.remove')}}"  class="col-md-4" method="POST">
+                            <a class="col-md-4 btn btn-primary"
+                               href="{{ route('request.edit', ['id'=>$request->id]) }}">Editar</a>
+                            {{-- FALTA A ROTA NO ACTION--}}
+                            <form action="{{route('request.remove')}}" class="col-md-4" method="POST">
                                 {{csrf_field()}} {{--usamos o field e nao o token pk o field gera um input hidden com o token --}}
-                            <div class="form-group form-inline">
-                                {{--quando usamos um link passa-se as variaveis pela rota como na linha acima
-                                 quando é um form get ou post temos que criar um input  para podermos depois aceder as variaveis no controlador
-                                 se o form for post esse campo tem k ser hiden para nao aparecer nada no link do browser--}}
-                                <input type="number" hidden value="{{$request->id}}" name="request_id">
-                                <button type="submit" class="btn btn-danger">
-                                    Remover
-                                </button>
-                            </div>
-                        </form>
-                    </td>
+                                <div class="form-group form-inline">
+                                    {{--quando usamos um link passa-se as variaveis pela rota como na linha acima
+                                     quando é um form get ou post temos que criar um input  para podermos depois aceder as variaveis no controlador
+                                     se o form for post esse campo tem k ser hiden para nao aparecer nada no link do browser--}}
+                                    <input type="number" hidden value="{{$request->id}}" name="request_id">
+                                    <button type="submit" class="btn btn-danger">
+                                        Remover
+                                    </button>
+                                </div>
+                            </form>
+                        </td>
                     @else
-                    {{--else : apresentar opcoes para avaliar --}}
+                        {{--else : apresentar opcoes para avaliar --}}
                         <td class="col-md-4">
 
                             {{-- FALTA A ROTA NO ACTION--}}
@@ -135,32 +143,32 @@
         <div class="row">
             <div class="col-md-12">Filtros
                 <form class="form-group form-inline">
-                        <div >
-                            <select id="orderByDate" class="form-control" name="orderByDate">
-                                <option value="0" selected>Ordem</option>
-                                <option value="1">Mais antigos</option>
-                                {{--  mostra comentarios do mais antigo para o mais recente --}}
-                                <option value="2">Mais recentes</option>
-                                {{--  mostra comentarios do mais recente para o mais antigo --}}
-                            </select>
-                        </div>
+                    <div>
+                        <select id="orderByDate" class="form-control" name="orderByDate">
+                            <option value="0" selected>Ordem</option>
+                            <option value="1">Mais antigos</option>
+                            {{--  mostra comentarios do mais antigo para o mais recente --}}
+                            <option value="2">Mais recentes</option>
+                            {{--  mostra comentarios do mais recente para o mais antigo --}}
+                        </select>
+                    </div>
 
 
-                        <div >
-                            <select id="filterByReplys" class="form-control" name="filterByReplys">
-                                <option value="" selected>Filtrar por respostas</option>
-                                <option value="0">Todos os comentários</option>
-                                {{--  mostra comentarios do mais antigo para o mais recente --}}
-                                <option value="1">Com respostas não lidas</option>
-                                {{--  mostra comentarios do mais antigo para o mais recente --}}
-                                <option value="2">Sem respostas</option>
-                                {{--  mostra comentarios do mais recente para o mais antigo --}}
-                            </select>
-                        </div>
+                    <div>
+                        <select id="filterByReplys" class="form-control" name="filterByReplys">
+                            <option value="" selected>Filtrar por respostas</option>
+                            <option value="0">Todos os comentários</option>
+                            {{--  mostra comentarios do mais antigo para o mais recente --}}
+                            <option value="1">Com respostas não lidas</option>
+                            {{--  mostra comentarios do mais antigo para o mais recente --}}
+                            <option value="2">Sem respostas</option>
+                            {{--  mostra comentarios do mais recente para o mais antigo --}}
+                        </select>
+                    </div>
 
-                        <button type="submit" class="btn btn-primary">
-                            Filtrar
-                        </button>
+                    <button type="submit" class="btn btn-primary">
+                        Filtrar
+                    </button>
                 </form>
             </div>
         </div>
@@ -182,7 +190,8 @@
                     <th class="col-md-3">Data da última resposta</th>
                     {{--mudar a cor se tiver respostas nao lidas e por nº de respos
                      tas clicavel para poder ver as respostas--}}
-                    <th class="col-md-1">Nº de Respostas</tr>
+                    <th class="col-md-1">Nº de Respostas
+                </tr>
                 </thead>
 
                 <tbody>
@@ -213,11 +222,10 @@
                 </tbody>
 
 
-
             </table>
         </div>
 
     </div>
-    @endsection
+@endsection
 
 
