@@ -228,9 +228,7 @@ class RequestController extends Controller
 
     public function remove(Request $request)
     {
-
         $requestId = $request->input('request_id');
-
 
         $printRequest = PrintRequest::find($requestId);
 
@@ -238,6 +236,7 @@ class RequestController extends Controller
         $printRequest->comment()->delete();
         $printRequest->delete();
 
+        return redirect()->route('requests.dashboard');
     }
 
     public function closeRequest(Request $request, PrintRequest $id)
