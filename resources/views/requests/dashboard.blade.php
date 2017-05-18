@@ -71,8 +71,8 @@
                 <tr>
                     <td class="col-md-1"><a href="{{route('request.details', ['id' => $request->id])}}" >{{$request->id}}</a></td>
                     <td class="col-md-2">{{substr($request->description, 0, 20)}}</td>
-                    <td class="col-md-2">{{$request->created_at}}</td>
-                    <td class="col-md-2">{{$request->due_date}}</td>
+                    <td class="col-md-2">{{substr($request->created_at, 0, 10)}}</td>
+                    <td class="col-md-2">{{substr($request->due_date, 0, 10)}}</td>
 
                     @if($request->status==0)
                         <td class="col-md-1">Em espera</td>
