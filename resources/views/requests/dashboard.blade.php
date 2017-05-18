@@ -69,10 +69,10 @@
 
             @foreach($requests as $request)
                 <tr>
-                    <td class="col-md-1"><a href="{{route('requestDetails', ['id' => $request->id])}}" >{{$request->id}}</a></td>
+                    <td class="col-md-1"><a href="{{route('request.details', ['id' => $request->id])}}" >{{$request->id}}</a></td>
                     <td class="col-md-2">{{substr($request->description, 0, 20)}}</td>
-                    <td class="col-md-2">{{$request->created_at}}</td>
-                    <td class="col-md-2">{{$request->due_date}}</td>
+                    <td class="col-md-2">{{substr($request->created_at, 0, 10)}}</td>
+                    <td class="col-md-2">{{substr($request->due_date, 0, 10)}}</td>
 
                     @if($request->status==0)
                         <td class="col-md-1">Em espera</td>
@@ -85,9 +85,9 @@
                         {{-- apresentar botao para editar e remover--}}
                     <td class="col-md-4">
 
-                        <a class="col-md-4 btn btn-primary" href="{{ route('editRequest', ['id'=>$request->id]) }}">Editar</a>
+                        <a class="col-md-4 btn btn-primary" href="{{ route('request.edit', ['id'=>$request->id]) }}">Editar</a>
                         {{-- FALTA A ROTA NO ACTION--}}
-                            <form action="{{route('removeRequest')}}"  class="col-md-4" method="POST">
+                            <form action="{{route('request.remove')}}"  class="col-md-4" method="POST">
                                 {{csrf_field()}} {{--usamos o field e nao o token pk o field gera um input hidden com o token --}}
                             <div class="form-group form-inline">
                                 {{--quando usamos um link passa-se as variaveis pela rota como na linha acima

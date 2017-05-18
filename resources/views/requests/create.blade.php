@@ -15,7 +15,7 @@
                     <div class="panel-heading">{{$title}}</div>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST" action="{{$printRequest->id === null ?
-                        route('createRequest') : route('updateRequest', $printRequest->id)}}"
+                        route('request.create') : route('request.update', $printRequest->id)}}"
                               enctype="multipart/form-data">
                             {{ csrf_field() }}
 
@@ -123,7 +123,7 @@
                                 <div class="col-md-6">
                                     <div class="radio">
                                         <input id="stapled" type="radio" name="stapled" value="1"
-                                               {{$printRequest->stapled == 1 ? 'checked' : ''}}required>Com agrafo
+                                                {{$printRequest->stapled ==1 ? 'checked' : ''}}>Com agrafo
                                     </div>
                                     <div class="radio">
                                         <input id="stapled" type="radio" name="stapled" value="0"
@@ -163,7 +163,7 @@
                                 <div class="col-md-6">
                                     <div class="radio">
                                         <input id="front_back" type="radio" name="front_back" value="0"
-                                               {{$printRequest->paper_size === 0 ? 'checked' : ''}} required>Não
+                                               {{$printRequest->front_back === 0 ? 'checked' : ''}} required>Não
                                     </div>
                                     <div class="radio">
                                         <input id="front_back" type="radio" name="front_back" value="1"

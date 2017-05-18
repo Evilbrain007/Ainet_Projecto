@@ -115,7 +115,7 @@ class RequestController extends Controller
             //aqui vai buscar a imagem à storage
             // $path=asset('images/printit.png');
             //asset(storage_path().'/print-jobs/'.$printRequest->owner_id. '/'. $printRequest->file)
-            $path = route('getImageRequest', ['id' => $printRequest->id]);
+            $path = route('request.image', ['id' => $printRequest->id]);
         }
 
         return view('requests/create', compact('title', 'printRequest', 'path'));
@@ -198,7 +198,7 @@ class RequestController extends Controller
          $comment = Comment::create($attributes);
          Comment::store($comment);
 
-         return redirect()->route('requestDetails', $attributes['request_id']);
+         return redirect()->route('request.details', $attributes['request_id']);
      }*/
 
     //o Request é um objecto que é passado automaticamente quando se faz post
@@ -228,9 +228,7 @@ class RequestController extends Controller
 
     public function remove(Request $request)
     {
-
         $requestId = $request->input('request_id');
-
 
         $printRequest = PrintRequest::find($requestId);
 
@@ -238,6 +236,7 @@ class RequestController extends Controller
         $printRequest->comment()->delete();
         $printRequest->delete();
 
+        return redirect()->route('requests.dashboard');
     }
 
     public function closeRequest(Request $request, PrintRequest $id)
@@ -250,7 +249,7 @@ class RequestController extends Controller
                 return redirect(route('requests.dashboard'));
             }
         } else {
-            return redirect(route('requestDetails', ['id' => $printRequest->id]));
+            return redirect(route('request.details', ['id' => $printRequest->id]));
         }
     }
 
@@ -272,7 +271,7 @@ class RequestController extends Controller
                 return redirect(route('requests.dashboard'));
             }
         } else {
-            return redirect(route('requestDetails', ['id' => $printRequest->id]));
+            return redirect(route('request.details', ['id' => $printRequest->id]));
         }
     }
 }

@@ -18,7 +18,7 @@ class CommentController extends Controller
         $comment = Comment::create($attributes);
         Comment::store($comment);
 
-        return redirect()->route('requestDetails', ['id' => $request->input('requestId')]);
+        return redirect()->route('request.details', ['id' => $request->input('requestId')]);
     }
 
     public function storeReply(Request $request){
@@ -31,7 +31,7 @@ class CommentController extends Controller
         $comment = Comment::create($attributes);
         Comment::store($comment);
 
-        return redirect()->route('requestDetails', ['id' => $request->input('requestId')]);
+        return redirect()->route('request.details', ['id' => $request->input('requestId')]);
     }
 
 }
