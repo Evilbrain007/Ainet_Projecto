@@ -94,7 +94,7 @@
                             <div class="form-group{{$errors->has('file') ? 'has-error' : ''}}">
                                 <label for="file" class="col-md-4 control-label">Seleccione uma fotografia</label>
                                 <div class="col-md-3" align="center">
-                                    <img alt="User Pic" src="{{ route("getUserImage", ['user_id' => $user->id]) }}" class="img-responsive">
+                                    <img alt="User Pic" src="{{ route("user.image", ['user_id' => $user->id]) }}" class="img-responsive">
                                 </div>
                                 <div class="col-md-3">
                                     <input id="file" type="file" name="file" required>
