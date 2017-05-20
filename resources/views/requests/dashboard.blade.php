@@ -12,34 +12,74 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">Filtros
-                {{-- FALTA A ROTA NO ACTION--}}
                 <form class="form-group form-inline" action="{{route('requests.dashboard')}}" method="get">
                     <div>
                         <select id="filterByStatus" class="form-control" name="filterByStatus">
-                            <option value="" selected>Escolha um estado</option>
-                            <option value="1">Concluido</option>
-                            {{--  mostra os pedidos concluidos --}}
-                            <option value="0">Em espera</option>
+                            <option value=""
+                                    @if ($filters['status'] === '')
+                                    selected
+                                    @endif >Escolha um estado
+                            </option>
                             {{--  mostra os pedidos em espera --}}
+                            <option value="0"
+                                    @if ($filters['status'] === '0')
+                                    selected
+                                    @endif>Em espera
+                            </option>
+                            {{--  mostra os pedidos concluidos --}}
+                            <option value="1"
+                                    @if ($filters['status'] === '1')
+                                    selected
+                                    @endif
+                            >Concluido
+                            </option>
+                            {{--  mostra os pedidos recusados --}}
+                            <option value="2"
+                                    @if ($filters['status'] === '2')
+                                    selected
+                                    @endif
+                            >Recusado
+                            </option>
                         </select>
 
                         <select id="filterByopenDate" class="form-control" name="filterByopenDate">
-                            <option value="" selected>Ordenar por data</option>
-                            <option value="cresc">Mais antigos primeiro</option>
+                            <option value=""
+                                    @if ($filters['openDate'] === '')
+                                    selected
+                                    @endif >Ordenar por data
+                            </option>
                             {{--  apresenta os dados na tabela por ordem crescente --}}
-                            <option value="desc">Mais recentes primeiro</option>
+                            <option value="cresc"
+                                    @if ($filters['openDate'] === 'cresc')
+                                        selected
+                                    @endif>Mais antigos primeiro
+                            </option>
                             {{--  apresenta os dados na tabela por ordem decrescente --}}
-
+                            <option value="desc"
+                                    @if ($filters['openDate'] === 'desc')
+                                    selected
+                                    @endif>Mais recentes primeiro</option>
                         </select>
 
                         <select id="filterBydueDate" class="form-control" name="filterBydueDate">
-                            <option value="" selected>Ordenar por data de conclusão</option>
-                            <option value="cresc">Mais antigos primeiro</option>
+                            <option value=""
+                                    @if ($filters['dueDate'] === '')
+                                    selected
+                                    @endif>Ordenar por data de conclusão</option>
                             {{--  apresenta os dados na tabela por ordem crescente --}}
-                            <option value="desc">Mais recentes primeiro</option>
+                            <option value="cresc"
+                                    @if ($filters['dueDate'] === 'cresc')
+                                    selected
+                                    @endif>Mais antigos primeiro</option>
                             {{--  apresenta os dados na tabela por ordem decrescente --}}
+                            <option value="desc"
+                                    @if ($filters['dueDate'] === 'desc')
+                                    selected
+                                    @endif>Mais recentes primeiro</option>
 
                         </select>
+
+                        {{--se o user autenticado for o admin apresentar mais opçoes de filtros --}}
 
                         <button type="submit" class="btn btn-primary">
                             Filtrar
@@ -133,6 +173,8 @@
             @endforeach
             </tbody>
         </table>
+        {{-- appends($_GET) mantém a lista filtrada --}}
+        {{ $requests->appends($_GET)->links() }}
 
     </div>
 

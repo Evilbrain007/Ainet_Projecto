@@ -141,7 +141,9 @@
 
                 </tbody>
             </table>
-            {{ $users->links() }}
+
+            {{-- appends($_GET) mantém a lista filtrada --}}
+            {{ $users->appends($_GET)->links() }}
             <form action={{route('home')}} method="get">
                 <label class="radio-inline">
                     <input type="radio" name="userOrder" value="asc" @if($selectedUserAsc === true) checked @endif>
