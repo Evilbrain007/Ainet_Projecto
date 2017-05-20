@@ -27,7 +27,7 @@ Route::get('/requests/dashboard', 'RequestController@dashboard')->middleware('au
 
 Route::get('/requests/create', 'RequestController@create')->middleware('auth', 'user_not_blocked')->name('request.create');
 
-Route::post('/requests/create', 'RequestController@store')->middleware('auth');
+Route::post('/requests/create', 'RequestController@store')->middleware('auth', 'user_not_blocked');
 
 Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth', 'user_not_blocked')->name('request.edit');
 
@@ -42,7 +42,6 @@ Route::get('/requests/{id}/file', 'RequestController@getFile')->middleware('auth
 
 Route::get('/requests/{id}/assess', 'RequestController@assessRequest')->middleware('auth', 'user_not_blocked')->name('request.assess');
 
-
 Route::post('/request/remove', 'RequestController@remove')->middleware('auth', 'user_not_blocked')->name('request.remove');
 
 
@@ -51,21 +50,20 @@ Route::post('requests/comments/create', 'CommentController@store')->middleware('
 Route::post('requests/comments/create/response', 'CommentController@storeReply')->middleware('auth', 'user_not_blocked')->name('comment.response.create');
 
 
-Route::get('/admin', 'DashboardController@getIndex')->middleware('auth')->middleware('admin')->middleware('user_not_blocked')->name('home.admin');
+Route::post('admin/user/{id}/setadmin', 'UserController@setUserAsAdmin')->middleware('auth', 'admin', 'user_not_blocked')->name('user.admin');
 
-Route::post('user/{id}/setadmin', 'UserController@setUserAsAdmin')->middleware('auth')->middleware('admin')->middleware('user_not_blocked')->name('user.admin');
+Route::post('admin/user/{id}/setemployee', 'UserController@setUserAsEmployee')->middleware('auth', 'admin', 'user_not_blocked')->name('user.employee');
 
-Route::post('user/{id}/setemployee', 'UserController@setUserAsEmployee')->middleware('auth')->middleware('admin')->middleware('user_not_blocked')->name('user.employee');
+Route::post('admin/user/{id}/block', 'UserController@blockUser')->middleware('auth', 'admin', 'user_not_blocked')->name('user.block');
 
-Route::post('user/{id}/block', 'UserController@blockUser')->middleware('auth')->middleware('admin')->middleware('user_not_blocked')->name('user.block');
+Route::post('admin/user/{id}/unblock', 'UserController@unblockUser')->middleware('auth', 'admin', 'user_not_blocked')->name('user.unblock');
 
-Route::post('user/{id}/unblock', 'UserController@unblockUser')->middleware('auth')->middleware('admin')->middleware('user_not_blocked')->name('user.unblock');
+Route::post('admin/request/{id}/close', 'RequestController@closeRequest')->middleware('auth', 'admin', 'user_not_blocked')->name('request.close');
 
-Route::post('request/{id}/close', 'RequestController@closeRequest')->middleware('auth')->middleware('admin')->middleware('user_not_blocked')->name('request.close');
-
-Route::post('request/{id}/refuse', 'RequestController@refuseRequest')->middleware('auth')->middleware('admin')->middleware('user_not_blocked')->name('request.refuse');
+Route::post('admin/request/{id}/refuse', 'RequestController@refuseRequest')->middleware('auth', 'admin', 'user_not_blocked')->name('request.refuse');
 
 Auth::routes();
+
 
 Route::get('/verifyemail/{token}', 'Auth\RegisterController@verify');
 

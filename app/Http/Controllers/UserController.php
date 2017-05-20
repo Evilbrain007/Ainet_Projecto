@@ -25,8 +25,12 @@ class UserController extends Controller
     {
         $user = $id;
 
-        $this->checkUser($user);
-        
+        // se o utilizador não for o utilizador autenticado, volta para o home
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $user->id){
+            return redirect(route('home'))->with($message);
+        }
+
         $departments = Department::all();
 
         $title = "Editar Perfil"; //isto esta bem? ou evita so buscar o id na vista blade?
@@ -36,7 +40,13 @@ class UserController extends Controller
 
     public function update(Request $request, User $id)
     {
-        $this->checkUser($id);
+        $user = $id;
+        // se o utilizador não for o utilizador autenticado, volta para o home
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $user->id){
+            return redirect(route('home'))->with($message);
+        }
+
         dd($request);
     }
 
@@ -93,20 +103,6 @@ class UserController extends Controller
         }
         return  response()->file(storage_path('app/public/profiles/'.$imagePath));
 
-    }
-
-    public static function checkUserIsCurrentUser($userId)
-    {
-        return (Auth::id() == $userId);
-    }
-
-    public function checkUser($user)
-    {
-        if (UserController::checkUserIsCurrentUser($user->id)){
-            $message = ['message_error' => 'O URL introduzido não corresponde ao URL do seu utilizador'];
-            return redirect()->route('home')->with($message);
-        }
-        return;
     }
 
 }

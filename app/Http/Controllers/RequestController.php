@@ -92,6 +92,12 @@ class RequestController extends Controller
     {
         $printRequest = $id;
 
+        // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $printRequest->owner_id){
+            return redirect(route('requests.dashboard'))->with($message);
+        }
+
         $title = "Editar pedido nº $printRequest->id";
         $file_extension = pathinfo(storage_path() . '/print-jobs/' . $printRequest->owner_id . '/' . $printRequest->file, PATHINFO_EXTENSION);
         $path = null;
@@ -113,6 +119,13 @@ class RequestController extends Controller
     public function getFile(PrintRequest $id)
     {
         $printRequest = $id;
+
+        // se o utilizador não for o utilizador autenticado ou admin, volta para o dashboard de pedidos
+        $message = ['message_error' => 'Ficheiro não disponível.'];
+        if (Auth::user()->admin == true || Auth::id() !== $printRequest->owner_id){
+            return redirect(route('requests.dashboard'))->with($message);
+        }
+
         $file_name = $printRequest->file;
 
         return response()->file(storage_path('app/print-jobs/' . $printRequest->owner_id . '/' . $file_name));
@@ -190,6 +203,12 @@ class RequestController extends Controller
         //recebemos o printRequest que vai ser alterado
         $printRequest = $id;
 
+        // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $printRequest->owner_id){
+            return redirect(route('requests.dashboard'))->with($message);
+        }
+
         $attributes = ['status' => 0,
             'description' => $request->input('description'),
             'quantity' => $request->input('quantity'),
@@ -212,6 +231,12 @@ class RequestController extends Controller
         $requestId = $request->input('request_id');
 
         $printRequest = PrintRequest::find($requestId);
+
+        // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $printRequest->owner_id){
+            return redirect(route('requests.dashboard'))->with($message);
+        }
 
         //TODO
         $printRequest->comment()->delete();
@@ -262,6 +287,14 @@ class RequestController extends Controller
     public function assessRequest(Request $request, PrintRequest $id)
     {
         $printRequest = $id;
+
+        // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $printRequest->owner_id){
+            return redirect(route('requests.dashboard'))->with($message);
+        }
+
+
         $printRequest->satisfaction_grade = $request->satisfaction_grade;
         $printRequest->save();
         return redirect(route('requests.dashboard'));
