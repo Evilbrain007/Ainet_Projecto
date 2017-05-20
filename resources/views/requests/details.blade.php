@@ -126,7 +126,13 @@
         <div class="panel-heading">
             <h3 class="panel-title">Comentários</h3>
         </div>
-
+        @foreach($errors->all() as $error)
+            <div class="has-error">
+                <span class="help-block text-center">
+                    <strong>{{ $error }}</strong>
+                </span>
+            </div>
+        @endforeach
         <div class="panel-body">
             <div class="panel panel-default">
                 <div class="panel-heading">

@@ -1,0 +1,10 @@
+@include('requests.create-edit',
+['description' => $printRequest->description,
+'due_date' => $printRequest->due_date,
+'quantity' => $printRequest->quantity,
+'paper_type' => $printRequest->paper_type."",
+'colored' => $printRequest->colored."",
+'stapled' => $printRequest->stapled."",
+'paper_size' => $printRequest->paper_size."",
+'front_back' => $printRequest->front_back."",
+])

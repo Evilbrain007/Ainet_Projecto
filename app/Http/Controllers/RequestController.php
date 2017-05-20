@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class RequestController extends Controller
 {
@@ -24,8 +25,19 @@ class RequestController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request);
-        //$request->input('description');
+
+        $this->validate($request, [
+            'description' => 'required|max:255',
+            'due_date' => 'date|after:tomorrow',
+            'quantity' => 'required|numeric|between:1,1000',
+            'paper_type' => 'required|numeric|between:0,2',
+            'colored' => 'required|boolean',
+            'stapled' => 'required|boolean',
+            'paper_size' => 'required|numeric|between:3,4',
+            'front_back' => 'required|boolean',
+            'file' => 'required|mimes:jpeg,bmp,png,odt,pdf,pptx,xlsx',
+        ]);
+
         $owner_id = Auth::id();
         $full_path = $request->file('file')->store('print-jobs/' . $owner_id);
         $path = explode('/', $full_path)[2];
@@ -88,9 +100,8 @@ class RequestController extends Controller
         }
     }
 
-    public function edit(PrintRequest $id)
+    public function edit(PrintRequest $printRequest)
     {
-        $printRequest = $id;
 
         $title = "Editar pedido nº $printRequest->id";
         $file_extension = pathinfo(storage_path() . '/print-jobs/' . $printRequest->owner_id . '/' . $printRequest->file, PATHINFO_EXTENSION);
@@ -107,7 +118,7 @@ class RequestController extends Controller
             $path = route('request.image', ['id' => $printRequest->id]);
         }
 
-        return view('requests/create', compact('title', 'printRequest', 'path'));
+        return view('requests/edit', compact('title', 'printRequest', 'path'));
     }
 
     public function getImageRequest(PrintRequest $id)
@@ -187,10 +198,20 @@ class RequestController extends Controller
      }*/
 
     //o Request é um objecto que é passado automaticamente quando se faz post
-    public function update(Request $request, PrintRequest $id)
+    public function update(Request $request, PrintRequest $printRequest)
     {
-        //recebemos o printRequest que vai ser alterado
-        $printRequest = $id;
+
+        $this->validate($request, [
+            'description' => 'required|max:255',
+            'due_date' => 'nullable|date|after:tomorrow',
+            'quantity' => 'required|numeric|between:1,1000',
+            'paper_type' => 'required|numeric|between:0,2',
+            'colored' => 'required|boolean',
+            'stapled' => 'required|boolean',
+            'paper_size' => 'required|numeric|between:3,4',
+            'front_back' => 'required|boolean',
+        ]);
+
 
         $attributes = ['status' => 0,
             'description' => $request->input('description'),

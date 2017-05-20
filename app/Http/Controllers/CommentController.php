@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Comment;
+use App\PrintRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,6 +11,9 @@ class CommentController extends Controller
 {
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'comment' => 'required|max:255',
+            'requestId' => 'required']);
         //inicializamos o array de atributos requestId e comment e vamos buscar esses campos atraves do input
         $attributes = ['request_id' => $request->input('requestId'),
             'user_id' => Auth::id(),
@@ -22,6 +26,17 @@ class CommentController extends Controller
     }
 
     public function storeReply(Request $request){
+
+        $this->validate($request, [
+            'comment' => 'required|max:255',
+            'parent' => 'required',
+            'requestId' => 'required']);
+
+        $parentRequest = Comment::find($request->input('parent'));
+        if($parentRequest->getAttribute('request_id')!=$request->input('requestId')){
+            $message = ['message_error' => 'O comentário que quer responder tem de ter o mesmo Pedido'];
+            return redirect(route('request.details', ['id' => $request->input('requestId')]))->with($message);
+        }
 
         $attributes = ['request_id' => $request->input('requestId'),
             'user_id' => Auth::id(),

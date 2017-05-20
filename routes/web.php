@@ -31,9 +31,9 @@ Route::get('/requests/create', 'RequestController@create')->middleware('auth')->
 
 Route::post('/requests/create', 'RequestController@store')->middleware('auth');
 
-Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth')->name('request.edit');
+Route::get('/requests/edit/{printRequest}', 'RequestController@edit')->middleware('auth')->name('request.edit');
 
-Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth')->name('request.update');
+Route::post('/requests/edit/{printRequest}', 'RequestController@update')->middleware('auth')->name('request.update');
 
 Route::get('/requests/edit/image/{id}', 'RequestController@getImageRequest')->middleware('auth')->name('request.image');
 
