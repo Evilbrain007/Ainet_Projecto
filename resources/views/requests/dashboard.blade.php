@@ -51,31 +51,35 @@
                             {{--  apresenta os dados na tabela por ordem crescente --}}
                             <option value="cresc"
                                     @if ($filters['openDate'] === 'cresc')
-                                        selected
+                                    selected
                                     @endif>Mais antigos primeiro
                             </option>
                             {{--  apresenta os dados na tabela por ordem decrescente --}}
                             <option value="desc"
                                     @if ($filters['openDate'] === 'desc')
                                     selected
-                                    @endif>Mais recentes primeiro</option>
+                                    @endif>Mais recentes primeiro
+                            </option>
                         </select>
 
                         <select id="filterBydueDate" class="form-control" name="filterBydueDate">
                             <option value=""
-                                    @if ($filters['dueDate'] === '')
+                                    @if ($filters['closedDate'] === '')
                                     selected
-                                    @endif>Ordenar por data de conclusão</option>
+                                    @endif>Ordenar por data de conclusão
+                            </option>
                             {{--  apresenta os dados na tabela por ordem crescente --}}
                             <option value="cresc"
-                                    @if ($filters['dueDate'] === 'cresc')
+                                    @if ($filters['closedDate'] === 'cresc')
                                     selected
-                                    @endif>Mais antigos primeiro</option>
+                                    @endif>Mais antigos primeiro
+                            </option>
                             {{--  apresenta os dados na tabela por ordem decrescente --}}
                             <option value="desc"
-                                    @if ($filters['dueDate'] === 'desc')
+                                    @if ($filters['closedDate'] === 'desc')
                                     selected
-                                    @endif>Mais recentes primeiro</option>
+                                    @endif>Mais recentes primeiro
+                            </option>
 
                         </select>
 
@@ -97,9 +101,10 @@
             <tr>
                 <th class="col-md-1">Nº do pedido</th>
                 <th class="col-md-2">Descrição</th>
-                <th class="col-md-1">Data de Criação</th>
+                <th class="col-md-2">Data de criação</th>
+                <th class="col-md-2">Concluir até</th>
                 <th class="col-md-2">Data de conclusão</th>
-                <th class="col-md-2">Acção</th> {{--mudar o nome desta coluna? --}}
+                <th class="col-md-1">Acção</th> {{--mudar o nome desta coluna? --}}
             </tr>
             </thead>
 
@@ -109,66 +114,85 @@
 
             @foreach($requests as $request)
                 <tr>
-                    <td class="col-md-1">
+                    <td>
                         <a href="{{route('request.details', ['id' => $request->id])}}">{{$request->id}}</a>
                     </td>
-                    <td class="col-md-2">
+                    <td>
                         <a href="{{route('request.details', ['id' => $request->id])}}">{{substr($request->description, 0, 20)}}</a>
                     </td>
-                    <td class="col-md-2">{{substr($request->created_at, 0, 10)}}</td>
-                    <td class="col-md-2">{{substr($request->due_date, 0, 10)}}</td>
+                    <td>{{substr($request->created_at, 0, 10)}}</td>
+                    <td>
+                        @if($request->status === "0")
+                                N/A
+                        @elseif($request->due_date !== null)
+                            {{substr($request->due_date, 0, 10)}}
+                        @endif
+                    <td>
+                        @if ($request->status !== "0")
+                            {{substr($request->closed_date, 0, 10)}}
+                    @endif
+                    </td>
 
-                    <td class="col-md-1">
+                    <td>
                         @if($request->status === 0)
                             Em espera
-                        @elseif ($request->status === 1)
+                        @elseif($request->status === 1)
                             Concluído
                         @elseif ($request->status === 2)
                             Recusado
                         @endif
                     </td>
 
-                    @if($request->status === 0)
-                        {{-- apresentar botao para editar e remover--}}
-                        <td class="col-md-4">
+                    <td>
+                        @if (Auth::id() === $request->owner_id)
+                            @if($request->status === 0)
+                                {{-- apresentar botao para editar e remover--}}
 
-                            <a class="col-md-4 btn btn-primary"
-                               href="{{ route('request.edit', ['printRequest'=>$request->id]) }}">Editar</a>
-                            {{-- FALTA A ROTA NO ACTION--}}
-                            <form action="{{route('request.remove')}}" class="col-md-4" method="POST">
-                                {{csrf_field()}} {{--usamos o field e nao o token pk o field gera um input hidden com o token --}}
-                                <div class="form-group form-inline">
-                                    {{--quando usamos um link passa-se as variaveis pela rota como na linha acima
-                                     quando é um form get ou post temos que criar um input  para podermos depois aceder as variaveis no controlador
-                                     se o form for post esse campo tem k ser hiden para nao aparecer nada no link do browser--}}
-                                    <input type="number" hidden value="{{$request->id}}" name="request_id">
-                                    <button type="submit" class="btn btn-danger">
-                                        Remover
-                                    </button>
-                                </div>
-                            </form>
-                        </td>
-                    @else
-                        {{--else : apresentar opcoes para avaliar --}}
-                        <td class="col-md-4">
-
-                            {{-- FALTA A ROTA NO ACTION--}}
-                            <form action="" method="post">
-                                <div class="form-group form-inline">
-                                    <select id="satisfactionGrade" class="form-control" name="satisfactionGrade">
-                                        <option value="" selected>Qualidade do serviço</option>
-                                        <option value="1">Mau</option>
-                                        <option value="2">Médio</option>
-                                        <option value="3">Bom</option>
-                                    </select>
-                                    <button type="submit" class="btn btn-primary">
-                                        Avaliar
-                                    </button>
-                                </div>
-                            </form>
-                        </td>
-
+                                <a class="col-md-4 btn btn-primary"
+                                   href="{{ route('request.edit', ['printRequest'=>$request->id]) }}">Editar</a>
+                                {{-- FALTA A ROTA NO ACTION--}}
+                                <form action="{{route('request.remove')}}" class="col-md-4" method="POST">
+                                    {{csrf_field()}} {{--usamos o field e nao o token pk o field gera um input hidden com o token --}}
+                                    <div class="form-group form-inline">
+                                        {{--quando usamos um link passa-se as variaveis pela rota como na linha acima
+                                         quando é um form get ou post temos que criar um input  para podermos depois aceder as variaveis no controlador
+                                         se o form for post esse campo tem k ser hiden para nao aparecer nada no link do browser--}}
+                                        <input type="number" hidden value="{{$request->id}}" name="request_id">
+                                        <button type="submit" class="btn btn-danger">
+                                            Remover
+                                        </button>
+                                    </div>
+                                </form>
+                            @else
+                                {{--else : apresentar opcoes para avaliar --}}
+                                @if ($request->satisfaction_grade == 0)
+                                    <form action="{{route('request.assess', ['id' => $request->id])}}" method="post">
+                                        {{ csrf_field() }}
+                                        <div class="form-group form-inline">
+                                            <select id="satisfactionGrade" class="form-control"
+                                                    name="satisfaction_grade">
+                                                <option value="" selected>Qualidade do serviço</option>
+                                                <option value="1">Mau</option>
+                                                <option value="2">Médio</option>
+                                                <option value="3">Bom</option>
+                                            </select>
+                                            <input class="btn btn-primary" type="submit" value="Avaliar">
+                                        </div>
+                                    </form>
+                                @else
+                                    @if ($request->satisfaction_grade === 1)
+                                        Má qualidade do serviço
+                                    @elseif($request->satisfaction_grade === 2)
+                                        Média qualidade do serviço
+                                    @elseif($request->satisfaction_grade === 3)
+                                        Boa qualidade do serviço
+                                    @else
+                                        N/D
+                                    @endif
+                                @endif
+                        @endif
                     @endif
+                    </td>
                 </tr>
             @endforeach
             </tbody>
@@ -193,10 +217,6 @@
                             <option value="2">Mais recentes</option>
                             {{--  mostra comentarios do mais recente para o mais antigo --}}
                         </select>
-                    </div>
-
-
-                    <div>
                         <select id="filterByReplys" class="form-control" name="filterByReplys">
                             <option value="" selected>Filtrar por respostas</option>
                             <option value="0">Todos os comentários</option>
@@ -206,11 +226,11 @@
                             <option value="2">Sem respostas</option>
                             {{--  mostra comentarios do mais recente para o mais antigo --}}
                         </select>
+                        <button type="submit" class="btn btn-primary">
+                            Filtrar
+                        </button>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
-                        Filtrar
-                    </button>
                 </form>
             </div>
         </div>

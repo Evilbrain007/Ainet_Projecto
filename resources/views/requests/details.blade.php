@@ -60,13 +60,13 @@
         <table class="table">
             <tbody class="text-center">
             <tr>
-                <td class="col-sm-1">{{$printRequest->colored ? 'A Cores' : 'Preto e branco'}}</td>
+                <td class="col-sm-1">{{$printRequest->colored ? 'A cores' : 'Preto e branco'}}</td>
                 <td class="col-sm-1">{{$printRequest->front_back ? 'Frente e verso' : 'Só frente'}}</td>
                 <td class="col-sm-1">{{$printRequest->front_back ? 'Agrafado' : 'Não agrafado'}}</td>
                 <td class="col-sm-1">A{{$printRequest->paper_size}}</td>
                 <td class="col-sm-1">{{$printRequest->paper_type == 2 ? 'Papel de fotografia' :
                  $printRequest->paper_type == 1 ? 'Normal' : 'Rascunho'}}</td>
-                <td class="col-sm-1"><a href="{{-- //TODO ROTA DA SORAIA --}}">Ficheiro a imprimir</a></td>
+                <td class="col-sm-1"><a href="{{route('request.file', ['id' => $printRequest->id])}}">Ficheiro a imprimir</a></td>
                 <td class="col-sm-1">
                     <strong>
                         @if($printRequest->status === 0)
@@ -93,7 +93,11 @@
                 <h3 class="panel-title">Impressora usada</h3>
             </div>
             <div class="panel-body">
-                {{$printRequest->printer->name}}
+                @if ($printRequest->printer !== null)
+                    {{$printRequest->printer->name}}
+                @else
+                    Não é possível determinar a impressora usada
+                @endif
             </div>
         </div>
     @endif

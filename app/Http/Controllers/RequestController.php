@@ -121,11 +121,9 @@ class RequestController extends Controller
         return view('requests/edit', compact('title', 'printRequest', 'path'));
     }
 
-    public function getImageRequest(PrintRequest $id)
+    public function getFile(PrintRequest $id)
     {
-
         $printRequest = $id;
-
         $file_name = $printRequest->file;
 
         return response()->file(storage_path('app/print-jobs/' . $printRequest->owner_id . '/' . $file_name));
@@ -149,7 +147,7 @@ class RequestController extends Controller
 
         $filters = ['status' => $request->input('filterByStatus'), //o input vai buscar o que foi inputado no formulario da dashboard nos respectivos campos
             'openDate' => $request->input('filterByopenDate'),
-            'dueDate' => $request->input('filterBydueDate')];
+            'closedDate' => $request->input('filterBydueDate')];
 
         //se nao houver filtros seleccionados, mostra todos os pedidos normalmente
         if (isset($filters['status'])) {
@@ -164,11 +162,11 @@ class RequestController extends Controller
             }
         }
 
-        if (isset($filters['dueDate'])) {
-            if ($filters['dueDate'] == 'cresc') {
-                $requests = $requests->oldest('due_date');
-            } elseif ($filters['dueDate'] == 'desc') {
-                $requests = $requests->latest('due_date');
+        if (isset($filters['closedDate'])) {
+            if ($filters['closedDate'] == 'cresc') {
+                $requests = $requests->oldest('closed_date');
+            } elseif ($filters['closedDate'] == 'desc') {
+                $requests = $requests->latest('closed_date');
             }
         }
 
@@ -280,5 +278,13 @@ class RequestController extends Controller
             $message = ['message_error' => 'Deve indicar o motivo de recusa do pedido de impressão'];
             return redirect(route('request.details', ['id' => $printRequest->id]))->with($message);
         }
+    }
+
+    public function assessRequest(Request $request, PrintRequest $id)
+    {
+        $printRequest = $id;
+        $printRequest->satisfaction_grade = $request->satisfaction_grade;
+        $printRequest->save();
+        return redirect(route('requests.dashboard'));
     }
 }
