@@ -110,11 +110,9 @@ class RequestController extends Controller
         return view('requests/create', compact('title', 'printRequest', 'path'));
     }
 
-    public function getImageRequest(PrintRequest $id)
+    public function getFile(PrintRequest $id)
     {
-
         $printRequest = $id;
-
         $file_name = $printRequest->file;
 
         return response()->file(storage_path('app/print-jobs/' . $printRequest->owner_id . '/' . $file_name));
@@ -259,5 +257,13 @@ class RequestController extends Controller
             $message = ['message_error' => 'Deve indicar o motivo de recusa do pedido de impressão'];
             return redirect(route('request.details', ['id' => $printRequest->id]))->with($message);
         }
+    }
+
+    public function assessRequest(Request $request, PrintRequest $id)
+    {
+        $printRequest = $id;
+        $printRequest->satisfaction_grade = $request->satisfaction_grade;
+        $printRequest->save();
+        return redirect(route('requests.dashboard'));
     }
 }
