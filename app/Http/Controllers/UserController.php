@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Department;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -23,6 +24,9 @@ class UserController extends Controller
     public function edit(User $id)
     {
         $user = $id;
+
+        $this->checkUser($user);
+        
         $departments = Department::all();
 
         $title = "Editar Perfil"; //isto esta bem? ou evita so buscar o id na vista blade?
@@ -30,8 +34,9 @@ class UserController extends Controller
         return view('users/edit', compact('title', 'user', 'departments'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $id)
     {
+        $this->checkUser($id);
         dd($request);
     }
 
@@ -90,5 +95,18 @@ class UserController extends Controller
 
     }
 
+    public static function checkUserIsCurrentUser($userId)
+    {
+        return (Auth::id() == $userId);
+    }
+
+    public function checkUser($user)
+    {
+        if (UserController::checkUserIsCurrentUser($user->id)){
+            $message = ['message_error' => 'O URL introduzido não corresponde ao URL do seu utilizador'];
+            return redirect()->route('home')->with($message);
+        }
+        return;
+    }
 
 }
