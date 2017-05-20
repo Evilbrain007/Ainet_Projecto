@@ -55,7 +55,7 @@ class RegisterController extends Controller
         ////////
 
         //Our Code
-        if ($request->file('file')->isValid()) {
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
             $path = $request->file('file')->store('public/profiles');
             /*$imageManager = new ImageManager();
             $img = $imageManager->make($path);*/
