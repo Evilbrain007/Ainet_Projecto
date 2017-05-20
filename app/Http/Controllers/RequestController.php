@@ -135,6 +135,7 @@ class RequestController extends Controller
     {
         $title = 'Pedidos';
         $owner_id = Auth::id();
+        $user = User::find($owner_id);
 
 
         //verificar se o utilizador logado é admin ou nao
@@ -152,6 +153,7 @@ class RequestController extends Controller
 
         $requests = PrintRequest::where('owner_id', $owner_id);
         $comments = [];
+        
         //se nao houver filtros seleccionados, mostra todos os pedidos normalmente
         if (isset($filters['status'])) {
             $requests = $requests->where('status', $filters['status']);
@@ -176,7 +178,8 @@ class RequestController extends Controller
                 $requests = $requests->where('owner_id', $owner_id)->latest('due_date');
             }
         }
-        $requests = $requests->get();
+
+        $requests = $requests->paginate(5);
 
         foreach ($requests as $request) {
             $aux = Comment::where('request_id', $request->id)->get();

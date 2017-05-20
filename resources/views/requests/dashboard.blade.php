@@ -41,6 +41,8 @@
 
                         </select>
 
+                        {{--se o user autenticado for o admin apresentar mais opçoes de filtros --}}
+
                         <button type="submit" class="btn btn-primary">
                             Filtrar
                         </button>
@@ -133,6 +135,7 @@
             @endforeach
             </tbody>
         </table>
+       {{ $requests->links() }}
 
     </div>
 
