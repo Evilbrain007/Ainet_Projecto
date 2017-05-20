@@ -33,10 +33,11 @@ Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth', 
 
 Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth', 'user_not_blocked')->name('request.update');
 
-Route::get('/requests/edit/{printRequest}', 'RequestController@edit')->middleware('auth')->name('request.edit');
+Route::get('/requests/edit/{printRequest}', 'RequestController@edit')->middleware('auth', 'user_not_blocked')->name('request.edit');
+
 Route::get('/requests/edit/image/{id}', 'RequestController@getFile')->middleware('auth', 'user_not_blocked')->name('request.image');
 
-Route::post('/requests/edit/{printRequest}', 'RequestController@update')->middleware('auth')->name('request.update');
+Route::post('/requests/edit/{printRequest}', 'RequestController@update')->middleware('auth', 'user_not_blocked')->name('request.update');
 
 Route::get('/request/{id}', 'RequestController@details')->middleware('auth', 'user_not_blocked')->name('request.details');
 
