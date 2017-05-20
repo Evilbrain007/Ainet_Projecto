@@ -93,7 +93,7 @@
                         <td class="col-md-4">
 
                             <a class="col-md-4 btn btn-primary"
-                               href="{{ route('request.edit', ['id'=>$request->id]) }}">Editar</a>
+                               href="{{ route('request.edit', ['printRequest'=>$request->id]) }}">Editar</a>
                             {{-- FALTA A ROTA NO ACTION--}}
                             <form action="{{route('request.remove')}}" class="col-md-4" method="POST">
                                 {{csrf_field()}} {{--usamos o field e nao o token pk o field gera um input hidden com o token --}}
