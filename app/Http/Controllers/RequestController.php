@@ -136,7 +136,7 @@ class RequestController extends Controller
 
         $filters = ['status' => $request->input('filterByStatus'), //o input vai buscar o que foi inputado no formulario da dashboard nos respectivos campos
             'openDate' => $request->input('filterByopenDate'),
-            'dueDate' => $request->input('filterBydueDate')];
+            'closedDate' => $request->input('filterBydueDate')];
 
         //se nao houver filtros seleccionados, mostra todos os pedidos normalmente
         if (isset($filters['status'])) {
@@ -151,11 +151,11 @@ class RequestController extends Controller
             }
         }
 
-        if (isset($filters['dueDate'])) {
-            if ($filters['dueDate'] == 'cresc') {
-                $requests = $requests->oldest('due_date');
-            } elseif ($filters['dueDate'] == 'desc') {
-                $requests = $requests->latest('due_date');
+        if (isset($filters['closedDate'])) {
+            if ($filters['closedDate'] == 'cresc') {
+                $requests = $requests->oldest('closed_date');
+            } elseif ($filters['closedDate'] == 'desc') {
+                $requests = $requests->latest('closed_date');
             }
         }
 

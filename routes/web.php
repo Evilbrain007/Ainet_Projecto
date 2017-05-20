@@ -37,9 +37,12 @@ Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth
 
 Route::get('/requests/edit/image/{id}', 'RequestController@getFile')->middleware('auth')->name('request.image');
 
+
 Route::get('/request/{id}', 'RequestController@details')->middleware('auth')->name('request.details');
 
 Route::get('/requests/{id}/file', 'RequestController@getFile')->middleware('auth')->name('request.file');
+
+Route::get('/requests/{id}/assess', 'RequestController@assessRequest')->middleware('auth')->name('request.assess');
 
 
 Route::post('/request/remove', 'RequestController@remove')->middleware('auth')->name('request.remove');
