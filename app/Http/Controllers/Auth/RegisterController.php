@@ -130,7 +130,7 @@ class RegisterController extends Controller
         $user->blocked = 0;
         if ($user->save()) {
             $this->guard()->login($user);
-            redirect(route('request.details'));
+            redirect(route('home'));
         }
     }
 
