@@ -10,6 +10,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RequestController extends Controller
 {
@@ -48,15 +49,6 @@ class RequestController extends Controller
         return redirect()->route('requests.dashboard');
     }
 
-    /*public function details($id)
-    {
-        $title = 'Detalhes do produto';
-        $printRequest = PrintRequest::find($id);
-
-        return view('requests/details', compact('title', 'printRequest'));
-    }*/
-
-
     public function details(PrintRequest $id)//O ID vai ser transformado no respectivo PrintRequest, se existir
     {
         $title = 'Detalhes do pedido';
@@ -64,9 +56,6 @@ class RequestController extends Controller
         $printRequest = $id;
         $user = User::find($printRequest->owner_id);
         $department = Department::find($user->department_id);
-        // $user = $printRequest->  tenho que ir buscar o user a partir do request e depois o departamento
-        //a partir do user. e tenho que devolver no return
-        //deveria passar um array de parametros?
         $comments = $this->getComments($printRequest->id);
 
         if (Auth::user()->admin == true) {
@@ -133,14 +122,16 @@ class RequestController extends Controller
 
     public function dashboard(Request $request)
     {
-        $title = 'Pedidos';
         $owner_id = Auth::id();
-        $user = User::find($owner_id);
 
-
-        //verificar se o utilizador logado é admin ou nao
-
-        //se for admin mostro todos os pedidos de todos os users
+        $comments = [];
+        if (Auth::user()->admin == true) {
+            $title = 'Todos os pedidos';
+            $requests = DB::table('requests');
+        } else {
+            $title = 'Pedidos de '.Auth::user()->name;
+            $requests = PrintRequest::where('owner_id', $owner_id);
+        }
 
         //se for funcionadio mostra so os pedidos do proprio funcionario - feito
         //filtrar os pedidos do proprio funcionario
@@ -149,33 +140,24 @@ class RequestController extends Controller
             'openDate' => $request->input('filterByopenDate'),
             'dueDate' => $request->input('filterBydueDate')];
 
-        //dd($filters);
-
-        $requests = PrintRequest::where('owner_id', $owner_id);
-        $comments = [];
-        
         //se nao houver filtros seleccionados, mostra todos os pedidos normalmente
         if (isset($filters['status'])) {
             $requests = $requests->where('status', $filters['status']);
-            //se por exemplo um utilizador ecolher filtar por estado concluido e nao tiver pedidos concluidos, o que é
-            //suposto acontecer? Mostra tudo vazio?
         }
 
         if (isset($filters['openDate'])) {
-            // $requests = $requests->orderBy('created_at', $filters['openDat    e'])->get();
             if ($filters['openDate'] == 'cresc') {
-                $requests = $requests->where('owner_id', $owner_id)->oldest();
-            } else {
-                $requests = $requests->where('owner_id', $owner_id)->latest();
+                $requests = $requests->oldest();
+            } elseif ($filters['openDate'] == 'desc') {
+                $requests = $requests->latest();
             }
         }
 
         if (isset($filters['dueDate'])) {
-            // $requests = $requests->orderBy('due_date', $filters['dueDate'])->get();
             if ($filters['dueDate'] == 'cresc') {
-                $requests = $requests->where('owner_id', $owner_id)->oldest('due_date');
-            } else {
-                $requests = $requests->where('owner_id', $owner_id)->latest('due_date');
+                $requests = $requests->oldest('due_date');
+            } elseif ($filters['dueDate'] == 'desc') {
+                $requests = $requests->latest('due_date');
             }
         }
 
@@ -191,7 +173,7 @@ class RequestController extends Controller
                 }
             }
         }
-        return view('requests/dashboard', compact('title', 'requests', 'comments'));
+        return view('requests.dashboard', compact('title', 'requests', 'comments', 'filters'));
     }
 
     /* public function createComment(Request $request)
@@ -207,10 +189,8 @@ class RequestController extends Controller
     //o Request é um objecto que é passado automaticamente quando se faz post
     public function update(Request $request, PrintRequest $id)
     {
-
         //recebemos o printRequest que vai ser alterado
         $printRequest = $id;
-        //dd($request);
 
         $attributes = ['status' => 0,
             'description' => $request->input('description'),
