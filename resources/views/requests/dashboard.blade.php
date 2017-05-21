@@ -39,10 +39,17 @@
                             {{--  apresenta os dados na tabela por ordem crescente --}}
                             <option value="desc">Mais recentes primeiro</option>
                             {{--  apresenta os dados na tabela por ordem decrescente --}}
-
                         </select>
-
                         {{--se o user autenticado for o admin apresentar mais opçoes de filtros --}}
+                        @if(Auth::user()->admin == true)
+                            <select id="filterByUserName" class="form-control" name="filterByUserName">
+                                <option value="" selected>Filtrar utilizador</option>
+                                @foreach($users as $user)
+                                    <option value="{{$user->name}}">{{$user->name}}</option>
+                                @endforeach
+
+                            </select>
+                        @endif
 
                         <button type="submit" class="btn btn-primary">
                             Filtrar
@@ -74,8 +81,8 @@
                 <tr>
                     <td class="col-md-1"><a href="{{route('requestDetails', ['id' => $request->id])}}" >{{$request->id}}</a></td>
                     <td class="col-md-2">{{substr($request->description, 0, 20)}}</td>
-                    <td class="col-md-2">{{substr($request->created_at), 0, 10}}</td>
-                    <td class="col-md-2">{{substr($request->due_date), 0, 10}}</td>
+                    <td class="col-md-2">{{substr($request->created_at, 0, 10)}}</td>
+                    <td class="col-md-2">{{substr($request->due_date, 0, 10)}}</td>
 
                     @if($request->status==0)
                         <td class="col-md-1">Em espera</td>

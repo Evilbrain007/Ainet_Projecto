@@ -131,8 +131,6 @@ class RequestController extends Controller
     {
         $title = 'Pedidos';
         $owner_id = Auth::id();
-        $user = User::find($owner_id);
-
 
         //verificar se o utilizador logado é admin ou nao
 
@@ -143,20 +141,32 @@ class RequestController extends Controller
 
         $filters = ['status' => $request->input('filterByStatus'), //o input vai buscar o que foi inputado no formulario da dashboard nos respectivos campos
             'openDate' => $request->input('filterByopenDate'),
-            'dueDate' => $request->input('filterBydueDate')];
+            'dueDate' => $request->input('filterBydueDate'),
+            'user' => $request->input('filterByUserName')];
 
         //dd($filters);
 
-        $requests = PrintRequest::where('owner_id', $owner_id);
+        $requests = null; //PrintRequest::where('owner_id', $owner_id);
+        $users = null;
         $comments = [];
-        
-        //se nao houver filtros seleccionados, mostra todos os pedidos normalmente
-        if (isset($filters['status'])) {
-            $requests = $requests->where('status', $filters['status']);
-            //se por exemplo um utilizador ecolher filtar por estado concluido e nao tiver pedidos concluidos, o que é
-            //suposto acontecer? Mostra tudo vazio?
+
+        if(Auth::user()->admin == true){
+           $requests = PrintRequest::paginate(5);
+        //fazer um arry com todos os users que depois vai ser passado no return para na vista o admin poder escolher o utilizador
+            $users = User::all();
+          //  dd($users);
+        } else{
+            $requests = PrintRequest::where('owner_id', $owner_id);
+            $requests = $requests->paginate(5);
         }
 
+        //se nao houver filtros seleccionados, mostra todos os pedidos normalmente
+
+        //verifica os pedidos filtrando os campos
+        //falta filtrar por utilizador no caso de ser admin
+        if (isset($filters['status'])) {
+            $requests = $requests->where('status', $filters['status']);
+        }
 
         if (isset($filters['openDate'])) {
             // $requests = $requests->orderBy('created_at', $filters['openDat    e'])->get();
@@ -165,7 +175,6 @@ class RequestController extends Controller
             } else {
                 $requests = $requests->where('owner_id', $owner_id)->latest();
             }
-
         }
 
         if (isset($filters['dueDate'])) {
@@ -177,7 +186,7 @@ class RequestController extends Controller
             }
         }
 
-        $requests = $requests->paginate(5);
+        //$requests = $requests->paginate(5);
 
 
         foreach ($requests as $request) {
@@ -192,7 +201,7 @@ class RequestController extends Controller
             }
         }
 
-        return view('requests/dashboard', compact('title', 'requests', 'comments'));
+        return view('requests/dashboard', compact('title', 'requests', 'users', 'comments'));
     }
 
    /* public function createComment(Request $request)
