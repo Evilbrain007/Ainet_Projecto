@@ -46,7 +46,7 @@
                             <option value=""
                                     @if ($filters['openDate'] === '')
                                     selected
-                                    @endif >Ordenar por data
+                                    @endif >Por data criação
                             </option>
                             {{--  apresenta os dados na tabela por ordem crescente --}}
                             <option value="cresc"
@@ -62,11 +62,11 @@
                             </option>
                         </select>
 
-                        <select id="filterBydueDate" class="form-control" name="filterBydueDate">
+                        <select id="filterByClosedDate" class="form-control" name="filterByClosedDate">
                             <option value=""
                                     @if ($filters['closedDate'] === '')
                                     selected
-                                    @endif>Ordenar por data de conclusão
+                                    @endif>Por data de conclusão
                             </option>
                             {{--  apresenta os dados na tabela por ordem crescente --}}
                             <option value="cresc"
@@ -82,13 +82,41 @@
                             </option>
 
                         </select>
+                        <select id="filterBydueDate" class="form-control" name="filterBydueDate">
+                            <option value=""
+                                    @if ($filters['dueDate'] === '')
+                                    selected
+                                    @endif> Por data limite
+                            </option>
+                            {{--  apresenta os dados na tabela por ordem crescente --}}
+                            <option value="cresc"
+                                    @if ($filters['dueDate'] === 'cresc')
+                                    selected
+                                    @endif>Mais antigos primeiro
+                            </option>
+                            {{--  apresenta os dados na tabela por ordem decrescente --}}
+                            <option value="desc"
+                                    @if ($filters['dueDate'] === 'desc')
+                                    selected
+                                    @endif>Mais recentes primeiro
+                            </option>
+
+                        </select>
 
                         {{--se o user autenticado for o admin apresentar mais opçoes de filtros --}}
                         @if(Auth::user()->admin == true)
                             <select id="filterByUserName" class="form-control" name="filterByUserName">
-                                <option value="" selected>Filtrar utilizador</option>
+                                <option value=""
+                                @if(!isset($filters['user']))
+                                    selected
+                                @endif
+                                >Filtrar utilizador</option>
                                 @foreach($users as $user)
-                                    <option value="{{$user->name}}">{{$user->name}}</option>
+                                    <option value="{{$user->id}}"
+                                    @if($filters['user'] == $user->id)
+                                        selected
+                                    @endif
+                                    >{{$user->name}}</option>
                                 @endforeach
 
                             </select>

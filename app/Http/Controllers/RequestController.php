@@ -166,7 +166,7 @@ class RequestController extends Controller
 
         $filters = ['status' => $request->input('filterByStatus'), //o input vai buscar o que foi inputado no formulario da dashboard nos respectivos campos
             'openDate' => $request->input('filterByopenDate'),
-            'closedDate' => $request->input('filterBydueDate'),
+            'closedDate' => $request->input('filterByClosedDate'),
             'dueDate' => $request->input('filterBydueDate'),
             'user' => $request->input('filterByUserName')];
 
@@ -183,12 +183,24 @@ class RequestController extends Controller
             }
         }
 
+        if (isset($filters['dueDate'])) {
+            if ($filters['dueDate'] == 'cresc') {
+                $requests = $requests->oldest('due_date');
+            } elseif ($filters['closedDate'] == 'desc') {
+                $requests = $requests->latest('due_date');
+            }
+        }
+
         if (isset($filters['closedDate'])) {
             if ($filters['closedDate'] == 'cresc') {
                 $requests = $requests->oldest('closed_date');
             } elseif ($filters['closedDate'] == 'desc') {
                 $requests = $requests->latest('closed_date');
             }
+        }
+
+        if (isset($filters['user'])) {
+            $requests = $requests->where('owner_id', $filters['user']);
         }
 
         $requests = $requests->paginate(5);
