@@ -22,8 +22,8 @@
         </div>
         <div class="row">
             <div class="col-md-3">{{$statistics['totalPrints']}}</div>
-            <div class="col-md-1">{{$statistics['bwColoredPrintsRatio']}}</div>
-            <div class="col-md-1">{{$statistics['coloredBWPrintsRatio']}}</div>
+            <div class="col-md-1">{{number_format((float)$statistics['bwColoredPrintsRatio'],2)}} %</div>
+            <div class="col-md-1">{{number_format((float)$statistics['coloredBWPrintsRatio'],2)}} %</div>
             <div class="col-md-3">Média imp. diárias deste
                 mês: {{number_format($statistics['printAvgCurrentMonth'],2)}}</div>
         </div>
@@ -43,7 +43,7 @@
                 @foreach($departments as $department)
                     <tr>
                         <td class="text-left">
-                            <a href="{{route('departmentDetail', ['id' => $department->id])}}">
+                            <a href="{{route('department.detail', ['id' => $department->id])}}">
                                 {{$department->name}}
                             </a></td>
                         <td class="text-right">{{$department->totalPrints}}</td>
@@ -79,7 +79,7 @@
                 @foreach($users as $user)
                     <tr>
                         <td class="text-left">
-                            <a href="{{route('userDetail', ['id' =>$user->id])}}">
+                            <a href="{{route('user.detail', ['id' =>$user->id])}}">
                                 {{$user->name}}
                             </a></td>
                         <td class="text-right">{{$user->email}}</td>
@@ -88,7 +88,7 @@
                             <td>
                                 @if($user->blocked == true)
                                     <form class="form-inline"
-                                          action={{route('unblockUser', ['id' =>$user->id])}} method="post">
+                                          action={{route('user.unblock', ['id' =>$user->id])}} method="post">
                                         {{ csrf_field() }}
                                         <input class="btn btn-danger disabled" type="button" value="Sim"/>
                                         @unless(Auth::user() == $user)
@@ -99,7 +99,7 @@
                                     </form>
                                 @else
                                     <form class="form-inline"
-                                          action={{route('blockUser', ['id' =>$user->id])}} method="post">
+                                          action={{route('user.block', ['id' =>$user->id])}} method="post">
                                         {{ csrf_field() }}
                                         @unless(Auth::user() == $user)
                                             <input class="btn btn-default" type="submit" value="Sim">
@@ -113,7 +113,7 @@
                             <td>
                                 @if($user->admin == true)
                                     <form class="form-inline"
-                                          action={{route('setUserAsEmployee', ['id' =>$user->id])}} method="post">
+                                          action={{route('user.employee', ['id' =>$user->id])}} method="post">
                                         {{ csrf_field() }}
                                         <input class="btn btn-primary disabled" type="button" value="Sim"/>
                                         @unless(Auth::user() == $user)
@@ -124,7 +124,7 @@
                                     </form>
                                 @else
                                     <form class="form-inline"
-                                          action={{route('setUserAsAdmin', ['id' =>$user->id])}} method="post">
+                                          action={{route('user.admin', ['id' =>$user->id])}} method="post">
                                         {{ csrf_field() }}
                                         @unless(Auth::user() == $user)
                                             <input class="btn btn-default" type="submit" value="Sim">
@@ -141,7 +141,9 @@
 
                 </tbody>
             </table>
-            {{ $users->links() }}
+
+            {{-- appends($_GET) mantém a lista filtrada --}}
+            {{ $users->appends($_GET)->links() }}
             <form action={{route('home')}} method="get">
                 <label class="radio-inline">
                     <input type="radio" name="userOrder" value="asc" @if($selectedUserAsc === true) checked @endif>

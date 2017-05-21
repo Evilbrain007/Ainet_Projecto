@@ -20,6 +20,7 @@
 </div>
 
 <div class="container">
+    @include('partials.flashmessages')
     @yield('content')
 </div>
 

@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Department;
+use App\Printer;
+use App\PrintRequest;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Http\File;
 use Illuminate\Http\Request;
-use App\PrintRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use App\Comment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class RequestController extends Controller
 {
@@ -19,14 +20,24 @@ class RequestController extends Controller
         $title = 'Criar Pedido';
         $printRequest = new PrintRequest();
 
-
         return view('requests/create', compact('title', 'printRequest'));
     }
 
     public function store(Request $request)
     {
-        //dd($request);
-        //$request->input('description');
+
+        $this->validate($request, [
+            'description' => 'required|max:255',
+            'due_date' => 'date|after:tomorrow',
+            'quantity' => 'required|numeric|between:1,1000',
+            'paper_type' => 'required|numeric|between:0,2',
+            'colored' => 'required|boolean',
+            'stapled' => 'required|boolean',
+            'paper_size' => 'required|numeric|between:3,4',
+            'front_back' => 'required|boolean',
+            'file' => 'required|mimes:jpeg,bmp,png,odt,pdf,pptx,xlsx',
+        ]);
+
         $owner_id = Auth::id();
         $full_path = $request->file('file')->store('print-jobs/' . $owner_id);
         $path = explode('/', $full_path)[2];
@@ -47,21 +58,12 @@ class RequestController extends Controller
         $printRequest = PrintRequest::create($attributes);
         PrintRequest::store($printRequest);
 
-        return redirect()->route('requestsDashboard');
+        return redirect()->route('requests.dashboard');
     }
-
-    /*public function details($id)
-    {
-        $title = 'Detalhes do produto';
-        $printRequest = PrintRequest::find($id);
-
-        return view('requests/details', compact('title', 'printRequest'));
-    }*/
-
 
     public function details(PrintRequest $id)//O ID vai ser transformado no respectivo PrintRequest, se existir
     {
-        $title = 'Detalhes do produto';
+        $title = 'Detalhes do pedido';
 
         $printRequest = $id;
         $user = User::find($printRequest->owner_id);
@@ -70,14 +72,20 @@ class RequestController extends Controller
         //a partir do user. e tenho que devolver no return
         //deveria passar um array de parametros?
         $comments = $this->getComments($printRequest->id);
-        return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments'));
+
+        if (Auth::user()->admin == true) {
+            $printers = Printer::all();
+            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments', 'printers'));
+        } else {
+            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments'));
+        }
     }
 
     public function getComments($printRequestId)
     {
         $comments = Comment::where('request_id', $printRequestId)->where('parent_id', null)->get();
 
-        if(!empty($comments)){
+        if (!empty($comments)) {
             $this->getChildren($comments);
         }
 
@@ -88,16 +96,21 @@ class RequestController extends Controller
     {
         foreach ($comments as $comment) {
             $comment_children = Comment::where('parent_id', $comment->id)->get();
-            if(!empty($comment_children)){
+            if (!empty($comment_children)) {
                 $this->getChildren($comment_children);
                 $comment ['comment_children'] = $comment_children;
             }
         }
     }
 
-    public function edit(PrintRequest $id)
+    public function edit(PrintRequest $printRequest)
     {
-        $printRequest = $id;
+
+        // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $printRequest->owner_id){
+            return redirect(route('requests.dashboard'))->with($message);
+        }
 
         $title = "Editar pedido nº $printRequest->id";
         $file_extension = pathinfo(storage_path() . '/print-jobs/' . $printRequest->owner_id . '/' . $printRequest->file, PATHINFO_EXTENSION);
@@ -111,16 +124,21 @@ class RequestController extends Controller
             //aqui vai buscar a imagem à storage
             // $path=asset('images/printit.png');
             //asset(storage_path().'/print-jobs/'.$printRequest->owner_id. '/'. $printRequest->file)
-            $path = route('getImageRequest', ['id' => $printRequest->id]);
+            $path = route('request.image', ['id' => $printRequest->id]);
         }
 
-        return view('requests/create', compact('title', 'printRequest', 'path'));
+        return view('requests/edit', compact('title', 'printRequest', 'path'));
     }
 
-    public function getImageRequest(PrintRequest $id)
+    public function getFile(PrintRequest $id)
     {
-
         $printRequest = $id;
+
+        // se o utilizador não for o utilizador autenticado ou admin, volta para o dashboard de pedidos
+        $message = ['message_error' => 'Ficheiro não disponível.'];
+        if (Auth::user()->admin == true || Auth::id() !== $printRequest->owner_id){
+            return redirect(route('requests.dashboard'))->with($message);
+        }
 
         $file_name = $printRequest->file;
 
@@ -129,65 +147,51 @@ class RequestController extends Controller
 
     public function dashboard(Request $request)
     {
-        $title = 'Pedidos';
         $owner_id = Auth::id();
 
-        //verificar se o utilizador logado é admin ou nao
+        $comments = [];
+        $users = null;
 
-        //se for admin mostro todos os pedidos de todos os users
+        if (Auth::user()->admin == true) {
+            $title = 'Todos os pedidos';
+            $requests = DB::table('requests');
+            $users = User::all();
+        } else {
+            $title = 'Pedidos de '.Auth::user()->name;
+            $requests = PrintRequest::where('owner_id', $owner_id);
+        }
 
         //se for funcionadio mostra so os pedidos do proprio funcionario - feito
         //filtrar os pedidos do proprio funcionario
 
         $filters = ['status' => $request->input('filterByStatus'), //o input vai buscar o que foi inputado no formulario da dashboard nos respectivos campos
             'openDate' => $request->input('filterByopenDate'),
+            'closedDate' => $request->input('filterBydueDate'),
             'dueDate' => $request->input('filterBydueDate'),
             'user' => $request->input('filterByUserName')];
 
-        //dd($filters);
-
-        $requests = null; //PrintRequest::where('owner_id', $owner_id);
-        $users = null;
-        $comments = [];
-
-        if(Auth::user()->admin == true){
-           $requests = PrintRequest::paginate(5);
-        //fazer um arry com todos os users que depois vai ser passado no return para na vista o admin poder escolher o utilizador
-            $users = User::all();
-          //  dd($users);
-        } else{
-            $requests = PrintRequest::where('owner_id', $owner_id);
-            $requests = $requests->paginate(5);
-        }
-
         //se nao houver filtros seleccionados, mostra todos os pedidos normalmente
-
-        //verifica os pedidos filtrando os campos
-        //falta filtrar por utilizador no caso de ser admin
         if (isset($filters['status'])) {
             $requests = $requests->where('status', $filters['status']);
         }
 
         if (isset($filters['openDate'])) {
-            // $requests = $requests->orderBy('created_at', $filters['openDat    e'])->get();
             if ($filters['openDate'] == 'cresc') {
-                $requests = $requests->where('owner_id', $owner_id)->oldest();
-            } else {
-                $requests = $requests->where('owner_id', $owner_id)->latest();
+                $requests = $requests->oldest();
+            } elseif ($filters['openDate'] == 'desc') {
+                $requests = $requests->latest();
             }
         }
 
-        if (isset($filters['dueDate'])) {
-            // $requests = $requests->orderBy('due_date', $filters['dueDate'])->get();
-            if ($filters['dueDate'] == 'cresc') {
-                $requests = $requests->where('owner_id', $owner_id)->oldest('due_date');
-            } else {
-                $requests = $requests->where('owner_id', $owner_id)->latest('due_date');
+        if (isset($filters['closedDate'])) {
+            if ($filters['closedDate'] == 'cresc') {
+                $requests = $requests->oldest('closed_date');
+            } elseif ($filters['closedDate'] == 'desc') {
+                $requests = $requests->latest('closed_date');
             }
         }
 
-        //$requests = $requests->paginate(5);
-
+        $requests = $requests->paginate(5);
 
         foreach ($requests as $request) {
             $aux = Comment::where('request_id', $request->id)->get();
@@ -197,30 +201,42 @@ class RequestController extends Controller
                     $comment['numberReplies'] = $numberReplies;
                     $comments [] = $comment;
                 }
-
             }
         }
-
-        return view('requests/dashboard', compact('title', 'requests', 'users', 'comments'));
+        return view('requests.dashboard', compact('title', 'requests', 'comments', 'filters', 'users'));
     }
 
-   /* public function createComment(Request $request)
-    {
-        $attributes = ['request_id'=>$request->input('request_id') ];
+    /* public function createComment(Request $request)
+     {
+         $attributes = ['request_id'=>$request->input('request_id') ];
 
-        $comment = Comment::create($attributes);
-        Comment::store($comment);
+         $comment = Comment::create($attributes);
+         Comment::store($comment);
 
-        return redirect()->route('requestDetails', $attributes['request_id']);
-    }*/
+         return redirect()->route('request.details', $attributes['request_id']);
+     }*/
 
     //o Request é um objecto que é passado automaticamente quando se faz post
-    public function update(Request $request, PrintRequest $id)
+    public function update(Request $request, PrintRequest $printRequest)
     {
 
-        //recebemos o printRequest que vai ser alterado
-        $printRequest = $id;
-        //dd($request);
+        $this->validate($request, [
+            'description' => 'required|max:255',
+            'due_date' => 'nullable|date|after:tomorrow',
+            'quantity' => 'required|numeric|between:1,1000',
+            'paper_type' => 'required|numeric|between:0,2',
+            'colored' => 'required|boolean',
+            'stapled' => 'required|boolean',
+            'paper_size' => 'required|numeric|between:3,4',
+            'front_back' => 'required|boolean',
+        ]);
+
+
+        // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $printRequest->owner_id){
+            return redirect(route('requests.dashboard'))->with($message);
+        }
 
         $attributes = ['status' => 0,
             'description' => $request->input('description'),
@@ -235,21 +251,81 @@ class RequestController extends Controller
         //chamamos o update (que é da superclasse Model e o $printRequest extende de Model)
         $printRequest->update($attributes);
 
-        return redirect()->route('requestsDashboard');
+        return redirect()->route('requests.dashboard');
 
     }
 
-    public function remove(Request $request){
-
+    public function remove(Request $request)
+    {
         $requestId = $request->input('request_id');
 
-
         $printRequest = PrintRequest::find($requestId);
+
+        // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $printRequest->owner_id){
+            return redirect(route('requests.dashboard'))->with($message);
+        }
 
         //TODO
         $printRequest->comment()->delete();
         $printRequest->delete();
 
+        return redirect()->route('requests.dashboard');
     }
 
+    public function closeRequest(Request $request, PrintRequest $id)
+    {
+        $printRequest = $this->prepareClosedRequest($id);
+        $printer = Printer::find($request->printer);
+        if (isset($printer)) {
+            $printRequest->printer()->associate($printer);
+            if ($printRequest->save()) {
+                return redirect(route('requests.dashboard'));
+            }
+        } else {
+            return redirect(route('request.details', ['id' => $printRequest->id]));
+        }
+    }
+
+    public function prepareClosedRequest(PrintRequest $id)
+    {
+        $printRequest = $id;
+        $printRequest->closed_date = Carbon::now();
+        $printRequest->status = 1;
+        $printRequest->closingUser()->associate(Auth::user());
+        return $printRequest;
+    }
+
+    public function refuseRequest(Request $request, PrintRequest $id)
+    {
+        $printRequest = $this->prepareClosedRequest($id);
+        $printRequest->status = 2;
+        $reason = trim($request->refused_reason);
+        if ($reason !== "") {
+            $printRequest->refused_reason = $reason;
+            if ($printRequest->save()) {
+                return redirect(route('requests.dashboard'));
+            }
+        } else {
+            $message = ['message_error' => 'Deve indicar o motivo de recusa do pedido de impressão'];
+            return redirect(route('request.details', ['id' => $printRequest->id]))->with($message);
+        }
+    }
+
+    public function assessRequest(Request $request, PrintRequest $id)
+    {
+        $printRequest = $id;
+
+        // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $printRequest->owner_id){
+            return redirect(route('requests.dashboard'))->with($message);
+        }
+
+
+        $printRequest->satisfaction_grade = $request->satisfaction_grade;
+        $printRequest->save();
+        return redirect(route('requests.dashboard'));
+    }
 }

@@ -29,4 +29,10 @@ class ForgotPasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+    public function showLinkRequestForm()
+    {
+        $title = 'Obter nova password';
+        return view('auth.passwords.email', compact('title'));
+    }
 }

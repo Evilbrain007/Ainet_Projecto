@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Department;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -20,29 +21,42 @@ class UserController extends Controller
         return view('users.details', compact('title', 'user', 'department'));
     }
 
+    public function edit(User $id)
+    {
+        $user = $id;
+
+        // se o utilizador não for o utilizador autenticado, volta para o home
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $user->id){
+            return redirect(route('home'))->with($message);
+        }
+
+        $departments = Department::all();
+
+        $title = "Editar Perfil"; //isto esta bem? ou evita so buscar o id na vista blade?
+
+        return view('users/edit', compact('title', 'user', 'departments'));
+    }
+
+    public function update(Request $request, User $id)
+    {
+        $user = $id;
+        // se o utilizador não for o utilizador autenticado, volta para o home
+        $message = ['message_error' => 'Endereço inválido.'];
+        if (Auth::id() !== $user->id){
+            return redirect(route('home'))->with($message);
+        }
+
+        dd($request);
+    }
+
+
     public function setUserAsAdmin(User $id)
     {
         $user = $id;
         $user->admin = true;
         User::store($user);
         return redirect(route('home'));
-    }
-
-
-    public function edit(User $id)
-    {
-        $user = $id;
-        $departments = Department::all();
-
-        $title = "Editar Perfil"; //isto esta bem? ou evia so buscar o id na vista blade?
-
-
-        return view('users/edit', compact('title', 'user', 'departments'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        dd($request);
     }
 
 
@@ -90,6 +104,5 @@ class UserController extends Controller
         return  response()->file(storage_path('app/public/profiles/'.$imagePath));
 
     }
-
 
 }

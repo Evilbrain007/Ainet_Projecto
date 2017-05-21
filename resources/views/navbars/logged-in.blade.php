@@ -9,14 +9,12 @@
         <span class="caret"></span>
     </a>
 
-    {{-- COMO O LARAVEL VEM--}}
-
     <ul class="dropdown-menu" role="menu">
         <li>
-            <a href="{{route('userDetail', ['id' => Auth::id()])}}">Ver Perfil</a>
+            <a href="{{route('user.detail', ['id' => Auth::id()])}}">Ver Perfil</a>
         </li>
         <li>
-            <a href="{{route('editUser', ['id' => Auth::id()])}}">Editar Perfil</a>
+            <a href="{{route('user.edit', ['id' => Auth::id()])}}">Editar Perfil</a>
         </li>
         <li>
             <a href="{{ route('logout') }}"
@@ -30,21 +28,5 @@
             </form>
         </li>
     </ul>
-
-    {{--TENTATIVA DO MIGUEL
-
-     <ul class="dropdown-menu" role="menu">
-        <li>
-            <a href="www.facebook.com">Ver Perfil</a>
-        </li>
-        <li>
-            <form class="form-group" action="{{ route('logout') }}" method="POST" style="display: none;">
-                {{csrf_field()}}
-                <button class="btn btn-link" type="submit">Logout</button>
-            </form>
-        </li>
-    </ul>
-
-     --}}
 
 </li>

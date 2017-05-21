@@ -10,54 +10,64 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'DashboardController@getIndex')->name('home');
+Route::get('/', 'DashboardController@getIndex')->middleware('user_not_blocked')->middleware('user_not_blocked')->name('home');
+
+Route::get('/departament/{id}', 'DepartmentController@detail')->middleware('user_not_blocked')->middleware('user_not_blocked')->name('department.detail');
+
+Route::get('users/image/{user_id}', 'UserController@getUserImage')->middleware('user_not_blocked')->name('user.image');
+
+Route::get('/users/edit/{id}', 'UserController@edit')->middleware('auth', 'user_not_blocked')->name('user.edit');
+
+Route::post('/users/edit/{id}', 'UserController@update')->middleware('auth', 'user_not_blocked')->name('user.update');
+
+Route::get('/user/{id}', 'UserController@details')->middleware('user_not_blocked')->name('user.detail');
 
 
-Route::get('/departament/{id}', 'DepartmentController@detail')->name('departmentDetail');
+Route::get('/requests/dashboard', 'RequestController@dashboard')->middleware('auth', 'user_not_blocked')->name('requests.dashboard');
+
+Route::get('/requests/create', 'RequestController@create')->middleware('auth', 'user_not_blocked')->name('request.create');
+
+Route::post('/requests/create', 'RequestController@store')->middleware('auth', 'user_not_blocked');
+
+Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth', 'user_not_blocked')->name('request.edit');
+
+Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth', 'user_not_blocked')->name('request.update');
+
+Route::get('/requests/edit/{printRequest}', 'RequestController@edit')->middleware('auth', 'user_not_blocked')->name('request.edit');
+
+Route::get('/requests/edit/image/{id}', 'RequestController@getFile')->middleware('auth', 'user_not_blocked')->name('request.image');
+
+Route::post('/requests/edit/{printRequest}', 'RequestController@update')->middleware('auth', 'user_not_blocked')->name('request.update');
+
+Route::get('/request/{id}', 'RequestController@details')->middleware('auth', 'user_not_blocked')->name('request.details');
+
+Route::get('/requests/{id}/file', 'RequestController@getFile')->middleware('auth', 'user_not_blocked')->name('request.file');
+
+Route::get('/requests/{id}/assess', 'RequestController@assessRequest')->middleware('auth', 'user_not_blocked')->name('request.assess');
+
+Route::post('/request/remove', 'RequestController@remove')->middleware('auth', 'user_not_blocked')->name('request.remove');
 
 
-Route::get('users/image/{user_id}', 'UserController@getUserImage')->name('getUserImage');
+Route::post('requests/comments/create', 'CommentController@store')->middleware('auth', 'user_not_blocked')->name('comment.create');
 
-Route::get('/users/edit/{id}', 'UserController@edit')->middleware('auth')->name('editUser');
-
-Route::post('/users/edit/{id}', 'UserController@update')->middleware('auth')->name('updateUser');
-
-Route::get('/user/{id}', 'UserController@details')->name('userDetail');
+Route::post('requests/comments/create/response', 'CommentController@storeReply')->middleware('auth', 'user_not_blocked')->name('comment.response.create');
 
 
-Route::get('/requests/dashboard', 'RequestController@dashboard')->middleware('auth')->name('requestsDashboard');
+Route::post('admin/user/{id}/setadmin', 'UserController@setUserAsAdmin')->middleware('auth', 'admin', 'user_not_blocked')->name('user.admin');
 
-Route::get('/requests/create', 'RequestController@create')->middleware('auth')->name('createRequest');
+Route::post('admin/user/{id}/setemployee', 'UserController@setUserAsEmployee')->middleware('auth', 'admin', 'user_not_blocked')->name('user.employee');
 
-Route::post('/requests/create', 'RequestController@store')->middleware('auth');
+Route::post('admin/user/{id}/block', 'UserController@blockUser')->middleware('auth', 'admin', 'user_not_blocked')->name('user.block');
 
-Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth')->name('editRequest');
+Route::post('admin/user/{id}/unblock', 'UserController@unblockUser')->middleware('auth', 'admin', 'user_not_blocked')->name('user.unblock');
 
-Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth')->name('updateRequest');
+Route::post('admin/request/{id}/close', 'RequestController@closeRequest')->middleware('auth', 'admin', 'user_not_blocked')->name('request.close');
 
-Route::get('/requests/edit/image/{id}', 'RequestController@getImageRequest')->middleware('auth')->name('getImageRequest');
-
-Route::get('/request/{id}', 'RequestController@details')->middleware('auth')->name('requestDetails');
-
-Route::post('/request/remove', 'RequestController@remove')->middleware('auth')->name('removeRequest');
-
-
-Route::post('requests/comments/create', 'CommentController@store')->middleware('auth')->name('createComment');
-
-Route::post('requests/comments/create/response', 'CommentController@storeReply')->middleware('auth')->name('createResponse');
-
-
-Route::get('/admin', 'DashboardController@getIndex')->middleware('auth')->middleware('admin')->name('homeAdmin');
-
-Route::post('admin/user/{id}/setadmin', 'UserController@setUserAsAdmin')->middleware('auth')->middleware('admin')->name('setUserAsAdmin');
-
-Route::post('admin/user/{id}/setemployee', 'UserController@setUserAsEmployee')->middleware('auth')->middleware('admin')->name('setUserAsEmployee');
-
-Route::post('admin/user/{id}/block', 'UserController@blockUser')->middleware('auth')->middleware('admin')->name('blockUser');
-
-Route::post('admin//user/{id}/unblock', 'UserController@unblockUser')->middleware('auth')->middleware('admin')->name('unblockUser');
-
+Route::post('admin/request/{id}/refuse', 'RequestController@refuseRequest')->middleware('auth', 'admin', 'user_not_blocked')->name('request.refuse');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+
+Route::get('/verifyemail/{token}', 'Auth\RegisterController@verify');
+
+
