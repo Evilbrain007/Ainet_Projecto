@@ -35,7 +35,7 @@ Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth
 
 Route::get('/request/{id}', 'RequestController@details')->middleware('auth', 'user_not_blocked')->name('request.details');
 
-Route::get('/request/{id}/file', 'RequestController@getFile')->name('request.file');
+Route::get('/request/{id}/file', 'RequestController@getFile')->middleware('auth', 'user_not_blocked')->name('request.file');
 
 Route::post('/request/{id}/assess', 'RequestController@assessRequest')->middleware('auth', 'user_not_blocked')->name('request.assess');
 
