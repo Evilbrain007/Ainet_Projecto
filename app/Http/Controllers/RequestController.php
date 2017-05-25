@@ -267,7 +267,7 @@ class RequestController extends Controller
         $printRequest->comment()->delete();
         $printRequest->delete();
 
-        return redirect()->route('requests.dashboard');
+        return redirect()->back();
     }
 
     public function closeRequest(Request $request, PrintRequest $id)
@@ -318,7 +318,6 @@ class RequestController extends Controller
         if (Auth::id() !== $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
-
 
         $printRequest->satisfaction_grade = $request->satisfaction_grade;
         $printRequest->save();
