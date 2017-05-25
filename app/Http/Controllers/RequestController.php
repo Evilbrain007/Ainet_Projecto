@@ -322,6 +322,6 @@ class RequestController extends Controller
 
         $printRequest->satisfaction_grade = $request->satisfaction_grade;
         $printRequest->save();
-        return redirect(route('requests.dashboard'));
+        return redirect()->back();
     }
 }

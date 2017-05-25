@@ -43,7 +43,7 @@ Route::get('/request/{id}', 'RequestController@details')->middleware('auth', 'us
 
 Route::get('/requests/{id}/file', 'RequestController@getFile')->middleware('auth', 'user_not_blocked')->name('request.file');
 
-Route::get('/requests/{id}/assess', 'RequestController@assessRequest')->middleware('auth', 'user_not_blocked')->name('request.assess');
+Route::post('/requests/{id}/assess', 'RequestController@assessRequest')->middleware('auth', 'user_not_blocked')->name('request.assess');
 
 Route::post('/request/remove', 'RequestController@remove')->middleware('auth', 'user_not_blocked')->name('request.remove');
 
