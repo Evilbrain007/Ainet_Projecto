@@ -11,9 +11,25 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-12">Filtros
-                <form class="form-group form-inline" action="{{route('requests.dashboard')}}" method="get">
-                    <div>
+            <div class="col-md-12">Filtros para pedidos de impressão
+                <form class="form-inline" action="{{route('requests.dashboard')}}" method="get">
+                    @if (Auth::user()->admin == true)
+                        <div class="btn-group">
+                            <label class="btn btn-primary">
+                                <input type="radio" name="myRequests" id="option1" value="1"
+                                       @if ($adminRequests == 1)
+                                       checked
+                                        @endif> Meus pedidos
+                            </label>
+                            <label class="btn btn-danger">
+                                <input type="radio" name="myRequests" id="option2" value="0"
+                                       @if ($adminRequests == 0)
+                                       checked
+                                        @endif> Todos
+                            </label>
+                        </div>
+                    @endif
+                    <div class="form-group">
                         <select id="filterByStatus" class="form-control" name="filterByStatus">
                             <option value=""
                                     @if ($filters['status'] === '')
@@ -104,7 +120,7 @@
                 <th class="col-md-2">Data de criação</th>
                 <th class="col-md-2">Concluir até</th>
                 <th class="col-md-2">Data de conclusão</th>
-                <th class="col-md-1">Acção</th> {{--mudar o nome desta coluna? --}}
+                <th class="col-md-1">Estado</th>
             </tr>
             </thead>
 
@@ -123,14 +139,14 @@
                     <td>{{substr($request->created_at, 0, 10)}}</td>
                     <td>
                         @if($request->status === "0")
-                                N/A
-                        @elseif($request->due_date !== null)
-                            {{substr($request->due_date, 0, 10)}}
-                        @endif
+                            N/A
+                    @elseif($request->due_date !== null)
+                        {{substr($request->due_date, 0, 10)}}
+                    @endif
                     <td>
                         @if ($request->status !== "0")
                             {{substr($request->closed_date, 0, 10)}}
-                    @endif
+                        @endif
                     </td>
 
                     <td>
@@ -171,7 +187,7 @@
                                         <div class="form-group form-inline">
                                             <select id="satisfactionGrade" class="form-control"
                                                     name="satisfaction_grade">
-                                                <option value="" selected>Qualidade do serviço</option>
+                                                <option value="" selected>Qualidade</option>
                                                 <option value="1">Mau</option>
                                                 <option value="2">Médio</option>
                                                 <option value="3">Bom</option>
@@ -190,8 +206,8 @@
                                         N/D
                                     @endif
                                 @endif
+                            @endif
                         @endif
-                    @endif
                     </td>
                 </tr>
             @endforeach
@@ -199,7 +215,6 @@
         </table>
         {{-- appends($_GET) mantém a lista filtrada --}}
         {{ $requests->appends($_GET)->links() }}
-
     </div>
 
 
@@ -207,7 +222,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-12">Filtros
+            <div class="col-md-12">Filtros para comentários
                 <form class="form-group form-inline">
                     <div>
                         <select id="orderByDate" class="form-control" name="orderByDate">

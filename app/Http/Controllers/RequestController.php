@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 
 class RequestController extends Controller
 {
@@ -105,7 +104,7 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $printRequest->owner_id){
+        if (Auth::id() !== $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
@@ -133,7 +132,7 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado ou admin, volta para o dashboard de pedidos
         $message = ['message_error' => 'Ficheiro não disponível.'];
-        if (Auth::user()->admin == true || Auth::id() !== $printRequest->owner_id){
+        if (Auth::user()->admin == true || Auth::id() !== $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
@@ -146,12 +145,17 @@ class RequestController extends Controller
     {
         $owner_id = Auth::id();
 
+        $adminRequests = 0;
+        if (isset($request->myRequests)) {
+            $adminRequests = $request->myRequests;
+        }
+
         $comments = [];
-        if (Auth::user()->admin == true) {
+        if (Auth::user()->admin == true && $adminRequests != 1) {
             $title = 'Todos os pedidos';
             $requests = DB::table('requests');
         } else {
-            $title = 'Pedidos de '.Auth::user()->name;
+            $title = 'Pedidos de ' . Auth::user()->name;
             $requests = PrintRequest::where('owner_id', $owner_id);
         }
 
@@ -195,7 +199,7 @@ class RequestController extends Controller
                 }
             }
         }
-        return view('requests.dashboard', compact('title', 'requests', 'comments', 'filters'));
+        return view('requests.dashboard', compact('title', 'requests', 'comments', 'filters', 'adminRequests'));
     }
 
     /* public function createComment(Request $request)
@@ -226,7 +230,7 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $printRequest->owner_id){
+        if (Auth::id() !== $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
@@ -255,7 +259,7 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $printRequest->owner_id){
+        if (Auth::id() !== $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
@@ -311,7 +315,7 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $printRequest->owner_id){
+        if (Auth::id() !== $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
