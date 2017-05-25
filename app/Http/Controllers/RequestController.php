@@ -11,7 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 
 class RequestController extends Controller
 {
@@ -70,11 +69,20 @@ class RequestController extends Controller
         $department = Department::find($user->department_id);
         $comments = $this->getComments($printRequest->id);
 
+        $file_extension = pathinfo(storage_path() . '/print-jobs/' . $printRequest->owner_id . '/' . $printRequest->file, PATHINFO_EXTENSION);
+        $path = null;
+
+        if ($file_extension == 'odt' || $file_extension == 'pdf' || $file_extension == 'pptx' || $file_extension == 'xlsx') {
+            $path = asset('images/' . $file_extension . '.png');
+        } else {
+            $path = route('request.file', ['id' => $printRequest->id]);
+        }
+
         if (Auth::user()->admin == true) {
             $printers = Printer::all();
-            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments', 'printers'));
+            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments', 'path', 'printers'));
         } else {
-            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments'));
+            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments', 'path'));
         }
     }
 
@@ -100,12 +108,12 @@ class RequestController extends Controller
         }
     }
 
-    public function edit(PrintRequest $printRequest)
+    public function edit(PrintRequest $id)
     {
-
+        $printRequest = $id;
         // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $printRequest->owner_id){
+        if (Auth::id() !== $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
@@ -121,10 +129,9 @@ class RequestController extends Controller
             //aqui vai buscar a imagem à storage
             // $path=asset('images/printit.png');
             //asset(storage_path().'/print-jobs/'.$printRequest->owner_id. '/'. $printRequest->file)
-            $path = route('request.image', ['id' => $printRequest->id]);
+            $path = route('request.file', ['id' => $printRequest->id]);
         }
-
-        return view('requests/edit', compact('title', 'printRequest', 'path'));
+        return view('requests.edit', compact('title', 'printRequest', 'path'));
     }
 
     public function getFile(PrintRequest $id)
@@ -133,7 +140,7 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado ou admin, volta para o dashboard de pedidos
         $message = ['message_error' => 'Ficheiro não disponível.'];
-        if (Auth::user()->admin == true || Auth::id() !== $printRequest->owner_id){
+        if (Auth::user()->admin != true || Auth::id() != $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
@@ -146,12 +153,17 @@ class RequestController extends Controller
     {
         $owner_id = Auth::id();
 
+        $adminRequests = 0;
+        if (isset($request->myRequests)) {
+            $adminRequests = $request->myRequests;
+        }
+
         $comments = [];
-        if (Auth::user()->admin == true) {
+        if (Auth::user()->admin == true && $adminRequests != 1) {
             $title = 'Todos os pedidos';
             $requests = DB::table('requests');
         } else {
-            $title = 'Pedidos de '.Auth::user()->name;
+            $title = 'Pedidos de ' . Auth::user()->name;
             $requests = PrintRequest::where('owner_id', $owner_id);
         }
 
@@ -195,7 +207,7 @@ class RequestController extends Controller
                 }
             }
         }
-        return view('requests.dashboard', compact('title', 'requests', 'comments', 'filters'));
+        return view('requests.dashboard', compact('title', 'requests', 'comments', 'filters', 'adminRequests'));
     }
 
     /* public function createComment(Request $request)
@@ -226,7 +238,7 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $printRequest->owner_id){
+        if (Auth::id() !== $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
@@ -255,7 +267,7 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $printRequest->owner_id){
+        if (Auth::id() !== $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
@@ -263,7 +275,7 @@ class RequestController extends Controller
         $printRequest->comment()->delete();
         $printRequest->delete();
 
-        return redirect()->route('requests.dashboard');
+        return redirect()->back();
     }
 
     public function closeRequest(Request $request, PrintRequest $id)
@@ -311,13 +323,12 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $printRequest->owner_id){
+        if (Auth::id() !== $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
-
         $printRequest->satisfaction_grade = $request->satisfaction_grade;
         $printRequest->save();
-        return redirect(route('requests.dashboard'));
+        return redirect()->back();
     }
 }

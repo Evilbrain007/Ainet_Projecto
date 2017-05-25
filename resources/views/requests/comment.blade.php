@@ -7,7 +7,15 @@
             <div class="panel-body">
                 <p><strong>{{$comment->comment}}</strong></p>
                 <div class="pull-right">
-                    @if(Auth::user()->admin == true)<a class="btn btn-danger" href="home.html">Bloquear</a>@endif
+                    @if(Auth::user()->admin == true)
+                        <form action="{{route('comment.block', ['id' => $comment->id])}}" method="POST">
+                            {{csrf_field()}}
+                            <input type="number" hidden value="{{$comment->id}}" name="comment_id">
+                            <button type="submit" class="btn btn-danger">
+                                Bloquear
+                            </button>
+                        </form>
+                    @endif
 
                 </div>
                 <div>
