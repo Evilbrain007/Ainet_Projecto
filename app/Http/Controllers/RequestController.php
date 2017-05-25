@@ -131,7 +131,7 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado ou admin, volta para o dashboard de pedidos
         $message = ['message_error' => 'Ficheiro não disponível.'];
-        if (Auth::user()->admin == true || Auth::id() !== $printRequest->owner_id) {
+        if (Auth::user()->admin != true || Auth::id() != $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
