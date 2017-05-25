@@ -99,9 +99,9 @@ class RequestController extends Controller
         }
     }
 
-    public function edit(PrintRequest $printRequest)
+    public function edit(PrintRequest $id)
     {
-
+        $printRequest = $id;
         // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
         $message = ['message_error' => 'Endereço inválido.'];
         if (Auth::id() !== $printRequest->owner_id) {

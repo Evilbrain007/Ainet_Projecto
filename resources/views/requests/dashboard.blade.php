@@ -163,21 +163,18 @@
                         @if (Auth::id() === $request->owner_id)
                             @if($request->status === 0)
                                 {{-- apresentar botao para editar e remover--}}
-
-                                <a class="col-md-4 btn btn-primary"
-                                   href="{{ route('request.edit', ['printRequest'=>$request->id]) }}">Editar</a>
-                                {{-- FALTA A ROTA NO ACTION--}}
-                                <form action="{{route('request.remove')}}" class="col-md-4" method="POST">
-                                    {{csrf_field()}} {{--usamos o field e nao o token pk o field gera um input hidden com o token --}}
-                                    <div class="form-group form-inline">
-                                        {{--quando usamos um link passa-se as variaveis pela rota como na linha acima
-                                         quando é um form get ou post temos que criar um input  para podermos depois aceder as variaveis no controlador
-                                         se o form for post esse campo tem k ser hiden para nao aparecer nada no link do browser--}}
+                                <form action="{{route('request.edit', ['id'=>$request->id])}}" method="GET">
+                                    <input type="number" hidden value="{{$request->id}}" name="request_id">
+                                    <button type="submit" class="btn btn-primary">
+                                        Editar
+                                    </button>
+                                </form>
+                                <form action="{{route('request.remove')}}" method="POST">
+                                    {{csrf_field()}}
                                         <input type="number" hidden value="{{$request->id}}" name="request_id">
                                         <button type="submit" class="btn btn-danger">
                                             Remover
                                         </button>
-                                    </div>
                                 </form>
                             @else
                                 {{--else : apresentar opcoes para avaliar --}}
