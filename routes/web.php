@@ -46,6 +46,8 @@ Route::post('requests/comments/create', 'CommentController@store')->middleware('
 
 Route::post('requests/comments/create/response', 'CommentController@storeReply')->middleware('auth', 'user_not_blocked')->name('comment.response.create');
 
+Route::post('admin/requests/comment/{id}/block', 'CommentController@block')->middleware('auth', 'user_not_blocked', 'admin')->name('comment.block');
+
 
 Route::post('admin/user/{id}/setadmin', 'UserController@setUserAsAdmin')->middleware('auth', 'admin', 'user_not_blocked')->name('user.admin');
 

@@ -49,4 +49,16 @@ class CommentController extends Controller
         return redirect()->route('request.details', ['id' => $request->input('requestId')]);
     }
 
+    public function block(Comment $id)
+    {
+        $comment = $id;
+        $comment->blocked = true;
+        if ($comment->save()) {
+            $message = ['message_success' => 'Comentário #'.$comment->id.'bloqueado.'];
+            return redirect()->back()->with($message);
+        }
+        $message = ['message_error' => 'Erro. Comentário #'.$comment->id.'não pode ser bloqueado.'];
+        return redirect()->back()->with($message);
+    }
+
 }
