@@ -77,66 +77,66 @@
                 <tbody>
 
                 @foreach($users as $user)
-                    <tr>
-                        <td class="text-left">
-                            <a href="{{route('user.detail', ['id' =>$user->id])}}">
-                                {{$user->name}}
-                            </a></td>
-                        <td class="text-right">{{$user->email}}</td>
-                        <td class="text-right">{{$user->phone}}</td>
-                        @if(Auth::check() && Auth::user()->admin == true)
-                            <td>
-                                @if($user->blocked == true)
-                                    <form class="form-inline"
-                                          action={{route('user.unblock', ['id' =>$user->id])}} method="post">
-                                        {{ csrf_field() }}
-                                        <input class="btn btn-danger disabled" type="button" value="Sim"/>
-                                        @unless(Auth::user() == $user)
-                                            <input class="btn btn-default" type="submit" value="Não">
-                                        @else
-                                            <input class="btn btn-default disabled" type="button" value="Não"/>
-                                        @endunless
-                                    </form>
-                                @else
-                                    <form class="form-inline"
-                                          action={{route('user.block', ['id' =>$user->id])}} method="post">
-                                        {{ csrf_field() }}
-                                        @unless(Auth::user() == $user)
-                                            <input class="btn btn-default" type="submit" value="Sim">
-                                        @else
-                                            <input class="btn btn-default disabled" type="button" value="Sim"/>
-                                        @endunless
-                                        <input class="btn btn-danger disabled" type="button" value="Não"/>
-                                    </form>
-                                @endif
-                            </td>
-                            <td>
-                                @if($user->admin == true)
-                                    <form class="form-inline"
-                                          action={{route('user.employee', ['id' =>$user->id])}} method="post">
-                                        {{ csrf_field() }}
-                                        <input class="btn btn-primary disabled" type="button" value="Sim"/>
-                                        @unless(Auth::user() == $user)
-                                            <input class="btn btn-default" type="submit" value="Não">
-                                        @else
-                                            <input class="btn btn-default disabled" type="button" value="Não"/>
-                                        @endunless
-                                    </form>
-                                @else
-                                    <form class="form-inline"
-                                          action={{route('user.admin', ['id' =>$user->id])}} method="post">
-                                        {{ csrf_field() }}
-                                        @unless(Auth::user() == $user)
-                                            <input class="btn btn-default" type="submit" value="Sim">
-                                        @else
-                                            <input class="btn btn-default disabled" type="button" value="Sim"/>
-                                        @endunless
-                                        <input class="btn btn-primary disabled" type="button" value="Não"/>
-                                    </form>
-                                @endif
-                            </td>
-                        @endif
-                    </tr>
+                        <tr>
+                            <td class="text-left">
+                                <a href="{{route('user.detail', ['id' =>$user->id])}}">
+                                    {{$user->name}}
+                                </a></td>
+                            <td class="text-right">{{$user->email}}</td>
+                            <td class="text-right">{{$user->phone}}</td>
+                            @if(Auth::check() && Auth::user()->admin == true)
+                                <td>
+                                    @if($user->blocked == true)
+                                        <form class="form-inline"
+                                              action={{route('user.unblock', ['id' =>$user->id])}} method="post">
+                                            {{ csrf_field() }}
+                                            <input class="btn btn-danger disabled" type="button" value="Sim"/>
+                                            @unless(Auth::user() == $user)
+                                                <input class="btn btn-default" type="submit" value="Não">
+                                            @else
+                                                <input class="btn btn-default disabled" type="button" value="Não"/>
+                                            @endunless
+                                        </form>
+                                    @else
+                                        <form class="form-inline"
+                                              action={{route('user.block', ['id' =>$user->id])}} method="post">
+                                            {{ csrf_field() }}
+                                            @unless(Auth::user() == $user)
+                                                <input class="btn btn-default" type="submit" value="Sim">
+                                            @else
+                                                <input class="btn btn-default disabled" type="button" value="Sim"/>
+                                            @endunless
+                                            <input class="btn btn-danger disabled" type="button" value="Não"/>
+                                        </form>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($user->admin == true)
+                                        <form class="form-inline"
+                                              action={{route('user.employee', ['id' =>$user->id])}} method="post">
+                                            {{ csrf_field() }}
+                                            <input class="btn btn-primary disabled" type="button" value="Sim"/>
+                                            @unless(Auth::user() == $user)
+                                                <input class="btn btn-default" type="submit" value="Não">
+                                            @else
+                                                <input class="btn btn-default disabled" type="button" value="Não"/>
+                                            @endunless
+                                        </form>
+                                    @else
+                                        <form class="form-inline"
+                                              action={{route('user.admin', ['id' =>$user->id])}} method="post">
+                                            {{ csrf_field() }}
+                                            @unless(Auth::user() == $user)
+                                                <input class="btn btn-default" type="submit" value="Sim">
+                                            @else
+                                                <input class="btn btn-default disabled" type="button" value="Sim"/>
+                                            @endunless
+                                            <input class="btn btn-primary disabled" type="button" value="Não"/>
+                                        </form>
+                                    @endif
+                                </td>
+                            @endif
+                        </tr>
                 @endforeach
 
                 </tbody>

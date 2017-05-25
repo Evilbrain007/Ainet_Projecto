@@ -56,7 +56,7 @@ class UserController extends Controller
         $user = $id;
         $user->admin = true;
         User::store($user);
-        return redirect(route('home'));
+        return redirect()->back();
     }
 
 
@@ -66,7 +66,7 @@ class UserController extends Controller
         $user->admin = false;
         User::store($user);
 
-        return redirect(route('home'));
+        return redirect()->back();
     }
 
     public function blockUser(User $id)
@@ -75,7 +75,7 @@ class UserController extends Controller
         $user->blocked = true;
         User::store($user);
 
-        return redirect(route('home'));
+        return redirect()->back();
     }
 
     public function unblockUser(User $id)
@@ -84,7 +84,7 @@ class UserController extends Controller
         $user->blocked = false;
         User::store($user);
 
-        return redirect(route('home'));
+        return redirect()->back();
     }
 
     public function getUserName($id)
