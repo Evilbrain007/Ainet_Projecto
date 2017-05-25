@@ -48,6 +48,10 @@ Route::post('requests/comments/create/response', 'CommentController@storeReply')
 
 Route::post('admin/requests/comment/{id}/block', 'CommentController@block')->middleware('auth', 'user_not_blocked', 'admin')->name('comment.block');
 
+Route::post('admin/requests/comment/{id}/unblock', 'CommentController@unblock')->middleware('auth', 'user_not_blocked', 'admin')->name('comment.unblock');
+
+Route::get('admin/requests/comments/blocked', 'CommentController@blockedComments')->middleware('auth', 'user_not_blocked', 'admin')->name('comments.blocked');
+
 
 Route::post('admin/user/{id}/setadmin', 'UserController@setUserAsAdmin')->middleware('auth', 'admin', 'user_not_blocked')->name('user.admin');
 

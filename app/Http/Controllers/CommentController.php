@@ -54,11 +54,34 @@ class CommentController extends Controller
         $comment = $id;
         $comment->blocked = true;
         if ($comment->save()) {
-            $message = ['message_success' => 'Comentário #'.$comment->id.'bloqueado.'];
+            $message = ['message_success' => 'Comentário #'.$comment->id.' bloqueado.'];
             return redirect()->back()->with($message);
         }
-        $message = ['message_error' => 'Erro. Comentário #'.$comment->id.'não pode ser bloqueado.'];
+        $message = ['message_error' => 'Erro. Comentário #'.$comment->id.' não pode ser bloqueado.'];
         return redirect()->back()->with($message);
+    }
+
+    public function unblock(Request $request, Comment $id)
+    {
+
+        $comment = $id;
+        $comment->blocked = false;
+        if ($comment->save()) {
+            $message = ['message_success' => 'Comentário #'.$comment->id.' desbloqueado.'];
+            return redirect()->route('request.details', ['id' => $request->request_id])->with($message);
+        }
+        $message = ['message_error' => 'Erro. Comentário #'.$comment->id.' não pode ser desbloqueado.'];
+        return redirect()->back()->with($message);
+    }
+
+
+    public function blockedComments()
+    {
+        $title = "Comentários bloqueados";
+
+        $blockedComments = Comment::where('blocked', 1)->get();
+
+        return view('requests.blocked-comments', compact('title', 'blockedComments'));
     }
 
 }
