@@ -66,7 +66,8 @@
                 <td class="col-sm-1">A{{$printRequest->paper_size}}</td>
                 <td class="col-sm-1">{{$printRequest->paper_type == 2 ? 'Papel de fotografia' :
                  $printRequest->paper_type == 1 ? 'Normal' : 'Rascunho'}}</td>
-                <td class="col-sm-1"><a href="{{route('request.file', ['id' => $printRequest->id])}}">Ficheiro a imprimir</a></td>
+                <td class="col-sm-1"><a href="{{route('request.file', ['id' => $printRequest->id])}}">Ficheiro a
+                        imprimir</a></td>
                 <td class="col-sm-1">
                     <strong>
                         @if($printRequest->status === 0)
@@ -82,7 +83,8 @@
             </tbody>
         </table>
         <div class="panel-body">
-            <div class="col-sm-4">{{-- //TODO ROTA DA SORAIA --}}</div>
+            <div class="col-sm-4"><img alt="imagem" src="{{$path}}" class="img-responsive"/>
+            </div>
             <div class="col-sm-8">{{$printRequest->description}}</div>
         </div>
     </div>

@@ -69,11 +69,20 @@ class RequestController extends Controller
         $department = Department::find($user->department_id);
         $comments = $this->getComments($printRequest->id);
 
+        $file_extension = pathinfo(storage_path() . '/print-jobs/' . $printRequest->owner_id . '/' . $printRequest->file, PATHINFO_EXTENSION);
+        $path = null;
+
+        if ($file_extension == 'odt' || $file_extension == 'pdf' || $file_extension == 'pptx' || $file_extension == 'xlsx') {
+            $path = asset('images/' . $file_extension . '.png');
+        } else {
+            $path = route('request.file', ['id' => $printRequest->id]);
+        }
+
         if (Auth::user()->admin == true) {
             $printers = Printer::all();
-            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments', 'printers'));
+            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments', 'path', 'printers'));
         } else {
-            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments'));
+            return view('requests/details', compact('title', 'printRequest', 'user', 'department', 'comments', 'path'));
         }
     }
 
