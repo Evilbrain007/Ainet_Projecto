@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master_reset.php')
 
 @section('content')
 <div class="container">
