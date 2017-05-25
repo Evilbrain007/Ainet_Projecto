@@ -39,16 +39,4 @@ class ResetPasswordController extends Controller
     {
         $this->middleware('guest');
     }
-
-    public function showResetForm(Request $request, $token = null)
-    {
-        $title = "Recuperar password";
-        $email = $request->email;
-        $activation = PasswordReset::where('email', $email)->first();
-        $user = User::where('email', $email)->first();
-        $user->blocked(-1);
-        $user->save();
-        dispatch(new SendVerificationEmail($activation, $user));
-        return view('auth.passwords.reset', compact('title', 'token', 'email'));
-    }
 }
