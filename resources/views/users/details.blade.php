@@ -7,6 +7,72 @@
 @endsection
 
 @section('content')
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <h3 class="panel-title">Painel de administração</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-6">
+                @if(Auth::check() && Auth::user()->admin == true)
+                    @if($user->blocked == true)
+                        <form class="form-inline" name="blocked"
+                              action={{route('user.unblock', ['id' =>$user->id])}} method="post">
+                            {{ csrf_field() }}
+                            <label>Bloqueado &nbsp;
+                                <input class="btn btn-danger disabled" type="button" value="Sim"/>
+                            @unless(Auth::user() == $user)
+                            </label>
+                                <input class="btn btn-default" type="submit" value="Não">
+                            @else
+                                <input class="btn btn-default disabled" type="button" value="Não"/>
+                            @endunless
+                        </form>
+                    @else
+                        <form class="form-inline" name="blocked"
+                              action={{route('user.block', ['id' =>$user->id])}} method="post">
+                            {{ csrf_field() }}
+                            <label>Bloqueado &nbsp;
+                            @unless(Auth::user() == $user)
+                                <input class="btn btn-default" type="submit" value="Sim">
+                            @else
+                                <input class="btn btn-default disabled" type="button" value="Sim"/>
+                            @endunless
+                            </label>
+                            <input class="btn btn-danger disabled" type="button" value="Não"/>
+                        </form>
+                    @endif
+            </div>
+            <div class="col-md-6">
+                @if($user->admin == true)
+                    <form class="form-inline" name="admin"
+                          action={{route('user.employee', ['id' =>$user->id])}} method="post">
+                        {{ csrf_field() }}
+                        <label>Administrador &nbsp;
+                        <input class="btn btn-primary disabled" type="button" value="Sim"/>
+                        @unless(Auth::user() == $user)
+                            <input class="btn btn-default" type="submit" value="Não">
+                        @else
+                            <input class="btn btn-default disabled" type="button" value="Não"/>
+                        @endunless
+                    </form>
+                @else
+                    <form class="form-inline" name="admin"
+                          action={{route('user.admin', ['id' =>$user->id])}} method="post">
+                        {{ csrf_field() }}
+                        <label>Administrador
+                        @unless(Auth::user() == $user)
+                            <input class="btn btn-default" type="submit" value="Sim">
+                        @else
+                            <input class="btn btn-default disabled" type="button" value="Sim"/>
+                        @endunless
+                        </label>
+                        <input class="btn btn-primary disabled" type="button" value="Não"/>
+                    </form>
+                @endif
+            </div>
+            @endif
+        </div>
+    </div>
 
     <div class="panel panel-info">
         <div class="panel-heading">
@@ -17,7 +83,8 @@
                 <div class="col-md-3 col-lg-3 " align="center">{{--
                     <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive">
                 --}}
-                    <img alt="User Pic" src="{{ route("user.image", ['user_id' => $user->id]) }}" class="img-responsive">
+                    <img alt="User Pic" src="{{ route("user.image", ['user_id' => $user->id]) }}"
+                         class="img-responsive">
                 </div>
 
                 <div class=" col-md-9 col-lg-9 ">
@@ -59,5 +126,6 @@
             <p>{{$user->presentation}}</p>
         </div>
     </div>
+
 
 @endsection
