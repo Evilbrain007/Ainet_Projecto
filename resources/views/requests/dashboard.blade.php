@@ -163,13 +163,10 @@
                         @if (Auth::id() === $request->owner_id)
                             @if($request->status === 0)
                                 {{-- apresentar botao para editar e remover--}}
-                                <form action="{{route('request.edit', ['id'=>$request->id])}}" method="GET">
-                                    <input type="number" hidden value="{{$request->id}}" name="request_id">
-                                    <button type="submit" class="btn btn-primary">
-                                        Editar
-                                    </button>
-                                </form>
-                                <form action="{{route('request.remove')}}" method="POST">
+
+                                <a class="col-md-4 btn btn-primary"
+                                   href="{{ route('request.edit', ['printRequest'=>$request->id]) }}">Editar</a>
+                                <form action="{{route('request.remove')}}" class="col-md-4" method="POST">
                                     {{csrf_field()}}
                                         <input type="number" hidden value="{{$request->id}}" name="request_id">
                                         <button type="submit" class="btn btn-danger">

@@ -33,17 +33,11 @@ Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth', 
 
 Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth', 'user_not_blocked')->name('request.update');
 
-Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth', 'user_not_blocked')->name('request.edit');
-
-Route::get('/requests/edit/image/{id}', 'RequestController@getFile')->middleware('auth', 'user_not_blocked')->name('request.image');
-
-Route::post('/requests/edit/{printRequest}', 'RequestController@update')->middleware('auth', 'user_not_blocked')->name('request.update');
-
 Route::get('/request/{id}', 'RequestController@details')->middleware('auth', 'user_not_blocked')->name('request.details');
 
-Route::get('/requests/{id}/file', 'RequestController@getFile')->middleware('auth', 'user_not_blocked')->name('request.file');
+Route::get('/request/{id}/file', 'RequestController@getFile')->name('request.file');
 
-Route::post('/requests/{id}/assess', 'RequestController@assessRequest')->middleware('auth', 'user_not_blocked')->name('request.assess');
+Route::post('/request/{id}/assess', 'RequestController@assessRequest')->middleware('auth', 'user_not_blocked')->name('request.assess');
 
 Route::post('/request/remove', 'RequestController@remove')->middleware('auth', 'user_not_blocked')->name('request.remove');
 

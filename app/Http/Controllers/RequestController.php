@@ -120,10 +120,9 @@ class RequestController extends Controller
             //aqui vai buscar a imagem à storage
             // $path=asset('images/printit.png');
             //asset(storage_path().'/print-jobs/'.$printRequest->owner_id. '/'. $printRequest->file)
-            $path = route('request.image', ['id' => $printRequest->id]);
+            $path = route('request.file', ['id' => $printRequest->id]);
         }
-
-        return view('requests/edit', compact('title', 'printRequest', 'path'));
+        return view('requests.edit', compact('title', 'printRequest', 'path'));
     }
 
     public function getFile(PrintRequest $id)
