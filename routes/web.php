@@ -10,9 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'DashboardController@getIndex')->middleware('user_not_blocked')->middleware('user_not_blocked')->name('home');
+Route::get('/', 'DashboardController@getIndex')->middleware('user_not_blocked')->name('home');
 
-Route::get('/departament/{id}', 'DepartmentController@detail')->middleware('user_not_blocked')->middleware('user_not_blocked')->name('department.detail');
+Route::get('/departament/{id}', 'DepartmentController@detail')->middleware('user_not_blocked')->name('department.detail');
 
 Route::get('users/image/{user_id}', 'UserController@getUserImage')->middleware('user_not_blocked')->name('user.image');
 
