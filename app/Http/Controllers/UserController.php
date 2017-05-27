@@ -43,7 +43,8 @@ class UserController extends Controller
         $user = $id;
         // se o utilizador não for o utilizador autenticado, volta para o home
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $user->id){
+        dd(Auth::id());
+        if (Auth::id() != $user->id){
             return redirect(route('home'))->with($message);
         }
 

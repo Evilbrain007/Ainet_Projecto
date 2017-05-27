@@ -31,7 +31,7 @@ Route::post('/requests/create', 'RequestController@store')->middleware('auth', '
 
 Route::get('/requests/edit/{id}', 'RequestController@edit')->middleware('auth', 'user_not_blocked')->name('request.edit');
 
-Route::post('/requests/edit/{id}', 'RequestController@update')->middleware('auth', 'user_not_blocked')->name('request.update');
+Route::post('/requests/edit/{printRequest}', 'RequestController@update')->middleware('auth', 'user_not_blocked')->name('request.update');
 
 Route::get('/request/{id}', 'RequestController@details')->middleware('auth', 'user_not_blocked')->name('request.details');
 

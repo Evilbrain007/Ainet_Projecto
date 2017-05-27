@@ -238,7 +238,8 @@ class RequestController extends Controller
 
         // se o utilizador não for o utilizador autenticado, volta para o dashboard de pedidos
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $printRequest->owner_id) {
+        dd($printRequest);
+        if (Auth::id() != $printRequest->owner_id) {
             return redirect(route('requests.dashboard'))->with($message);
         }
 
