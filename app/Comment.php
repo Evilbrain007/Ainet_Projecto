@@ -14,7 +14,7 @@ class Comment extends Model
 
     public function printRequest()
     {
-        return $this ->belongsTo('App\PrintRequest', 'request_id');
+        return $this->belongsTo('App\PrintRequest', 'request_id');
     }
 
     public function parent()
@@ -35,7 +35,7 @@ class Comment extends Model
         // associamos o comentario ao pedido
         //usando o metodo printRequest desta classe, que tem o belongsTo
 
-        if(isset($attributes['parent_id'])){
+        if (isset($attributes['parent_id'])) {
             //se estiver a criar uma resposta a um comentário, então temos de fazer set ao comentário pai.
             $comment->setAttribute('parent_id', $attributes['parent_id']);
         }
@@ -47,7 +47,6 @@ class Comment extends Model
         //e o valor da msg que chamámos comment
         $comment->setAttribute('comment', $attributes['comment']);
         $comment->setAttribute('blocked', 0); //temos k definir que por default o comantario nao esta bloqueado
-
 
 
         return $comment;

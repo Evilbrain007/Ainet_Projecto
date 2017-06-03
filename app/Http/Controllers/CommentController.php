@@ -25,7 +25,8 @@ class CommentController extends Controller
         return redirect()->route('request.details', ['id' => $request->input('requestId')]);
     }
 
-    public function storeReply(Request $request){
+    public function storeReply(Request $request)
+    {
 
         $this->validate($request, [
             'comment' => 'required|max:255',
@@ -33,7 +34,7 @@ class CommentController extends Controller
             'requestId' => 'required']);
 
         $parentRequest = Comment::find($request->input('parent'));
-        if($parentRequest->getAttribute('request_id')!=$request->input('requestId')){
+        if ($parentRequest->getAttribute('request_id') != $request->input('requestId')) {
             $message = ['message_error' => 'O comentário que quer responder tem de ter o mesmo Pedido'];
             return redirect(route('request.details', ['id' => $request->input('requestId')]))->with($message);
         }
@@ -54,10 +55,10 @@ class CommentController extends Controller
         $comment = $id;
         $comment->blocked = true;
         if ($comment->save()) {
-            $message = ['message_success' => 'Comentário #'.$comment->id.' bloqueado.'];
+            $message = ['message_success' => 'Comentário #' . $comment->id . ' bloqueado.'];
             return redirect()->back()->with($message);
         }
-        $message = ['message_error' => 'Erro. Comentário #'.$comment->id.' não pode ser bloqueado.'];
+        $message = ['message_error' => 'Erro. Comentário #' . $comment->id . ' não pode ser bloqueado.'];
         return redirect()->back()->with($message);
     }
 
@@ -67,10 +68,10 @@ class CommentController extends Controller
         $comment = $id;
         $comment->blocked = false;
         if ($comment->save()) {
-            $message = ['message_success' => 'Comentário #'.$comment->id.' desbloqueado.'];
+            $message = ['message_success' => 'Comentário #' . $comment->id . ' desbloqueado.'];
             return redirect()->route('request.details', ['id' => $request->request_id])->with($message);
         }
-        $message = ['message_error' => 'Erro. Comentário #'.$comment->id.' não pode ser desbloqueado.'];
+        $message = ['message_error' => 'Erro. Comentário #' . $comment->id . ' não pode ser desbloqueado.'];
         return redirect()->back()->with($message);
     }
 

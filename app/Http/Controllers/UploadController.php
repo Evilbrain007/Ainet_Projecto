@@ -24,11 +24,9 @@ class UploadController
      */
     public function __construct()
     {
-        $this->filename =  $_FILES['upload_file']['name'];
+        $this->filename = $_FILES['upload_file']['name'];
         $this->file_type = pathinfo($this->filename, PATHINFO_EXTENSION);
     }
-
-
 
 
 }

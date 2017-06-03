@@ -14,7 +14,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">{{$title}}</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{$printRequest->id === null ?
+                        <form class="form-horizontal" method="POST" action="{{$printRequest->id === null ?
                         route('request.create') : route('request.update', $printRequest->id)}}"
                               enctype="multipart/form-data">
                             {{ csrf_field() }}
@@ -104,7 +104,7 @@
                                                {{$colored === "0" ? 'checked' : ''}} required>Preto e branco
                                     </div>
                                     <div class="radio">
-                                        <input id="colored" type="radio" name="colored" value="1"
+                                        <input type="radio" name="colored" value="1"
                                                 {{$colored === "1" ? 'checked' : ''}}>Cores
                                     </div>
 
@@ -124,7 +124,7 @@
                                                 {{$stapled === "1" ? 'checked' : ''}}>Com agrafo
                                     </div>
                                     <div class="radio">
-                                        <input id="stapled" type="radio" name="stapled" value="0"
+                                        <input type="radio" name="stapled" value="0"
                                                 {{$stapled === "0" ? 'checked' : ''}}>Sem agrafo
                                     </div>
 
@@ -144,7 +144,7 @@
                                                {{$paper_size === "3" ? 'checked' : ''}} required>A3
                                     </div>
                                     <div class="radio">
-                                        <input id="paper_size" type="radio" name="paper_size" value="4"
+                                        <input type="radio" name="paper_size" value="4"
                                                 {{$paper_size === "4" ? 'checked' : ''}}>A4
                                     </div>
 
@@ -164,7 +164,7 @@
                                                {{$front_back === "0" ? 'checked' : ''}} required>Não
                                     </div>
                                     <div class="radio">
-                                        <input id="front_back" type="radio" name="front_back" value="1"
+                                        <input type="radio" name="front_back" value="1"
                                                 {{$front_back === "1" ? 'checked' : ''}}>Sim
                                     </div>
 

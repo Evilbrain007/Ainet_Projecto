@@ -8,14 +8,16 @@
         <h1>{{$department->name}}</h1>
     </div>
     <div class="container">
-        <table class="table">
-            <thead>
+        <table class="table table-hover">
+        <thead>
+            <tr>
                 <th>Total de impressões</th>
                 <th>P/B</th>
                 <th>Cor</th>
                 <th>N.º de impressões hoje</th>
                 <th>Média imp. diárias deste mês</th>
-            </thead>
+            </tr>
+        </thead>
             <tbody>
             <tr>
                 <td>{{$statistics['totalPrints']}}</td>

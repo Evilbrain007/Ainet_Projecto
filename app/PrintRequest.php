@@ -36,7 +36,7 @@ class PrintRequest extends Model
         $user = User::find(Auth::id());
         $printRequest->owner()->associate($user);
 
-        foreach ($attributes as $key => $value){
+        foreach ($attributes as $key => $value) {
             $printRequest->setAttribute($key, $value);
         }
 
@@ -44,7 +44,8 @@ class PrintRequest extends Model
 
     }
 
-    public static function store($printRequest){
+    public static function store($printRequest)
+    {
         $printRequest->save();
     }
 

@@ -27,7 +27,7 @@ class UserController extends Controller
 
         // se o utilizador não for o utilizador autenticado, volta para o home
         $message = ['message_error' => 'Endereço inválido.'];
-        if (Auth::id() !== $user->id){
+        if (Auth::id() !== $user->id) {
             return redirect(route('home'))->with($message);
         }
 
@@ -44,7 +44,7 @@ class UserController extends Controller
         // se o utilizador não for o utilizador autenticado, volta para o home
         $message = ['message_error' => 'Endereço inválido.'];
         dd(Auth::id());
-        if (Auth::id() != $user->id){
+        if (Auth::id() != $user->id) {
             return redirect(route('home'))->with($message);
         }
 
@@ -99,10 +99,10 @@ class UserController extends Controller
     {
         $user = $user_id;
         $imagePath = $user->getAttribute('profile_photo');
-        if($imagePath == null){
-            return  response()->file(public_path().'/images/default_profile_photo.png');
+        if ($imagePath == null) {
+            return response()->file(public_path() . '/images/default_profile_photo.png');
         }
-        return  response()->file(storage_path('app/public/profiles/'.$imagePath));
+        return response()->file(storage_path('app/public/profiles/' . $imagePath));
 
     }
 

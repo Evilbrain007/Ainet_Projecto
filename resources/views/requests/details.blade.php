@@ -34,7 +34,7 @@
                     {{ csrf_field() }}
                     <input class="btn btn-primary" type="submit" value="Concluir pedido">
                     <label for="printers">Impressora usada:</label>
-                    <select name="printer">
+                    <select id="printers" name="printer">
                         @foreach($printers as $printer)
                             <option value="{{$printer->id}}">{{$printer->name}}</option>
                         @endforeach
@@ -46,7 +46,7 @@
                     <input class="btn btn-danger" type="submit" value="Recusar pedido">
                     <div class="form-group">
                         <label for="refused_reason">Motivo de recusa: </label>
-                        <input name="refused_reason" id="refused_reason" type="textarea" value="">
+                        <textarea class="form-control" name="refused_reason" id="refused_reason" rows="1" ></textarea>
                     </div>
                 </form>
             </div>

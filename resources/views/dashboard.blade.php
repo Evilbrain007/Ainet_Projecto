@@ -61,12 +61,12 @@
                 <tr>
                     <th>Nome</th>
                     <th>Email</th>
-                    <th th class="col-md-2">Telefone</th>
+                    <th class="col-md-2">Telefone</th>
                     @if(Auth::check() && Auth::user()->admin == true)
                         <th class="col-md-2">
                             Bloqueado
                         </th>
-                        <th th class="col-md-2">
+                        <th class="col-md-2">
                             Administrador
                         </th>
                     @endif
@@ -151,7 +151,6 @@
                 <label class="radio-inline">
                     <input type="radio" name="userOrder" value="desc" @if($selectedUserAsc === false) checked @endif>
                     Descendente</label>
-                &nbsp&nbsp
                 <input type="submit" value="Ordenar" class="btn btn-default">
             </form>
 

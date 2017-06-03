@@ -49,7 +49,7 @@ class DashboardController extends Controller
         $currentMonth = $now->month;
 
         $totalPrintsCurrentMonth = PrintRequest::whereMonth('closed_date', $currentMonth)->count();
-        $statistics['printAvgCurrentMonth'] = $totalPrintsCurrentMonth/($now->daysInMonth);
+        $statistics['printAvgCurrentMonth'] = $totalPrintsCurrentMonth / ($now->daysInMonth);
 
         foreach ($departments as $department) {
             $department->totalPrints = 0;

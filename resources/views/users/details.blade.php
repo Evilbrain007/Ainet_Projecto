@@ -7,10 +7,12 @@
 @endsection
 
 @section('content')
+    @if(Auth::check() && Auth::user()->admin == true)
     <div class="panel panel-danger">
         <div class="panel-heading">
             <h3 class="panel-title">Painel de administração</h3>
         </div>
+        @endif
         <div class="panel-body">
             <div class="col-md-6">
                 @if(Auth::check() && Auth::user()->admin == true)
@@ -47,7 +49,7 @@
                     <form class="form-inline" name="admin"
                           action={{route('user.employee', ['id' =>$user->id])}} method="post">
                         {{ csrf_field() }}
-                        <label>Administrador &nbsp;
+                        <label>Administrador</label>
                         <input class="btn btn-primary disabled" type="button" value="Sim"/>
                         @unless(Auth::user() == $user)
                             <input class="btn btn-default" type="submit" value="Não">
@@ -80,7 +82,7 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center">{{--
+                <div class="col-md-3 col-lg-3 ">{{--
                     <img alt="User Pic" src="http://babyinfoforyou.com/wp-content/uploads/2014/10/avatar-300x300.png" class="img-circle img-responsive">
                 --}}
                     <img alt="User Pic" src="{{ route("user.image", ['user_id' => $user->id]) }}"
