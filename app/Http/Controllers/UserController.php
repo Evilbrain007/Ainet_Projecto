@@ -48,7 +48,7 @@ class UserController extends Controller
             return redirect(route('home'))->with($message);
         }
 
-        dd($request);
+        return redirect(route('home'));
     }
 
 
